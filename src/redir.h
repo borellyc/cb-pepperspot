@@ -31,10 +31,10 @@
  *
  */
 
-//! 
+//!
 //!  \file redir.h
 //!  \brief HTTP redirection module.
-//!  
+//!
 
 #ifndef _REDIR_H
 #define _REDIR_H
@@ -98,10 +98,10 @@
 
 #define REDIR_ETH_ALEN                  6 //!< Ethernet address length
 
-//! 
+//!
 //!  \struct redir_conn_t
 //!  \brief Redirection connection.
-//!  
+//!
 struct redir_conn_t
 {
   /* Parameters from HTTP request */
@@ -153,10 +153,10 @@ struct redir_conn_t
   struct timeval start_time;              //!< Transferred in callback
 };
 
-//! 
+//!
 //!  \struct redir_t
 //!  \brief Redirection manager.
-//!  
+//!
 struct redir_t
 {
   int fd;                                 //!< File descriptor
@@ -186,22 +186,22 @@ struct redir_t
   int radiusnasporttype;                  //!< NAS port type of NAS
   int starttime;                          //!< Start time
 
-//! 
+//!
 //!  \brief Callback to retrieve state of an IPv4 connection.
-//!  
+//!
   int (*cb_getstate)(struct redir_t *redir, struct in_addr *addr, struct redir_conn_t *conn);
 
   /* [SV] */
-//! 
+//!
 //!  \brief Callback to retrieve state of an IPv6 connection.
-//!  
+//!
   int (*cb_getstate6)(struct redir_t *redir, struct in6_addr *addr, struct redir_conn_t *conn);
 };
 
-//! 
+//!
 //!  \struct redir_msg_t
 //!  \brief Redirection message (passed via message queue).
-//!  
+//!
 struct redir_msg_t
 {
   long int type;                          //!< Type of message
@@ -228,18 +228,18 @@ struct redir_msg_t
   int ipv6;                               //!< If connection use IPv6
 };
 
-//! 
+//!
 //!  \brief Create a new redirection manager.
 //!  \param redir pointer will be filled with newly redirection manager if success
 //!  \param addr our IPv4 address
 //!  \param addr6 our IPv6 address
 //!  \param port port
 //!  \return 0 if success, -1 otherwise
-//!  
+//!
 int redir_new(struct redir_t **redir,
               struct in_addr *addr, struct in6_addr *addr6, int port);
 
-//! 
+//!
 //!  \brief Set various parameters.
 //!  \param redir redir_t instance
 //!  \param debug print debug information or not
@@ -261,7 +261,7 @@ int redir_new(struct redir_t **redir,
 //!  \param radiuslocationid location ID
 //!  \param radiuslocationname location name
 //!  \param radiusnasporttype type of NAS port
-//!  
+//!
 void redir_set(struct redir_t *redir, int debug, struct in6_addr *prefix, int prefixlen,
                char *url, char *url6, char *homepage, char *secret,
                struct sockaddr_storage *radiuslisten,
@@ -273,9 +273,9 @@ void redir_set(struct redir_t *redir, int debug, struct in6_addr *prefix, int pr
                char *radiuslocationid, char *radiuslocationname,
                int radiusnasporttype);
 
-//! 
+//!
 //!  \brief Accept connection and redirect URL.
-//! 
+//!
 //!   1) forks a child process
 //!   2) Accepts the tcp connection
 //!   3) Analyses a HTTP get request
@@ -289,7 +289,7 @@ void redir_set(struct redir_t *redir, int debug, struct in6_addr *prefix, int pr
 //!   - Redirect to login page?
 //!   c) Request for another server
 //!   - Redirect to login server.
-//! 
+//!
 //!    Incoming requests are identified only by their IP address. No MAC
 //!    address information is obtained. The main security problem is denial
 //!    of service attacks by malicious hosts sending logoff requests for
@@ -298,33 +298,33 @@ void redir_set(struct redir_t *redir, int debug, struct in6_addr *prefix, int pr
 //!  \param redir redir_t instance
 //!  \param ipv6 if client use IPv6
 //!  \return 0 if success, -1 otherwise
-//!  
+//!
 int redir_accept(struct redir_t *redir, int ipv6);
 
-//! 
+//!
 //!  \brief Release redirection manager.
 //!  \param redir redirection manager to release
 //!  \return 0
-//!  
+//!
 int redir_free(struct redir_t *redir);
 
-//! 
+//!
 //!  \brief Set callback to determine state information for the IPv4 connection.
 //!  \param redir redir_t instance
 //!  \param cb_getstate callback
 //!  \return 0
-//!  
+//!
 int redir_set_cb_getstate(struct redir_t *redir,
                           int (*cb_getstate)(struct redir_t *redir, struct in_addr *addr,
                                              struct redir_conn_t *conn));
 
 /* [SV] */
-//! 
+//!
 //!  \brief Set callback to determine state information for the IPv6 connection.
 //!  \param redir redir_t instance
 //!  \param cb_getstate6 callback
 //!  \return 0
-//!  
+//!
 int redir_set_cb_getstate6(struct redir_t *redir,
                            int (*cb_getstate6)(struct redir_t *redir, struct in6_addr *addr,
                                                struct redir_conn_t *conn));

@@ -63,20 +63,20 @@
  *
  */
 
-//! 
+//!
 //!  \file lookup.c
 //!  \brief Hash lookup.
-//!  
+//!
 
 #include "lookup.h"
 
-//! 
+//!
 //!  \def mix
 //!  \brief Mix three variable according to algorithm of Bob Jenkins.
 //!  \param a first value
 //!  \param b second value
 //!  \param c third value
-//!  
+//!
 #define mix(a, b, c) \
   { \
     a -= b; a -= c; a ^= (c >> 13); \

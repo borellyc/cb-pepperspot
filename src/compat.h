@@ -20,10 +20,10 @@
  *          sebastien.vincent@pepperspot.info
  */
 
-//! 
+//!
 //!  \file compat.h
 //!  \brief Compatibility functions.
-//!  
+//!
 
 #ifndef _COMPAT_H
 #define _COMPAT_H
@@ -54,24 +54,24 @@ extern "C"
 extern char ** environ;              //!< environ variable which contains environment variable
 #endif
 
-//! 
+//!
 //!  \brief clearenv replacement function (non POSIX).
-//! 
+//!
 //!  Clear the environnement variables.
 //!  \return 0
-//!  
+//!
 int clearenv(void);
 
 #endif
 
 #if !defined(HAVE_DAEMON) && !defined(_XOPEN_SOURCE)
 
-//! 
+//!
 //!  \brief daemon replacement function (non POSIX).
 //!  \param nochdir if 0, the child change to "/" directory
 //!  \param noclose if 0, the child redirect stdin, stdout and stderr to /dev/null
 //!  \return O if OK, -1 otherwise (errno is set).
-//!  
+//!
 int daemon(int nochdir, int noclose);
 
 #endif

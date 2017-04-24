@@ -63,10 +63,10 @@
  *
  */
 
-//! 
+//!
 //!  \file radius.c
 //!  \brief RADIUS client.
-//!  
+//!
 
 #include <errno.h>
 #include <sys/types.h>
@@ -80,11 +80,11 @@
 #include "syserr.h"
 #include "radius.h"
 
-//! 
+//!
 //!  \brief Print information about radius packet queue.
 //!  \param this radius_t instance
 //!  \return 0
-//!  
+//!
 static int radius_queue_print(struct radius_t *this)
 {
   int n = 0;
@@ -107,13 +107,13 @@ static int radius_queue_print(struct radius_t *this)
   return 0;
 }
 
-//! 
+//!
 //!  \brief Calculate HMAC MD5 on a radius packet.
 //!  \param this radius_t instance
 //!  \param pack radius packet
 //!  \param dst destination buffer
 //!  \return 0
-//!  
+//!
 static int radius_hmac_md5(struct radius_t *this, struct radius_packet_t *pack, uint8_t *dst)
 {
   unsigned char digest[RADIUS_MD5LEN];
@@ -171,12 +171,12 @@ static int radius_hmac_md5(struct radius_t *this, struct radius_packet_t *pack, 
   return 0;
 }
 
-//! 
+//!
 //!  \brief Update a packet with an accounting request authenticator.
 //!  \param this radius_t instance
 //!  \param pack radius packet
 //!  \return 0
-//!  
+//!
 static int radius_acctreq_authenticator(struct radius_t *this, struct radius_packet_t *pack)
 {
   /* From RFC 2866: Authenticator is the MD5 hash of:
@@ -196,7 +196,7 @@ static int radius_acctreq_authenticator(struct radius_t *this, struct radius_pac
   return 0;
 }
 
-//! 
+//!
 //!  \brief Update a packet with an authentication response authenticator.
 //!  \param this radius_t instance
 //!  \param pack radius packet
@@ -204,7 +204,7 @@ static int radius_acctreq_authenticator(struct radius_t *this, struct radius_pac
 //!  \param secret radius secret
 //!  \param secretlen length of secret
 //!  \return 0
-//!  
+//!
 static int radius_authresp_authenticator(struct radius_t *this, struct radius_packet_t *pack,
                                          uint8_t *req_auth, char *secret, int secretlen)
 {
@@ -228,13 +228,13 @@ static int radius_authresp_authenticator(struct radius_t *this, struct radius_pa
   return 0;
 }
 
-//! 
+//!
 //!  \brief Place data in queue for later retransmission.
 //!  \param this radius_t instance
 //!  \param pack radius packet
 //!  \param cbp pointer used with callback
 //!  \return 0 if success, -1 otherwise
-//!  
+//!
 static int radius_queue_in(struct radius_t *this, struct radius_packet_t *pack, void *cbp)
 {
   struct timeval *tv = NULL;
@@ -302,14 +302,14 @@ static int radius_queue_in(struct radius_t *this, struct radius_packet_t *pack, 
   return 0;
 }
 
-//! 
+//!
 //!  \brief Remove data from queue.
 //!  \param this radius_t instance
 //!  \param pack radius packet
 //!  \param id ID
 //!  \param cbp pointer to use with callback
 //!  \return 0 if success, -1 otherwise
-//!  
+//!
 static int radius_queue_out(struct radius_t *this, struct radius_packet_t *pack, int id, void **cbp)
 {
   if(this->debug) if(this->debug) printf("radius_queue_out\n");
@@ -352,12 +352,12 @@ static int radius_queue_out(struct radius_t *this, struct radius_packet_t *pack,
   return 0;
 }
 
-//! 
+//!
 //!  \brief Recalculate the timeout value of a packet in the queue.
 //!  \param this radius_t instance
 //!  \param id iD
 //!  \return 0 if success, -1 otherwise
-//!  
+//!
 static int radius_queue_reschedule(struct radius_t *this, int id)
 {
   struct timeval *tv = NULL;
@@ -412,12 +412,12 @@ static int radius_queue_reschedule(struct radius_t *this, int id)
   return 0;
 }
 
-//! 
+//!
 //!  \brief Count the number of instances of an attribute in a packet.
 //!  \param pack radius packet
 //!  \param type radius packet type to count
 //!  \return number of instances of attribute of the specified type
-//!  
+//!
 /* static */ int radius_countattr(struct radius_packet_t *pack, uint8_t type)
 {
   struct radius_attr_t *t = NULL;
@@ -441,12 +441,12 @@ static int radius_queue_reschedule(struct radius_t *this, int id)
   return count;
 }
 
-//! 
+//!
 //!  \brief Compare two attributes to see if they are the same.
 //!  \param t1 first radius attribute
 //!  \param t2 second radius attribute
 //!  \return 0 if attributes are the same, -1 otherwise 
-//!  
+//!
 /* static */ int radius_cmpattr(struct radius_attr_t *t1, struct radius_attr_t *t2)
 {
   if(t1->t != t2->t  ) return -1;
@@ -455,12 +455,12 @@ static int radius_queue_reschedule(struct radius_t *this, int id)
   return 0;
 }
 
-//! 
+//!
 //!  \brief Compare two attributes to see if they are the same.
 //!  \param t1 first radius attribute
 //!  \param t2 second radius attribute
 //!  \return 0 if attributes are the same, -1 otherwise 
-//!  
+//!
 /* static */ int radius_cmpattr6(struct radius_attr6_t *t1, struct radius_attr6_t *t2)
 {
   if(t1->t != t2->t  ) return -1;
@@ -469,14 +469,14 @@ static int radius_queue_reschedule(struct radius_t *this, int id)
   return 0;
 }
 
-//! 
+//!
 //!  \brief Returns an integer less than, equal to or greater than zero if tv1
 //!  is found, respectively, to be less than, to match or be greater than tv2.
 //!  \param tv1 first time
 //!  \param tv2 second time
 //!  \return an integer less than, equal to or greater than zero if tv1
 //!  is found, respectively, to be less than, to match or be greater than tv2
-//!  
+//!
 static int radius_cmptv(struct timeval *tv1, struct timeval *tv2)
 {
   struct timeval diff;
@@ -545,13 +545,13 @@ static int radius_cmptv(struct timeval *tv1, struct timeval *tv2)
   return 0;
 }
 
-//! 
+//!
 //!  \brief Check that the authenticator on a reply is correct.
 //!  \param this radius_t instance
 //!  \param pack radius packet
 //!  \param pack_req packet which contains original request
 //!  \return 0 if authenticator is correct, other value otherwise
-//!  
+//!
 static int radius_authcheck(struct radius_t *this, struct radius_packet_t *pack, struct radius_packet_t *pack_req)
 {
   uint8_t auth[RADIUS_AUTHLEN];
@@ -568,12 +568,12 @@ static int radius_authcheck(struct radius_t *this, struct radius_packet_t *pack,
   return memcmp(pack->authenticator, auth, RADIUS_AUTHLEN);
 }
 
-//! 
+//!
 //!  \brief Check that the authenticator on an accounting request is correct.
 //!  \param this radius_t instance
 //!  \param pack radius packet
 //!  \return 0 if authenticator is correct, other value otherwise
-//!  
+//!
 static int radius_acctcheck(struct radius_t *this, struct radius_packet_t *pack)
 {
   uint8_t auth[RADIUS_AUTHLEN];

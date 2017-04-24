@@ -20,10 +20,10 @@
  *          sebastien.vincent@pepperspot.info
  */
 
-//! 
+//!
 //!  \file compat.c
 //!  \brief Compatibility functions.
-//!  
+//!
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>

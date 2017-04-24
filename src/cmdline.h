@@ -5,20 +5,20 @@
 #ifndef CMDLINE_H
 #define CMDLINE_H
 
-//! 
+//!
 //!  \file cmdline.h
 //!  \brief Parser.
-//!  
+//!
 
 #ifdef __cplusplus
 extern "C"
 { /* } */
 #endif /* __cplusplus */
 
-//! 
+//!
 //!  \struct gengetopt_args_info
 //!  \brief Arguments information.
-//!  
+//!
 struct gengetopt_args_info
 {
   int  fg_flag;                  //!< Run in foreground (default=off)
@@ -191,16 +191,16 @@ struct gengetopt_args_info
   int macpasswd_given;           //!< Whether macpasswd was given
 };
 
-//! 
+//!
 //!  \brief Parse command-line.
 //!  \param argc number of argument
 //!  \param argv array of arguments
 //!  \param args_info it will be filled with arguments information
 //!  \return 0 if success, -1 otherwise
-//!  
+//!
 int cmdline_parser(int argc, char *const *argv, struct gengetopt_args_info *args_info);
 
-//! 
+//!
 //!  \brief Parse command-line.
 //!  \param argc number of argument
 //!  \param argv array of arguments
@@ -209,41 +209,41 @@ int cmdline_parser(int argc, char *const *argv, struct gengetopt_args_info *args
 //!  \param initialize initialize or not gengetopt_args_info before use
 //!  \param check_required not used
 //!  \return 0 if success, -1 otherwise
-//!  
+//!
 int cmdline_parser2(int argc, char *const *argv, struct gengetopt_args_info *args_info,
                    int override, int initialize, int check_required);
 
-//! 
+//!
 //!  \brief Save to file.
 //!  \param filename Destination filename
 //!  \param args_info Information to save in file.
 //!  \return 0 if success, -1 otherwise
-//!  
+//!
 int cmdline_parser_file_save(const char *filename, struct gengetopt_args_info *args_info);
 
-//! 
+//!
 //!  \brief Print help about arguments.
-//!  
+//!
 void cmdline_parser_print_help(void);
 
-//! 
+//!
 //!  \brief Print parser version.
-//!  
+//!
 void cmdline_parser_print_version(void);
 
-//! 
+//!
 //!  \brief Initialize gengetopt_args_info structure.
 //!  \param args_info structure to be initialized
-//!  
+//!
 void cmdline_parser_init(struct gengetopt_args_info *args_info);
 
-//! 
+//!
 //!  \brief Free resource of gengetopt_args structure.
 //!  \param args_info structure to be released
-//!  
+//!
 void cmdline_parser_free(struct gengetopt_args_info *args_info);
 
-//! 
+//!
 //!  \brief Parse configuration file.
 //!  \param filename configuration filename
 //!  \param args_info it will be filled with arguments information
@@ -251,7 +251,7 @@ void cmdline_parser_free(struct gengetopt_args_info *args_info);
 //!  \param initialize initialize or not gengetopt_args_info before use
 //!  \param check_required not used
 //!  \return 0 if success, -1 otherwise
-//!  
+//!
 int cmdline_parser_configfile(char *const filename, struct gengetopt_args_info *args_info,
                               int override, int initialize, int check_required);
 

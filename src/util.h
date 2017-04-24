@@ -22,10 +22,10 @@
 
 /* $Id: util.h 1.54 06/02/22 16:21:55+02:00 anttit@tcs.hut.fi $ */
 
-//! 
+//!
 //!  \file util.h
 //!  \brief "Util" functions.
-//!  
+//!
 
 #ifndef _UTIL_H
 #define _UTIL_H
@@ -44,30 +44,30 @@
 #define IPV6_RECVPKTINFO  IPV6_PKTINFO  //!< IPv6 socket option to receive packet information
 #endif
 
-//! 
+//!
 //!  \def IN6ADDR_ALL_NODES_MC_INIT
 //!  \brief All nodes multicast address (FF02::1).
-//!  
+//!
 #define IN6ADDR_ALL_NODES_MC_INIT \
   { { { 0xff, 0x02, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x1 } } }
 
-//! 
+//!
 //!  \def IN6ADDR_ALL_ROUTERS_MC_INIT
 //!  \brief All routers multicast address (FF02::2).
-//!  
+//!
 #define IN6ADDR_ALL_ROUTERS_MC_INIT \
   { { { 0xff, 0x02, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x2 } } }
 
 /* Following 4 routines are taken from include/net/ipv6.h */
 
-//! 
+//!
 //!  \brief Set an IPv6 address.
 //!  \param addr address will be build with four other parameters
 //!  \param w1 first 32 bit of IPv6 address
 //!  \param w2 second 32 bit of IPv6 address
 //!  \param w3 third 32 bit of IPv6 address
 //!  \param w4 last 32 bit of IPv6 address
-//!  
+//!
 static inline void ipv6_addr_set(struct in6_addr *addr,
                                  uint32_t w1, uint32_t w2,
                                  uint32_t w3, uint32_t w4)
@@ -78,11 +78,11 @@ static inline void ipv6_addr_set(struct in6_addr *addr,
   ((uint32_t *)addr->s6_addr)[3] = w4;
 }
 
-//! 
+//!
 //!  \brief Build a IPv6 multicast solicited address.
 //!  \param addr IPv6 address
 //!  \param solicited Resulting solicited address built from addr
-//!  
+//!
 static inline void ipv6_addr_solict_mult(const struct in6_addr *addr,
                                          struct in6_addr *solicited)
 {
@@ -90,11 +90,11 @@ static inline void ipv6_addr_solict_mult(const struct in6_addr *addr,
                 htonl(0xFF000000) | ((uint32_t *)addr->s6_addr)[3]);
 }
 
-//! 
+//!
 //!  \brief Build a link-local address from global address.
 //!  \param addr Global IPv6 address.
 //!  \param llocal result link-local address built from addr
-//!  
+//!
 static inline void ipv6_addr_llocal(const struct in6_addr *addr,
                                     struct in6_addr *llocal)
 {
@@ -102,14 +102,14 @@ static inline void ipv6_addr_llocal(const struct in6_addr *addr,
                 ((uint32_t *)addr->s6_addr)[2], ((uint32_t *)addr->s6_addr)[3]);
 }
 
-//! 
+//!
 //!  \brief Free vector data.
-//! 
+//!
 //!  Frees an array of iovec data, specified by "iov" with "count"
 //!  elements.  Does not free actual array, only iov_base.
 //!  \param iov vector array
 //!  \param count number of elements in array
-//!  
+//!
 static inline void free_iov_data(struct iovec *iov, int count)
 {
   int len = count;

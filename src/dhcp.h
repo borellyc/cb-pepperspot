@@ -66,10 +66,10 @@
  *
  */
 
-//! 
+//!
 //!  \file dhcp.h
 //!  \brief Packet authenticator and DHCP module.
-//!  
+//!
 
 #ifndef _DHCP_H
 #define _DHCP_H
@@ -130,10 +130,10 @@
 #define DHCP_ETH_ALEN                      6 //!< Ethernet address length
 #define DHCP_ETH_HLEN                     14 //!< Ethernet header length
 
-//! 
+//!
 //!  \struct dhcp_eth_hdr_t
 //!  \brief Ethernet header.
-//!  
+//!
 struct dhcp_eth_hdr_t
 {
   uint8_t  dst[DHCP_ETH_ALEN];               //!< Destination address
@@ -148,10 +148,10 @@ struct dhcp_eth_hdr_t
 #define DHCP_IP_TCP                        6 //!< TCP Protocol number
 #define DHCP_IP_UDP                       17 //!< UDP Protocol number
 
-//! 
+//!
 //!  \struct dhcp_ip_hdr_t
 //!  \brief IPv4 header.
-//!  
+//!
 struct dhcp_ip_hdr_t
 {
   uint32_t ihl:4;                            //!< Internet header length (number of 32 bits words in header)
@@ -169,10 +169,10 @@ struct dhcp_ip_hdr_t
 
 #define DHCP_UDP_HLEN                      8 //!< UDP header length
 
-//! 
+//!
 //!  \struct dhcp_udp_hdr_t
 //!  \brief UDP header.
-//!  
+//!
 struct dhcp_udp_hdr_t
 {
   uint16_t src;                              //!< Source port
@@ -181,10 +181,10 @@ struct dhcp_udp_hdr_t
   uint16_t check;                            //!< Checksum
 };
 
-//! 
+//!
 //!  \struct dhcp_tcp_hdr_t
 //!  \brief TCP header.
-//!  
+//!
 struct dhcp_tcp_hdr_t
 {
   uint16_t src;                              //!< Source port
@@ -203,10 +203,10 @@ struct dhcp_tcp_hdr_t
 #define DHCP_IPV6_UDP                     17 //!< UDP protocol number
 
 /* [SV] */
-//! 
+//!
 //!  \struct dhcp_ipv6_hdr_t
 //!  \brief IPv6 header.
-//!  
+//!
 struct dhcp_ipv6_hdr_t
 {
   uint32_t version:4;                        //!< Version (always 6)
@@ -221,10 +221,10 @@ struct dhcp_ipv6_hdr_t
 
 #define DHCP_EAP_PLEN                   1500 //!< Dot1x Payload length
 
-//! 
+//!
 //!  \struct dhcp_eap_hdr_t
 //!  \brief EAP header.
-//!  
+//!
 struct dhcp_eap_hdr_t
 {
   uint8_t  code;                             //!< EAP code
@@ -234,10 +234,10 @@ struct dhcp_eap_hdr_t
   uint8_t  payload[DHCP_EAP_PLEN];           //!< Data
 } __attribute__((packed));
 
-//! 
+//!
 //!  \struct dhcp_dot1x_hdr_t
 //!  \brief 802.1x packet header.
-//!  
+//!
 struct dhcp_dot1x_hdr_t
 {
   uint8_t  ver;                              //!< Version
@@ -248,10 +248,10 @@ struct dhcp_dot1x_hdr_t
 
 #define DHCP_TAG_VLEN                    255 //!< Tag value always shorter than this
 
-//! 
+//!
 //!  \struct dhcp_tag_t
 //!  \brief DHCP tag.
-//!  
+//!
 struct dhcp_tag_t
 {
   uint8_t t;                                 //!< Type
@@ -261,10 +261,10 @@ struct dhcp_tag_t
 
 #define DHCP_EAPOL_TAG_VLEN              255 //!< Tag value always shorter than this
 
-//! 
+//!
 //!  \struct dhcp_eapol_tag_t
 //!  \brief EAPOL tag element.
-//!  
+//!
 struct dhcp_eapol_tag_t
 {
   uint8_t t;                                 //!< EAPOL tag type
@@ -274,10 +274,10 @@ struct dhcp_eapol_tag_t
 
 #define DHCP_IP_PLEN                    1500 //!< IPv4 payload length
 
-//! 
+//!
 //!  \struct dhcp_ip_packet_t
 //!  \brief Complete IPv4 packet including ethernet header.
-//!  
+//!
 struct dhcp_ip_packet_t
 {
   struct dhcp_eth_hdr_t ethh;                //!< Ethernet header
@@ -288,10 +288,10 @@ struct dhcp_ip_packet_t
 /* [SV] */
 #define DHCP_IPV6_PLEN                  1500 //!< IPv6 payload length
 
-//! 
+//!
 //!  \struct dhcp_ipv6_packet_t
 //!  \brief Full IPv6 packet including ethernet header.
-//!  
+//!
 struct dhcp_ipv6_packet_t
 {
   struct dhcp_eth_hdr_t  ethh;               //!< Ethernet header
@@ -299,10 +299,10 @@ struct dhcp_ipv6_packet_t
   uint8_t payload[DHCP_IPV6_PLEN];           //!< Data
 } __attribute__((packed));
 
-//! 
+//!
 //!  \struct dhcp_icmpv6_packet_t
 //!  \brief ICMPv6 header.
-//!  
+//!
 struct dhcp_icmpv6_packet_t
 {
   uint8_t  type;                             //!< Type of message
@@ -310,10 +310,10 @@ struct dhcp_icmpv6_packet_t
   uint16_t checksum;                         //!< Checksum
 };
 
-//! 
+//!
 //!  \struct dhcp_dot1x_packet_t
 //!  \brief Complete 802.1X packet.
-//!  
+//!
 struct dhcp_dot1x_packet_t
 {
   struct dhcp_eth_hdr_t   ethh;               //!< Ethernet header
@@ -333,10 +333,10 @@ struct dhcp_dot1x_packet_t
 
 #define DHCP_HTYPE_ETH                     1 //!< DHCP hardware type for ethernet network
 
-//! 
+//!
 //!  \struct dhcp_packet_t
 //!  \brief DHCP packet from RFC 2131.
-//!  
+//!
 struct dhcp_packet_t   /* From RFC 2131 */
 {
   uint8_t  op;                               //!< 1 Message op code / message type, 1 = BOOTREQUEST, 2 = BOOTREPLY
@@ -363,11 +363,11 @@ struct dhcp_packet_t   /* From RFC 2131 */
                                              //!< of defined options)
 } __attribute__((packed));
 
-//! 
+//!
 //!  \struct dhcp_fullpacket_t
 //!  \brief Complete DHCP packet including ethernet and
 //!  IPv4 header.
-//!  
+//!
 struct dhcp_fullpacket_t
 {
   struct dhcp_eth_hdr_t ethh;                //!< Ethernet header
@@ -379,10 +379,10 @@ struct dhcp_fullpacket_t
 #define DHCP_ARP_REQUEST                   1 //!< ARP request code
 #define DHCP_ARP_REPLY                     2 //!< ARP reply code
 
-//! 
+//!
 //!  \struct dhcp_arp_packet_t
 //!  \brief ARP packet.
-//!  
+//!
 struct dhcp_arp_packet_t                     /* From RFC 826 */
 {
   uint16_t hrd;                              //!< 16 bit: (ar$hrd) Hardware address space (eg, Ethernet, Packet Radio Net)
@@ -397,10 +397,10 @@ struct dhcp_arp_packet_t                     /* From RFC 826 */
   uint8_t  tpa[DHCP_IP_ALEN];                //!< mbytes: (ar$tpa) Protocol address of target
 } __attribute__((packed));
 
-//! 
+//!
 //!  \struct dhcp_arp_fullpacket_t
 //!  \brief Complete ARP packet including ethernet header.
-//!  
+//!
 struct dhcp_arp_fullpacket_t
 {
   struct dhcp_eth_hdr_t    ethh;             //!< Ethernet header
@@ -411,10 +411,10 @@ struct dhcp_arp_fullpacket_t
 
 #define DHCP_DNS_HLEN                     12 //!< DNS header length
 
-//! 
+//!
 //!  \struct dhcp_dns_packet_t
 //!  \brief DNS packet.
-//!  
+//!
 struct dhcp_dns_packet_t                     /* From RFC 1035 */
 {
   uint16_t id;                               //!< 16 bit: Generated by requester. Copied in reply
@@ -426,11 +426,11 @@ struct dhcp_dns_packet_t                     /* From RFC 1035 */
   uint8_t  records[DHCP_IP_PLEN];            //!< DNS records
 } __attribute__((packed));
 
-//! 
+//!
 //!  \struct dhcp_dns_fullpacket_t
 //!  \brief Complete DNS packet including ethernet and
 //!  IPv4 header.
-//!  
+//!
 struct dhcp_dns_fullpacket_t
 {
   struct dhcp_eth_hdr_t    ethh;             //!< Ethernet header
@@ -439,11 +439,11 @@ struct dhcp_dns_fullpacket_t
   struct dhcp_dns_packet_t dns;              //!< DNS packet
 } __attribute__((packed));
 
-//! 
+//!
 //!  \struct dhcp_dns_fullpacket6_t
 //!  \brief Complete DNS packet including ethernet and
 //!  IPv6 header.
-//!  
+//!
 struct dhcp_dns_fullpacket6_t
 {
   struct dhcp_eth_hdr_t    ethh;             //!< Ethernet header
@@ -472,10 +472,10 @@ struct dhcp_t;                               /* Forward declaration */
 
 #define DHCP_DNATV6_MAX                   10 //!< Maximum IPv6 DNAT table size
 
-//! 
+//!
 //!  \struct dhcp_conn_t
 //!  \brief Low-level connection.
-//!  
+//!
 struct dhcp_conn_t
 {
   int inuse;                                 //!< Free = 0; Inuse = 1
@@ -511,14 +511,14 @@ struct dhcp_conn_t
   /* uint16_t mtu;                           Maximum transfer unit */
 };
 
-//! 
+//!
 //!  \struct dhcp_t
 //!  \brief Information storage for each dhcp instance.
-//! 
+//!
 //!  Normally each instance of the application corresponds to
 //!  one instance of a dhcp instance.
-//! 
-//!  
+//!
+//!
 struct dhcp_t
 {
   /* Parameters related to the network interface */
@@ -597,80 +597,80 @@ struct dhcp_t
 
   /* Call back functions */
 
-//! 
+//!
 //!  \brief Callback function when peers request an IPv6 address.
-//!  
+//!
   int (*cb_request)(struct dhcp_conn_t *conn, struct in_addr *addr);
 
   /* [SV] */
-//! 
+//!
 //!  \brief Callback function when peers request an IPv6 address.
-//!  
+//!
   int (*cb_request6)(struct dhcp_conn_t *conn, struct in6_addr *addr);
 
-//! 
+//!
 //!  \brief Callback function when peers connect.
-//!  
+//!
   int (*cb_connect)(struct dhcp_conn_t *conn);
 
   /* [SV] */
-//! 
+//!
 //!  \brief Callback function when IPv6 peers connect.
-//!  
+//!
   int (*cb_connect6)(struct dhcp_conn_t *conn);
 
-//! 
+//!
 //!  \brief Callback function when peers disconnect.
-//!  
+//!
   int (*cb_disconnect)(struct dhcp_conn_t *conn);
 
   /* [SV] */
-//! 
+//!
 //!  \brief Callback function when IPv6 peers disconnect.
-//!  
+//!
   int (*cb_disconnect6)(struct dhcp_conn_t *conn);
 
   /* [SG] */
-//! 
+//!
 //!  \brief Callback to check if a peer is already authenticated
 //!  in IPv4 or IPv6.
-//!  
+//!
   int (*cb_unauth_dnat)(struct dhcp_conn_t *conn);
 
-//! 
+//!
 //!  \brief Callback function when receive IPv4 packet.
-//!  
+//!
   int (*cb_ip_ind)(struct dhcp_conn_t *conn, void *pack, unsigned len);
 
-//! 
+//!
 //!  \brief Callback function when receive IPv6 packet.
-//!  
+//!
   int (*cb_ipv6_ind)(struct dhcp_conn_t *conn, void *pack, unsigned len);
 
-//! 
+//!
 //!  \brief Callback function when receive EAP packet.
-//!  
+//!
   int (*cb_eap_ind)(struct dhcp_conn_t *conn, void *pack, unsigned len);
 
 };
 
 /* External API functions */
 
-//! 
+//!
 //!  \brief Get the MAC address of the interface.
 //!  \param ifname interface name
 //!  \param macaddr MAC address will be filled in it
 //!  \return 0 if success, -1 otherwise
-//!  
+//!
 int dhcp_get_mac(const char *ifname, unsigned char *macaddr);
 
-//! 
+//!
 //!  \brief Returns the current version of the program.
 //!  \return current version of the program
-//!  
+//!
 const char * dhcp_version(void);
 
-//! 
+//!
 //!  \brief Allocates a new instance of the library.
 //!  \param this resulting pointer will be stored in this variable
 //!  \param nb_conn maximum number of connections
@@ -688,13 +688,13 @@ const char * dhcp_version(void);
 //!  \param useeapol Use or not EAPOL
 //!  \param ipversion "ipv4", "ipv6" or "dual" mode
 //!  \return 0 if success, -1 otherwise
-//!  
+//!
 int dhcp_new(struct dhcp_t **this, int nb_conn, char *interface,
              int usemac, uint8_t *mac, int promisc,
              struct in_addr *listen, struct in6_addr *listen6, int lease, int allowdyn,
              struct in_addr *uamlisten, struct in6_addr *uamlisten6, uint16_t uamport, int useeapol, char *ipversion);
 
-//! 
+//!
 //!  \brief Set dhcp parameters for IPv4 which can be altered at runtime.
 //!  \param this dhcp_t instance
 //!  \param debug print extra information or not
@@ -707,13 +707,13 @@ int dhcp_new(struct dhcp_t **this, int nb_conn, char *interface,
 //!  \param uamokmask
 //!  \param uamoknetlen
 //!  \return 0 if success, -1 otherwise
-//!  
+//!
 int dhcp_set(struct dhcp_t *this, int debug,
              struct in_addr *authip, int authiplen, int anydns,
              struct in_addr *uamokip, int uamokiplen, struct in_addr *uamokaddr,
              struct in_addr *uamokmask, int uamoknetlen);
 
-//! 
+//!
 //!  \brief Set dhcp parameters for IPv6 which can be altered at runtime.
 //!  \param this dhcp_t instance
 //!  \param debug print debug information or not
@@ -726,13 +726,13 @@ int dhcp_set(struct dhcp_t *this, int debug,
 //!  \param uamokmask
 //!  \param uamoknetlen
 //!  \return 0 if success, -1 otherwise
-//!  
+//!
 int dhcp_set6(struct dhcp_t *this, int debug,
               struct in6_addr *authip, int authiplen, int anydns,
               struct in6_addr *uamokip, int uamokiplen, struct in6_addr *uamokaddr,
               struct in6_addr *uamokmask, int uamoknetlen);
 
-//! 
+//!
 //!  \brief Set various IP addresses of a connection.
 //!  \param conn client connection
 //!  \param hisip connection IPv4 address
@@ -742,7 +742,7 @@ int dhcp_set6(struct dhcp_t *this, int debug,
 //!  \param dns2 DNS address
 //!  \param domain domain name
 //!  \return 0 if success, -1 otherwise
-//!  
+//!
 int dhcp_set_addrs(struct dhcp_conn_t *conn,
                    struct in_addr *hisip,
                    struct in_addr *hismask,
@@ -751,271 +751,271 @@ int dhcp_set_addrs(struct dhcp_conn_t *conn,
                    struct in_addr *dns2,
                    char *domain);
 
-//! 
+//!
 //!  \brief Set various IP addresses of a connection.
 //!  \param conn client connection
 //!  \param hisip connection IPv6 address
 //!  \param ourip portal captive IPv6 address
 //!  \param domain domain name
 //!  \return 0 if success, -1 otherwise
-//!  
+//!
 int dhcp_set_addrs6(struct dhcp_conn_t *conn,
                     struct in6_addr *hisip,
                     struct in6_addr *ourip, char *domain);
 
-//! 
+//!
 //!  \brief Call this function when a new IP packet has arrived.
-//! 
+//!
 //!  This function should be part of a select() loop in the application.
 //!  \param this dhcp_t instance
 //!  \return 0 if success, -1 otherwise
-//!  
+//!
 int dhcp_decaps(struct dhcp_t *this);
 
-//! 
+//!
 //!  \brief Use the hash table to find IPv4 connection based on the mac address.
 //!  \param this dhcp_t instance
 //!  \param conn it will be filled with connection if found
 //!  \param hwaddr MAC address to find
 //!  \return 0 if success, -1 if not found.
-//!  
+//!
 int dhcp_hash_get(struct dhcp_t *this, struct dhcp_conn_t **conn, uint8_t *hwaddr);
 
-//! 
+//!
 //!  \brief Use the hash table to find IPv6 connection based on the mac address.
 //!  \param this dhcp_t instance
 //!  \param conn it will be filled with connection if found
 //!  \param hwaddr MAC address to find
 //!  \return 0 if success, -1 if not found.
 //!  \author Sebastien VINCENT
-//!  
+//!
 int dhcp_hash_get6(struct dhcp_t *this, struct dhcp_conn_t **conn, uint8_t *hwaddr);
 
-//! 
+//!
 //!  \brief Allocate a new IPv4 client connection.
 //!  \param this dhcp_t instance
 //!  \param conn pointer to receive the newly allocate object
 //!  \param hwaddr hardware address
 //!  \return 0 if success, -1 otherwise
-//!  
+//!
 int dhcp_new_conn(struct dhcp_t *this, struct dhcp_conn_t **conn, uint8_t *hwaddr);
 
-//! 
+//!
 //!  \brief Allocate a new IPv6 connection.
 //!  \param this dhcp_t instance
 //!  \param conn pointer to receive the newly allocate object
 //!  \param hwaddr hardware address
 //!  \return 0 if success, -1 otherwise
 //!  \author Sebastien VINCENT
-//!  
+//!
 int dhcp_new_conn6(struct dhcp_t *this, struct dhcp_conn_t **conn, uint8_t *hwaddr);
 
-//! 
+//!
 //!  \brief Remove an IPv4 client connection.
 //!  \param conn client connection to remove
 //!  \return 0
-//!  
+//!
 int dhcp_free_conn(struct dhcp_conn_t *conn);
 
-//! 
+//!
 //!  \brief Remove an IPv6 client connection.
 //!  \param conn client connection to remove
 //!  \return 0
-//!  
+//!
 int dhcp_free_conn6(struct dhcp_conn_t *conn);
 
-//! 
+//!
 //!  \brief Call this function to send an IP packet to the peer.
 //!  \param conn connection
 //!  \param pack IP packet
 //!  \param len length of packet
 //!  \return 0 or number of bytes written
-//!  
+//!
 int dhcp_send_ip(struct dhcp_conn_t *conn, void *pack, unsigned len);
 
-//! 
+//!
 //!  \brief Call this function to send an IPv6 packet to the peer.
 //!  \param conn the connection
 //!  \param pack the packet to send
 //!  \param len length of the packet
 //!  \return 0 or number of bytes written
 //!  \author Sebastien VINCENT
-//!  
+//!
 int dhcp_send_ipv6(struct dhcp_conn_t *conn, void *pack, unsigned len);
 
-//! 
+//!
 //!  \brief Send EAP frame.
 //!  \param conn low-level connection
 //!  \param pack packet to send
 //!  \param len length of packet
 //!  \return 0 if success, -1 otherwise
-//!  
+//!
 int dhcp_send_eap(struct dhcp_conn_t *conn, void *pack, int len);
 
-//! 
+//!
 //!  \brief Send EAP reject frame.
 //!  \param conn low-level connection
 //!  \param pack packet to send
 //!  \param len length of packet
 //!  \return 0 if success, -1 otherwise
-//!  
+//!
 int dhcp_send_eap_reject(struct dhcp_conn_t *conn, void *pack, int len);
 
 #if defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__APPLE__)
-//! 
+//!
 //!  \brief Receive packets from layer 2 socket.
 //!  \param this dhcp_t instance
 //!  \return 0 if success, -1 otherwise
-//!  
+//!
 int dhcp_receive(struct dhcp_t *this);
 #endif
 
-//! 
+//!
 //!  \brief Call this function when a new ARP packet has arrived.
 //!         This function should be part of a select() loop in the application.
 //!  \param this dhcp_t instance
 //!  \return 0 if success, -1 otherwise
-//!  
+//!
 int dhcp_arp_ind(struct dhcp_t *this);
 
-//! 
+//!
 //!  \brief Call this function when a new EAPOL packet has arrived.
 //!  \param this dhcp_t instance
 //!  \return 0 if success, -1 otherwise
-//!  
+//!
 int dhcp_eapol_ind(struct dhcp_t *this);
 
 /* [SV] */
-//! 
+//!
 //!  \brief Call this function when a new IPv6 packet has arrived.
 //!  This function should be part of a select() loop in the application.
 //!  \param this the dhcp_t instance
 //!  \return 0 if success, -1 otherwise
 //!  \author Sebastien VINCENT
-//!  
+//!
 int dhcp_ipv6_ind(struct dhcp_t *this);
 
-//! 
+//!
 //!  \brief Need to call this function at regular intervals to clean up old connections.
 //!  \param this dhcp_t instance
 //!  \return 0
-//!  
+//!
 int dhcp_timeout(struct dhcp_t *this);
 
-//! 
+//!
 //!  \brief Get time when to call dhcp_timeout().
-//! 
+//!
 //!  Use this function to find out when to call dhcp_timeout()
 //!  If service is needed after the value given by tvp then tvp
 //!  is left unchanged.
 //!  \param this dhcp_t instance
 //!  \param tvp time when to call dhcp_timeout
 //!  \return tvp
-//!  
+//!
 struct timeval * dhcp_timeleft(struct dhcp_t *this, struct timeval *tvp);
 
-//! 
+//!
 //!  \brief Release ressources allocated to the instance of the library.
 //!  \param this dhcp_t instance
 //!  \return 0
-//!  
+//!
 int dhcp_free(struct dhcp_t *this);
 
-//! 
+//!
 //!  \brief Set callback function which is called when a dhcp request is received.
 //!  \param this dhcp_t instance
 //!  \param cb_request the callback
 //!  \return 0
-//!  
+//!
 int dhcp_set_cb_request(struct dhcp_t *this,
                         int (*cb_request)(struct dhcp_conn_t *conn, struct in_addr *addr));
 /* [SV] */
-//! 
+//!
 //!  \brief Set the callback which is called when a machine requests an IPv6 address.
 //!  \param this dhcp_t instance
 //!  \param cb_request the callback
 //!  \return 0
-//!  
+//!
 int dhcp_set_cb_request6(struct dhcp_t *this,
                          int (*cb_request)(struct dhcp_conn_t *conn, struct in6_addr *addr));
 
-//! 
+//!
 //!  \brief Set callback function which is called when a connection is created.
 //!  \param this dhcp_t instance
 //!  \param cb_connect the callback
 //!  \return 0
-//!  
+//!
 int dhcp_set_cb_connect(struct dhcp_t *this,
                         int (*cb_connect)(struct dhcp_conn_t *conn));
 
 /* [SV] */
-//! 
+//!
 //!  \brief Set the callback which is called when an IPv6 connection is created.
 //!  \param this dhcp_t instance
 //!  \param cb_connect the callback
 //!  \return 0
-//!  
+//!
 int dhcp_set_cb_connect6(struct dhcp_t *this,
                          int (*cb_connect)(struct dhcp_conn_t *conn));
 
-//! 
+//!
 //!  \brief Set callback function which is called when a connection is deleted.
 //!  \param this dhcp_t instance
 //!  \param cb_disconnect the callback
 //!  \return 0
-//!  
+//!
 int dhcp_set_cb_disconnect(struct dhcp_t *this,
                            int (*cb_disconnect)(struct dhcp_conn_t *conn));
 
 /* [SV] */
-//! 
+//!
 //!  \brief Set the callback which is called when a IPv6 connection is deleted.
 //!  \param this dhcp_t instance
 //!  \param cb_disconnect the callback
 //!  \return 0
-//!  
+//!
 int dhcp_set_cb_disconnect6(struct dhcp_t *this,
                             int (*cb_disconnect)(struct dhcp_conn_t *conn));
 
 /* [SG] */
-//! 
+//!
 //!  \brief Set callback function which is called to check if
 //!  a client is already logged in another IP version.
 //!  \param this dhcp_t instance
 //!  \param cb_unauth_dnat callback
 //!  \return 0
-//!  
+//!
 int dhcp_set_cb_unauth_dnat(struct dhcp_t *this,
                             int (*cb_unauth_dnat)(struct dhcp_conn_t *conn));
 
-//! 
+//!
 //!  \brief Set callback function which is called when packet has arrived.
 //!  \param this dhcp_t instance
 //!  \param cb_ip_ind the callback
 //!  \return 0
-//!  
+//!
 int dhcp_set_cb_ip_ind(struct dhcp_t *this,
                        int (*cb_ip_ind)(struct dhcp_conn_t *conn, void *pack, unsigned len));
 
 /* [SV] */
-//! 
+//!
 //!  \brief Set callback which is called when IPv6 data has arrived on tun6 interface.
-//! 
+//!
 //!  This function should be part of a select() loop in the application.
 //!  \param this dhcp_t instance
 //!  \param cb_ipv6_ind the callback
 //!  \return 0
-//!  
+//!
 int dhcp_set_cb_ipv6_ind(struct dhcp_t *this,
                          int (*cb_ipv6_ind)(struct dhcp_conn_t *conn, void *pack, unsigned len));
 
-//! 
+//!
 //!  \brief Set callback function which is called when packet has arrived.
 //!  Used for eap packets.
 //!  \param this dhcp_t instance
 //!  \param cb_eap_ind the callback
 //!  \return 0
-//!  
+//!
 int dhcp_set_cb_eap_ind(struct dhcp_t *this,
                         int (*cb_eap_ind)(struct dhcp_conn_t *conn, void *pack, unsigned len));
 

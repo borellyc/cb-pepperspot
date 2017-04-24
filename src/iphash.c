@@ -63,10 +63,10 @@
  *
  */
 
-//! 
+//!
 //!  \file iphash.c
 //!  \brief Hash function for IPv4 and IPv6 addresses.
-//!  
+//!
 
 #include <sys/types.h>
 #include <netinet/in.h> /* in_addr */

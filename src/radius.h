@@ -63,10 +63,10 @@
  *
  */
 
-//! 
+//!
 //!  \file radius.h
 //!  \brief RADIUS client.
-//!  
+//!
 
 #ifndef _RADIUS_H
 #define _RADIUS_H
@@ -239,10 +239,10 @@
 #define RADIUS_TERMINATE_CAUSE_USER_ERROR           17 //!< Session terminated because of a user error
 #define RADIUS_TERMINATE_CAUSE_HOST_REQUEST         18 //!< Disconnected or logged out from host, could be caused if a host has crashed
 
-//! 
+//!
 //!  \struct radius_packet_t
 //!  \brief Radius packet.
-//!  
+//!
 struct radius_packet_t
 {
   uint8_t code;                                        //!< Code
@@ -252,10 +252,10 @@ struct radius_packet_t
   uint8_t payload[RADIUS_PACKSIZE-RADIUS_HDRSIZE];     //!< The payload
 } __attribute__((packed));
 
-//! 
+//!
 //!  \struct radius_queue_t
 //!  \brief Holder for queued packets.
-//!  
+//!
 struct radius_queue_t
 {
   int state;                                           //!< 0=empty, 1=full
@@ -274,10 +274,10 @@ struct radius_queue_t
   int this;                                            //!< Pointer to myself
 };
 
-//! 
+//!
 //!  \struct radius_t
 //!  \brief Describes radius_t instance.
-//!  
+//!
 struct radius_t
 {
   int fd;                                              //!< Socket file descriptor
@@ -324,10 +324,10 @@ struct radius_t
       //!< Callback for coa and disconnect request
 };
 
-//! 
+//!
 //!  \struct radius_member_t
 //!  \brief Radius member.
-//!  
+//!
 struct radius_member_t
 {
   struct in_addr addr;                                 //!< IP address of this member
@@ -340,10 +340,10 @@ struct radius_member_t
   void *peer;                                          //!< Pointer to peer protocol handler
 };
 
-//! 
+//!
 //!  \struct radius_attr_t
 //!  \brief Radius attribute.
-//!  
+//!
 struct radius_attr_t
 {
   uint8_t t;                                           //!< Type
@@ -366,10 +366,10 @@ struct radius_attr_t
   } v;                                                 //!< Variable-size payload
 } __attribute__((packed));
 
-//! 
+//!
 //!  \struct radius_attr6_t
 //!  \brief Radius specific IPv6 attribute.
-//!  
+//!
 struct radius_attr6_t
 {
   uint8_t t;                                           //!< Type
@@ -392,7 +392,7 @@ struct radius_attr6_t
   } v;                                                 //!< Variable-size payload
 } __attribute__((packed));
 
-//! 
+//!
 //!  \brief Create new radius instance.
 //!  \param this pointer will be filled with new radius_t instance
 //!  \param listen address to listen
@@ -404,14 +404,14 @@ struct radius_attr6_t
 //!  \param proxymask proxy mask 
 //!  \param proxysecret secret to use with proxy
 //!  \return 0 if success, -1 otherwise
-//!  
+//!
 int radius_new(struct radius_t **this,
                struct sockaddr_storage *listen, uint16_t port, int coanocheck,
                struct sockaddr_storage *proxylisten, uint16_t proxyport,
                struct sockaddr_storage *proxyaddr, struct sockaddr_storage *proxymask,
                char *proxysecret);
 
-//! 
+//!
 //!  \brief Set radius parameters which can later be changed.
 //!  \param this radius_t instance
 //!  \param debug enable or not debug
@@ -420,73 +420,73 @@ int radius_new(struct radius_t **this,
 //!  \param authport authentication port
 //!  \param acctport accounting port
 //!  \param secret secret to use
-//!  
+//!
 void radius_set(struct radius_t *this, int debug,
                 struct sockaddr_storage *server0, struct sockaddr_storage *server1,
                 uint16_t authport, uint16_t acctport, char *secret);
-//! 
+//!
 //!  \brief Send a request.
 //!  \param this radius_t instance
 //!  \param pack radius packet to send 
 //!  \param cbp pointer used for callback
 //!  \return 0 if success, -1 otherwise
-//!  
+//!
 int radius_req(struct radius_t *this,
                struct radius_packet_t *pack,
                void *cbp);
 
-//! 
+//!
 //!  \brief Send a response.
 //!  \param this radis_t instance
 //!  \param pack radius packet to send
 //!  \param peer destination peer
 //!  \param req_auth authenticator
 //!  \return 0 if success, -1 otherwise 
-//!  
+//!
 int radius_resp(struct radius_t *this,
                 struct radius_packet_t *pack,
                 struct sockaddr_storage *peer, uint8_t *req_auth);
 
-//! 
+//!
 //!  \brief Send a coa response.
 //!  \param this radius_t instance
 //!  \param pack radius packet to send
 //!  \param peer destination peer
 //!  \param req_auth authenticator
 //!  \return 0 if success, -1 otherwise
-//!  
+//!
 int radius_coaresp(struct radius_t *this,
                    struct radius_packet_t *pack,
                    struct sockaddr_storage *peer, uint8_t *req_auth);
 
-//! 
+//!
 //!  \brief Process an incoming packet.
 //!  \param this radius_t instance
 //!  \return 0 if success, -1 otherwise
-//!  
+//!
 int radius_decaps(struct radius_t *this);
 
-//!  
+//!
 //!  \brief Process a proxy incoming packet.
 //!  \param this radius_t instance
 //!  \return 0 if success, -1 otherwise
-//!  
+//!
 int radius_proxy_ind(struct radius_t *this);
 
-//! 
+//!
 //!  \brief Generate a packet for use with radius_addattr().
 //!  \param this radius_t instance
 //!  \param pack radius packet
 //!  \param code radius code
 //!  \return 0 if success, -1 otherwise
-//!  
+//!
 int radius_default_pack(struct radius_t *this,
                         struct radius_packet_t *pack,
                         int code);
 
-//! 
+//!
 //!  \brief Add an attribute to a packet.
-//!  
+//!
 //!  Add an attribute to a packet. The packet length is modified
 //!  accordingly. If data == NULL and dlen != 0 insert null attribute.
 //!  \param this radius_t instance
@@ -498,14 +498,14 @@ int radius_default_pack(struct radius_t *this,
 //!  \param data data payload
 //!  \param dlen data length
 //!  \return 0 if success, -1 otherwise
-//!  
+//!
 int radius_addattr(struct radius_t *this, struct radius_packet_t *pack,
                    uint8_t type, uint32_t vendor_id, uint8_t vendor_type,
                    uint32_t value, uint8_t *data, uint16_t dlen);
 
-//! 
+//!
 //!  \brief Add an IPv6 specific attribute to a packet.
-//!  
+//!
 //!  Add an attribute to a packet. The packet length is modified
 //!  accordingly. If data == NULL and dlen != 0 insert null attribute.
 //!  \param this radius_t instance
@@ -517,14 +517,14 @@ int radius_addattr(struct radius_t *this, struct radius_packet_t *pack,
 //!  \param data data payload
 //!  \param dlen data length
 //!  \return 0 if success, -1 otherwise
-//!  
+//!
 int radius_addattr6(struct radius_t *this, struct radius_packet_t *pack,
                     uint8_t type, uint32_t vendor_id, uint8_t vendor_type,
                     struct in6_addr value, uint8_t *data, uint16_t dlen);
 
-//! 
+//!
 //!  \brief Extract an attribute from a packet.
-//! 
+//!
 //!  Search for an attribute in a packet. Returns -1 if attribute is not found.
 //!  The first instance matching attributes will be skipped
 //!  \param pack radius packet
@@ -534,14 +534,14 @@ int radius_addattr6(struct radius_t *this, struct radius_packet_t *pack,
 //!  \param vendor_type vendor type
 //!  \param instance if 1 the first matching attribute will be skipped
 //!  \return 0 if found, -1 otherwise
-//!  
+//!
 int radius_getattr(struct radius_packet_t *pack, struct radius_attr_t **attr,
                    uint8_t type, uint32_t vendor_id, uint8_t vendor_type,
                    int instance);
 
-//! 
+//!
 //!  \brief Extract an IPv6 attribute from a packet.
-//! 
+//!
 //!  Search for an attribute in a packet. Returns -1 if attribute is not found.
 //!  The first instance matching attributes will be skipped
 //!  \param pack radius packet
@@ -551,12 +551,12 @@ int radius_getattr(struct radius_packet_t *pack, struct radius_attr_t **attr,
 //!  \param vendor_type vendor type
 //!  \param instance if 1 the first matching attribute will be skipped
 //!  \return 0 if found, -1 otherwise
-//!  
+//!
 int radius_getattr6(struct radius_packet_t *pack, struct radius_attr6_t **attr,
                     uint8_t type, uint32_t vendor_id, uint8_t vendor_type,
                     int instance);
 
-//! 
+//!
 //!  \brief Encode a password using MD5.
 //!  \param this radius_t instance
 //!  \param dst password buffer
@@ -568,12 +568,12 @@ int radius_getattr6(struct radius_packet_t *pack, struct radius_attr6_t **attr,
 //!  \param secret radius secret
 //!  \param secretlen radius secret length
 //!  \return 0 if password encoded successfully, -1 otherwise
-//!  
+//!
 int radius_pwencode(struct radius_t *this, uint8_t *dst, int dstsize,
                     int *dstlen, uint8_t *src, int srclen,
                     uint8_t *authenticator, char *secret, int secretlen);
 
-//! 
+//!
 //!  \brief Decode a password using MD5 (also used for MSCHAPv1 MPPE keys).
 //!  \param this radius_t instance
 //!  \param dst decoded password buffer
@@ -585,13 +585,13 @@ int radius_pwencode(struct radius_t *this, uint8_t *dst, int dstsize,
 //!  \param secret radius secret
 //!  \param secretlen radius secret length
 //!  \return 0 if password decoded successfully, -1 otherwise
-//!  
+//!
 int radius_pwdecode(struct radius_t *this, uint8_t *dst, int dstsize,
                     int *dstlen, uint8_t *src, int srclen,
                     uint8_t *authenticator, char *secret, int secretlen);
 
 
-//! 
+//!
 //!  \brief Encode MPPE key.
 //!  \param this radius_t instance
 //!  \param dst decoded password buffer
@@ -603,12 +603,12 @@ int radius_pwdecode(struct radius_t *this, uint8_t *dst, int dstsize,
 //!  \param secret radius secret
 //!  \param secretlen radius secret length
 //!  \return 0 if password decoded successfully, -1 otherwise
-//!  
+//!
 int radius_keyencode(struct radius_t *this, uint8_t *dst, int dstsize,
                      int *dstlen, uint8_t *src, int srclen,
                      uint8_t *authenticator, char *secret, int secretlen);
 
-//! 
+//!
 //!  \brief Decode MPPE key.
 //!  \param this radius_t instance
 //!  \param dst decoded password buffer
@@ -620,77 +620,77 @@ int radius_keyencode(struct radius_t *this, uint8_t *dst, int dstsize,
 //!  \param secret radius secret
 //!  \param secretlen radius secret length
 //!  \return 0 if password decoded successfully, -1 otherwise
-//!  
+//!
 int radius_keydecode(struct radius_t *this, uint8_t *dst, int dstsize,
                      int *dstlen, uint8_t *src, int srclen,
                      uint8_t *authenticator, char *secret, int secretlen);
 
-//! 
+//!
 //!  \brief Call this function to process packets needing retransmission.
-//!  
+//!
 //!  Retransmit any outstanding packets. This function should be called at
 //!  regular intervals. Use radius_timeleft() to determine how much time is
 //!  left before this function should be called.
 //!  \param this radius_t instance
 //!  \return 0
-//!  
+//!
 int radius_timeout(struct radius_t *this);
 
-//! 
+//!
 //!  \brief Figure out when to call radius_calltimeout().
-//!  
+//!
 //!  Determines how nuch time is left until we need to call
 //!  radius_timeout().
 //!  Only modifies timeout if new value is lower than current value.
 //!  \param this radius_t instance
 //!  \param timeout timeleft will be stored in it
 //!  \return 0 
-//!  
+//!
 int radius_timeleft(struct radius_t *this, struct timeval *timeout);
 
-//! 
+//!
 //!  \brief Delete existing radius instance.
 //!  \param this radius_t instance pointer to free
 //!  \return 0
-//!  
+//!
 int radius_free(struct radius_t *this);
 
-//! 
+//!
 //!  \brief Set allback function for received request.
 //!  \param this radius_t instance
 //!  \param cb_ind callback to set
 //!  \return 0
-//!  
+//!
 int radius_set_cb_ind(struct radius_t *this,
                       int (*cb_ind)(struct radius_t *radius, struct radius_packet_t *pack,
                                     struct sockaddr_storage *peer));
 
-//! 
+//!
 //!  \brief Set callback function for response to access request.
 //!  \param this radius_t instance
 //!  \param cb_auth_conf callback to set
 //!  \return 0
-//!  
+//!
 int radius_set_cb_auth_conf(struct radius_t *this,
                             int (*cb_auth_conf)(struct radius_t *radius, struct radius_packet_t *pack,
                                                 struct radius_packet_t *pack_req, void *cbp));
 
-//! 
+//!
 //!  \brief Callback function for response to accounting request.
 //!  \param this radius_t instance
 //!  \param cb_acct_conf callback to set
 //!  \return 0
-//!  
+//!
 int radius_set_cb_acct_conf(struct radius_t *this,
                             int (*cb_acct_conf)(struct radius_t *radius, struct radius_packet_t *pack,
                                                 struct radius_packet_t *pack_req, void *cbp));
 
-//! 
+//!
 //!  \brief Set callback function for coa and disconnect request.
 //!  \param this radius_t instance
 //!  \param cb_coa_ind callback to set
 //!  \return 0
-//!  
+//!
 int radius_set_cb_coa_ind(struct radius_t *this,
                           int (*cb_coa_ind)(struct radius_t *radius, struct radius_packet_t *pack,
                                             struct sockaddr_storage *peer));
