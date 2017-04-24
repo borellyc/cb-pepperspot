@@ -63,10 +63,10 @@
  *
  */
 
-/**
- * \file redir.c
- * \brief HTTP redirection module.
- */
+//! 
+//!  \file redir.c
+//!  \brief HTTP redirection module.
+//!  
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -99,9 +99,9 @@ static int g_redir_optionsdebug = 1;            //!< Print debug information whi
 static int g_redir_keep_going = 1;              //!< OK as global variable for child process
 static int g_redir_termstate = REDIR_TERM_INIT; //!< When we were terminated
 
-/**
- * \brief Credits for PepperSpot.
- */
+//! 
+//!  \brief Credits for PepperSpot.
+//!  
 static char g_redir_credits[] =
   "<H1>PepperSpot " VERSION "</H1><p>Copyright 2008-2009 University of Strasbourg</p><p> "
   "PepperSpot is an Open Source captive portal or wireless LAN access point "
@@ -109,10 +109,10 @@ static char g_redir_credits[] =
   "<a href=\"http://www.pepperspot.info\">www.pepperspot.info</a> and licensed "
   "under the GPL.</p><p>PepperSpot acknowledges all community members and original Chillispot contributors</p>";
 
-/**
- * \brief Redir signal handler.
- * \param signum Signal code
- */
+//! 
+//!  \brief Redir signal handler.
+//!  \param signum Signal code
+//!  
 static void redir_sig_handler(int signum)
 {
   switch(signum)
@@ -133,11 +133,11 @@ static void redir_sig_handler(int signum)
   }
 }
 
-/**
- * \brief Generate a 16 bytes random challenge.
- * \param dst 2 bytes array to store random challenge
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Generate a 16 bytes random challenge.
+//!  \param dst 2 bytes array to store random challenge
+//!  \return 0 if success, -1 otherwise
+//!  
 static int redir_challenge(unsigned char *dst)
 {
   FILE *file = NULL;
@@ -160,13 +160,13 @@ static int redir_challenge(unsigned char *dst)
   return 0;
 }
 
-/**
- * \brief Convert len octet ASCII hex string to len / 2 octet unsigned char.
- * \param src hex string to convert
- * \param len source length
- * \param dst destination to store result
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Convert len octet ASCII hex string to len / 2 octet unsigned char.
+//!  \param src hex string to convert
+//!  \param len source length
+//!  \param dst destination to store result
+//!  \return 0 if success, -1 otherwise
+//!  
 static int redir_hextochar(char *src, int len, unsigned char * dst)
 {
   char x[3];
@@ -190,13 +190,13 @@ static int redir_hextochar(char *src, int len, unsigned char * dst)
   return 0;
 }
 
-/**
- * \brief Convert len octet unsigned char to 2 * len + 1 octet ASCII hex string.
- * \param src source to convert
- * \param len source length
- * \param dst destination to store result
- * \return 0
- */
+//! 
+//!  \brief Convert len octet unsigned char to 2 * len + 1 octet ASCII hex string.
+//!  \param src source to convert
+//!  \param len source length
+//!  \param dst destination to store result
+//!  \return 0
+//!  
 static int redir_chartohex(unsigned char *src, int len, char *dst)
 {
   char x[3];
@@ -212,14 +212,14 @@ static int redir_chartohex(unsigned char *src, int len, char *dst)
   return 0;
 }
 
-/**
- * \brief Encode src as urlencoded and place null terminated result in dst.
- * \param src string to convert
- * \param srclen length of src
- * \param dst destination to store result
- * \param dstsize size of dst
- * \return 0
- */
+//! 
+//!  \brief Encode src as urlencoded and place null terminated result in dst.
+//!  \param src string to convert
+//!  \param srclen length of src
+//!  \param dst destination to store result
+//!  \param dstsize size of dst
+//!  \return 0
+//!  
 static int redir_urlencode(char *src, int srclen, char *dst, int dstsize)
 {
   char x[3];
@@ -261,14 +261,14 @@ static int redir_urlencode(char *src, int srclen, char *dst, int dstsize)
   return 0;
 }
 
-/**
- * \brief Decode urlencoded src and place null terminated result in dst.
- * \param src URL to decode
- * \param srclen length of src
- * \param dst destination to store result (undecoded URL)
- * \param dstsize siz of dst
- * \return 0
- */
+//! 
+//!  \brief Decode urlencoded src and place null terminated result in dst.
+//!  \param src URL to decode
+//!  \param srclen length of src
+//!  \param dst destination to store result (undecoded URL)
+//!  \param dstsize siz of dst
+//!  \return 0
+//!  
 static int redir_urldecode(char *src, int srclen, char *dst, unsigned int dstsize)
 {
   char x[3];
@@ -301,14 +301,14 @@ static int redir_urldecode(char *src, int srclen, char *dst, unsigned int dstsiz
   return 0;
 }
 
-/**
- * \brief Concatenate src to dst and place result dst.
- * \param dst destination
- * \param dstsize size of dst
- * \param fmt format
- * \param ... argument to concatenate with dst
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Concatenate src to dst and place result dst.
+//!  \param dst destination
+//!  \param dstsize size of dst
+//!  \param fmt format
+//!  \param ... argument to concatenate with dst
+//!  \return 0 if success, -1 otherwise
+//!  
 static int redir_stradd(char *dst, unsigned int dstsize, char *fmt, ...)
 {
   va_list args;
@@ -329,19 +329,19 @@ static int redir_stradd(char *dst, unsigned int dstsize, char *fmt, ...)
   return 0;
 }
 
-/**
- * \brief Make an XML Reply.
- * \param redir redit_t instance
- * \param conn redir connection
- * \param res state of XML reply (reject, ...)
- * \param timeleft session time left
- * \param hexchal challenge number
- * \param reply reply message
- * \param redirurl redirection URL
- * \param dst destination which will store XML reply
- * \param dstsize size of dst
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Make an XML Reply.
+//!  \param redir redit_t instance
+//!  \param conn redir connection
+//!  \param res state of XML reply (reject, ...)
+//!  \param timeleft session time left
+//!  \param hexchal challenge number
+//!  \param reply reply message
+//!  \param redirurl redirection URL
+//!  \param dst destination which will store XML reply
+//!  \param dstsize size of dst
+//!  \return 0 if success, -1 otherwise
+//!  
 static int redir_xmlreply(struct redir_t *redir, struct redir_conn_t *conn,
                           int res, long int timeleft, char *hexchal,
                           char *reply, char *redirurl,
@@ -544,21 +544,21 @@ static int redir_xmlreply(struct redir_t *redir, struct redir_conn_t *conn,
   return 0;
 }
 
-/**
- * \brief Make an HTTP redirection reply and send it to the client.
- * \param redir redir_t instance
- * \param fd file descriptor to send response
- * \param conn client connection
- * \param res reply state (reject, logoff, ...)
- * \param timeleft session time left
- * \param hexchal challenge number
- * \param uid user ID
- * \param userurl original client wanted webpage
- * \param reply reply message
- * \param redirurl redirection URL
- * \param hismac client MAC address
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Make an HTTP redirection reply and send it to the client.
+//!  \param redir redir_t instance
+//!  \param fd file descriptor to send response
+//!  \param conn client connection
+//!  \param res reply state (reject, logoff, ...)
+//!  \param timeleft session time left
+//!  \param hexchal challenge number
+//!  \param uid user ID
+//!  \param userurl original client wanted webpage
+//!  \param reply reply message
+//!  \param redirurl redirection URL
+//!  \param hismac client MAC address
+//!  \return 0 if success, -1 otherwise
+//!  
 static int redir_reply(struct redir_t *redir, int fd,
                        struct redir_conn_t *conn, int res,
                        long int timeleft,
@@ -734,14 +734,14 @@ static int redir_reply(struct redir_t *redir, int fd,
   return 0;
 }
 
-/**
- * \brief Get the path of an HTTP request (GET).
- * \param redir redir_t instance
- * \param src request
- * \param dst path will be stored in this variable
- * \param dstsize size of dst
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Get the path of an HTTP request (GET).
+//!  \param redir redir_t instance
+//!  \param src request
+//!  \param dst path will be stored in this variable
+//!  \param dstsize size of dst
+//!  \return 0 if success, -1 otherwise
+//!  
 static int redir_get_path(struct redir_t *redir, char *src, char *dst, int dstsize)
 {
   char *p1 = NULL;
@@ -810,14 +810,14 @@ static int redir_get_path(struct redir_t *redir, char *src, char *dst, int dstsi
   return 0;
 }
 
-/**
- * \brief Get the url of an HTTP request.
- * \param redir redir_t instance
- * \param src request
- * \param dst url will be stored in this variable
- * \param dstsize size of destination
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Get the url of an HTTP request.
+//!  \param redir redir_t instance
+//!  \param src request
+//!  \param dst url will be stored in this variable
+//!  \param dstsize size of destination
+//!  \return 0 if success, -1 otherwise
+//!  
 static int redir_get_url(struct redir_t *redir, char *src, char *dst, int dstsize)
 {
   char *p1 = NULL;
@@ -891,15 +891,15 @@ static int redir_get_url(struct redir_t *redir, char *src, char *dst, int dstsiz
   return 0;
 }
 
-/**
- * \brief Get a parameter of an HTTP request. Parameter is url decoded.
- * \param redir redir_t instance
- * \param src source buffer
- * \param param parameter name
- * \param dst parameter destination buffer
- * \param dstsize length of dst C-string
- * \return 0 if found, -1 otherwise (not found, malformed HTTP response)
- */
+//! 
+//!  \brief Get a parameter of an HTTP request. Parameter is url decoded.
+//!  \param redir redir_t instance
+//!  \param src source buffer
+//!  \param param parameter name
+//!  \param dst parameter destination buffer
+//!  \param dstsize length of dst C-string
+//!  \return 0 if found, -1 otherwise (not found, malformed HTTP response)
+//!  
 /* TODO: Should be merged with other parsers */
 static int redir_get_param(struct redir_t *redir, char *src,
                           char *param,
@@ -967,13 +967,13 @@ static int redir_get_param(struct redir_t *redir, char *src,
   return 0;
 }
 
-/**
- * \brief Read the an HTTP request from a client.
- * \param redir redir_t instance
- * \param fd file descriptor to read client message
- * \param conn client connection
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Read the an HTTP request from a client.
+//!  \param redir redir_t instance
+//!  \param fd file descriptor to read client message
+//!  \param conn client connection
+//!  \return 0 if success, -1 otherwise
+//!  
 static int redir_get_req(struct redir_t *redir, int fd, struct redir_conn_t *conn)
 {
   int maxfd = 0; /* For select() */
@@ -1127,14 +1127,14 @@ static int redir_get_req(struct redir_t *redir, int fd, struct redir_conn_t *con
   }
 }
 
-/**
- * \brief Radius callback when access accept/reject/challenge has been received.
- * \param radius radius_t instance
- * \param pack radius packet
- * \param pack_req original radius request packet
- * \param cbp pointer for callback
- * \return 0
- */
+//! 
+//!  \brief Radius callback when access accept/reject/challenge has been received.
+//!  \param radius radius_t instance
+//!  \param pack radius packet
+//!  \param pack_req original radius request packet
+//!  \param cbp pointer for callback
+//!  \return 0
+//!  
 static int redir_cb_radius_auth_conf(struct radius_t *radius,
                                      struct radius_packet_t *pack,
                                      struct radius_packet_t *pack_req, void *cbp)
@@ -1462,13 +1462,13 @@ static int redir_cb_radius_auth_conf(struct radius_t *radius,
   return 0;
 }
 
-/**
- * \brief Send radius Access-Request and wait for answer.
- * \param redir redir_t instance
- * \param addr peer address
- * \param conn redir connection
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Send radius Access-Request and wait for answer.
+//!  \param redir redir_t instance
+//!  \param addr peer address
+//!  \param conn redir connection
+//!  \return 0 if success, -1 otherwise
+//!  
 static int redir_radius(struct redir_t *redir, struct sockaddr_storage *addr,
                         struct redir_conn_t *conn)
 {
@@ -1735,16 +1735,16 @@ static int redir_radius(struct redir_t *redir, struct sockaddr_storage *addr,
   return 0;
 }
 
-/**
- * \brief Copy client information into message (to send to pepper process).
- * \param msg_type type of message
- * \param challenge challenge number
- * \param hexchal challenge in hex format
- * \param msg will be filled with information
- * \param addr IPv4 address
- * \param addr6 IPv6 address
- * \param addrstorage to see if client use IPv6 connection
- */
+//! 
+//!  \brief Copy client information into message (to send to pepper process).
+//!  \param msg_type type of message
+//!  \param challenge challenge number
+//!  \param hexchal challenge in hex format
+//!  \param msg will be filled with information
+//!  \param addr IPv4 address
+//!  \param addr6 IPv6 address
+//!  \param addrstorage to see if client use IPv6 connection
+//!  
 static void redir_memcopy(int msg_type, unsigned char *challenge, char *hexchal,
                           struct redir_msg_t *msg, struct sockaddr_in addr,
                           struct sockaddr_in6 addr6, struct sockaddr_storage addrstorage)
@@ -1760,10 +1760,10 @@ static void redir_memcopy(int msg_type, unsigned char *challenge, char *hexchal,
   return;
 }
 
-/**
- * \brief Close of socket.
- * \param new_socket socket to close
- */
+//! 
+//!  \brief Close of socket.
+//!  \param new_socket socket to close
+//!  
 static void redir_close(int new_socket)
 {
   if(!g_redir_keep_going) shutdown(new_socket, SHUT_RDWR);

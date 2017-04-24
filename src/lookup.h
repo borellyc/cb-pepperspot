@@ -63,27 +63,27 @@
  *
  */
 
-/**
- * \file lookup.h
- * \brief Hash lookup.
- */
+//! 
+//!  \file lookup.h
+//!  \brief Hash lookup.
+//!  
 
 #ifndef _LOOKUP_H
 #define _LOOKUP_H
 
 #include <stdint.h> /* ISO C99 types: uint8_t, uint16_t, ... */
-/**
- * \brief Generates a 32 bit hash.
- *
- * Based on public domain code by Bob Jenkins
- * It should be one of the best hash functions around in terms of both
- * statistical properties and speed. It is NOT recommended for cryptographic
- * purposes.
- * \param k value to hash
- * \param length length of value to hash
- * \param level last hash value
- * \return resulting hash
- */
+//! 
+//!  \brief Generates a 32 bit hash.
+//! 
+//!  Based on public domain code by Bob Jenkins
+//!  It should be one of the best hash functions around in terms of both
+//!  statistical properties and speed. It is NOT recommended for cryptographic
+//!  purposes.
+//!  \param k value to hash
+//!  \param length length of value to hash
+//!  \param level last hash value
+//!  \return resulting hash
+//!  
 uint32_t lookup(register uint8_t *k, register uint32_t length, register uint32_t level);
 
 #endif /* !_LOOKUP_H */

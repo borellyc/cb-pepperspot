@@ -8,10 +8,10 @@
   we make no copyright claims on it.
 */
 
-/**
- * \file cmdline.c
- * \brief Parser.
- */
+//! 
+//!  \file cmdline.c
+//!  \brief Parser.
+//!  
 
 /* If we use autoconf. */
 #ifdef HAVE_CONFIG_H

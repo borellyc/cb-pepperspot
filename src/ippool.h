@@ -63,10 +63,10 @@
  *
  */
 
-/**
- * \file ippool.h
- * \brief IPv4 and IPv6 address pool
- */
+//! 
+//!  \file ippool.h
+//!  \brief IPv4 and IPv6 address pool
+//!  
 
 #ifndef _IPPOOL_H
 #define _IPPOOL_H
@@ -94,10 +94,10 @@
 
 struct ippoolm_t;                /* Forward declaration */
 
-/**
- * \struct ippool_t
- * \brief Pool of IPv4/IPv6 addresses.
- */
+//! 
+//!  \struct ippool_t
+//!  \brief Pool of IPv4/IPv6 addresses.
+//!  
 struct ippool_t
 {
   int listsize;                  //!< Total number of addresses
@@ -118,10 +118,10 @@ struct ippool_t
   struct ippoolm_t *lastipv6;    //!< Pointer to the first IPv6 member
 };
 
-/**
- * \struct ippoolm_t
- * \brief Member of poool.
- */
+//! 
+//!  \struct ippoolm_t
+//!  \brief Member of poool.
+//!  
 struct ippoolm_t
 {
   struct in_addr addr;           //!< IP address of this member
@@ -137,143 +137,143 @@ struct ippoolm_t
    each address (IPv4). For IPv6 the corresponding value is 32 + 4 = 36
    bytes for each address. */
 
-/**
- * \brief Create new address pool.
- * \param this resulting pool will be stored in this variable
- * \param dyn
- * \param stat
- * \param allowdyn allow or not dynamic distribution of IPv4
- * \param allowstat allow static IPv4 attribution
- * \param flags flags (IPPOOL_NONETWORK, IPPOOL_NOGATEWAY or IPPOOL_NOBROADCAST)
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Create new address pool.
+//!  \param this resulting pool will be stored in this variable
+//!  \param dyn
+//!  \param stat
+//!  \param allowdyn allow or not dynamic distribution of IPv4
+//!  \param allowstat allow static IPv4 attribution
+//!  \param flags flags (IPPOOL_NONETWORK, IPPOOL_NOGATEWAY or IPPOOL_NOBROADCAST)
+//!  \return 0 if success, -1 otherwise
+//!  
 int ippool_new(struct ippool_t **this, char *dyn, char *stat, int allowdyn, int allowstat, int flags);
 
-/**
- * \brief Delete existing address pool.
- * \param this ippool_t instance
- * \return 0
- */
+//! 
+//!  \brief Delete existing address pool.
+//!  \param this ippool_t instance
+//!  \return 0
+//!  
 int ippool_free(struct ippool_t *this);
 
-/**
- * \brief Find an IPv4 address in the pool
- * \param this ippool_t instance
- * \param member if found its pointer will be put in this variable
- * \param addr IPv4 address to found
- * \return 0 if found, -1 otherwise
- */
+//! 
+//!  \brief Find an IPv4 address in the pool
+//!  \param this ippool_t instance
+//!  \param member if found its pointer will be put in this variable
+//!  \param addr IPv4 address to found
+//!  \return 0 if found, -1 otherwise
+//!  
 int ippool_get_ip(struct ippool_t *this, struct ippoolm_t **member, struct in_addr *addr);
 
-/**
- * \brief Find an IPv6 address in the pool
- * \param this ippool_t instance
- * \param member if found its pointer will be put in this variable
- * \param addr IPv6 address to found
- * \return 0 if found, -1 otherwise
- */
+//! 
+//!  \brief Find an IPv6 address in the pool
+//!  \param this ippool_t instance
+//!  \param member if found its pointer will be put in this variable
+//!  \param addr IPv6 address to found
+//!  \return 0 if found, -1 otherwise
+//!  
 int ippool_get_ip6(struct ippool_t *this, struct ippoolm_t **member, struct in6_addr *addr);
 
-/**
- * \brief Get an IP address. If addr = 0.0.0.0 get a dynamic IP address. Otherwise
- *  check to see if the given address is available
- * \param this ippool_t instance
- * \param member if found its pointer will be put in this variable
- * \param addr IPv4 address to found
- * \param statip static IPv4 or not
- * \return 0 if found, -1 otherwise
- */
+//! 
+//!  \brief Get an IP address. If addr = 0.0.0.0 get a dynamic IP address. Otherwise
+//!   check to see if the given address is available
+//!  \param this ippool_t instance
+//!  \param member if found its pointer will be put in this variable
+//!  \param addr IPv4 address to found
+//!  \param statip static IPv4 or not
+//!  \return 0 if found, -1 otherwise
+//!  
 int ippool_new_ip(struct ippool_t *this, struct ippoolm_t **member, struct in_addr *addr, int statip);
 
-/**
- * \brief Allocate a new IPv6 address.
- * \param this the ippool_t instance
- * \param member pointer that will receive the new allocated member
- * \param addr the IPv6 address
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Allocate a new IPv6 address.
+//!  \param this the ippool_t instance
+//!  \param member pointer that will receive the new allocated member
+//!  \param addr the IPv6 address
+//!  \return 0 if success, -1 otherwise
+//!  
 int ippool_new_ip6(struct ippool_t *this, struct ippoolm_t **member, struct in6_addr *addr);
 
-/**
- * Release a previously allocated IP address.
- * \param this ippool_t instance
- * \param member member to release
- * \return 0 if found and release, -1 otherwise
- */
+//! 
+//!  Release a previously allocated IP address.
+//!  \param this ippool_t instance
+//!  \param member member to release
+//!  \return 0 if found and release, -1 otherwise
+//!  
 int ippool_free_ip(struct ippool_t *this, struct ippoolm_t *member);
 
-/**
- * \brief Get network and mask based on ascii string (i.e 192.168.0.0/24).
- * \param addr IPv4 network address that will be filled in success
- * \param mask IPv4 network mask that will be filled in success
- * \param pool ascii IPv4 network address and mask (i.e. 192.168.0.0/24)
- * \param number not used
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Get network and mask based on ascii string (i.e 192.168.0.0/24).
+//!  \param addr IPv4 network address that will be filled in success
+//!  \param mask IPv4 network mask that will be filled in success
+//!  \param pool ascii IPv4 network address and mask (i.e. 192.168.0.0/24)
+//!  \param number not used
+//!  \return 0 if success, -1 otherwise
+//!  
 int ippool_aton(struct in_addr *addr, struct in_addr *mask, char *pool, int number);
 
-/**
- * \brief Get network and prefix based on ascii string (i.e 2001:db8::/64).
- * \param prefix IPv6 network address that will be filled in success
- * \param prefixlen IPv6 prefix length (in bit) will be filled in success
- * \param mask IPv6 network mask that will be filled in success
- * \param pool ascii IPv6 network address and mask (i.e. 2001:db8::/64)
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Get network and prefix based on ascii string (i.e 2001:db8::/64).
+//!  \param prefix IPv6 network address that will be filled in success
+//!  \param prefixlen IPv6 prefix length (in bit) will be filled in success
+//!  \param mask IPv6 network mask that will be filled in success
+//!  \param pool ascii IPv6 network address and mask (i.e. 2001:db8::/64)
+//!  \return 0 if success, -1 otherwise
+//!  
 int ippool_aton6(struct in6_addr *prefix, int *prefixlen, int *mask, char *pool);
 
-/**
- * \brief Get IPv6 suffix from an IPv6 address.
- * \param suffix result will be put in this variable
- * \param addr IPv6 address
- * \param mask prefix length (in bit)
- */
+//! 
+//!  \brief Get IPv6 suffix from an IPv6 address.
+//!  \param suffix result will be put in this variable
+//!  \param addr IPv6 address
+//!  \param mask prefix length (in bit)
+//!  
 void ippool_get_suffix6(struct in6_addr *suffix, struct in6_addr *addr, int mask);
 
-/**
- * \brief Hash an IP address using code based on Bob Jenkins lookup.
- * \param addr IPv4 address
- * \return hash
- */
+//! 
+//!  \brief Hash an IP address using code based on Bob Jenkins lookup.
+//!  \param addr IPv4 address
+//!  \return hash
+//!  
 unsigned long int ippool_hash(struct in_addr *addr);
 
-/**
- * \brief Hash an IPv6 address using code based on Bob Jenkins lookup.
- * \param addr IPv6 address
- * \return hash
- */
+//! 
+//!  \brief Hash an IPv6 address using code based on Bob Jenkins lookup.
+//!  \param addr IPv6 address
+//!  \return hash
+//!  
 unsigned long int ippool_hash6(struct in6_addr *addr);
 
-/**
- * \brief Hash and add an IPv4 member.
- * \param this ippool_t instance
- * \param member IPv4 member
- * \return 0
- */
+//! 
+//!  \brief Hash and add an IPv4 member.
+//!  \param this ippool_t instance
+//!  \param member IPv4 member
+//!  \return 0
+//!  
 int ippool_hash_add(struct ippool_t *this, struct ippoolm_t *member);
 
-/**
- * \brief Hash and add an IPv6 member.
- * \param this ippool_t instance
- * \param member IPv6 member
- * \return 0
- */
+//! 
+//!  \brief Hash and add an IPv6 member.
+//!  \param this ippool_t instance
+//!  \param member IPv6 member
+//!  \return 0
+//!  
 int ippool_hash_add6(struct ippool_t *this, struct ippoolm_t *member);
 
-/**
- * \brief Remove an IPv4 member.
- * \param this ippool_t instance
- * \param member IPv4 member
- * \return 0
- */
+//! 
+//!  \brief Remove an IPv4 member.
+//!  \param this ippool_t instance
+//!  \param member IPv4 member
+//!  \return 0
+//!  
 int ippool_hash_del(struct ippool_t *this, struct ippoolm_t *member);
 
-/**
- * \brief Remove an IPv6 member.
- * \param this ippool_t instance
- * \param member IPv6 member
- * \return 0
- */
+//! 
+//!  \brief Remove an IPv6 member.
+//!  \param this ippool_t instance
+//!  \param member IPv6 member
+//!  \return 0
+//!  
 int ippool_hash_del6(struct ippool_t *this, struct ippoolm_t *member);
 
 #endif /* !_IPPOOL_H */

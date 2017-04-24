@@ -63,10 +63,10 @@
  *
  */
 
-/**
- * \file radius_pepperspot.h
- * \brief PepperSpot-specific RADIUS attributes.
- */
+//! 
+//!  \file radius_pepperspot.h
+//!  \brief PepperSpot-specific RADIUS attributes.
+//!  
 
 #ifndef _RADIUS_PEPPERSPOT_H
 #define _RADIUS_PEPPERSPOT_H

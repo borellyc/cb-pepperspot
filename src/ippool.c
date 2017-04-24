@@ -63,10 +63,10 @@
  *
  */
 
-/**
- * \file ippool.c
- * \brief IPv4 and IPv6 address pool
- */
+//! 
+//!  \file ippool.c
+//!  \brief IPv4 and IPv6 address pool
+//!  
 
 #include <sys/types.h>
 #include <stdlib.h>     /* calloc */
@@ -80,11 +80,11 @@
 #include "ippool.h"
 #include "lookup.h"
 
-/**
- * \brief Print all addresses from the pool.
- * \param this ippool_t instance
- * \return 0
- */
+//! 
+//!  \brief Print all addresses from the pool.
+//!  \param this ippool_t instance
+//!  \return 0
+//!  
 static int ippool_print_addr(struct ippool_t *this)
 {
   int n = 0;

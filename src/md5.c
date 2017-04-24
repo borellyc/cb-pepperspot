@@ -37,22 +37,22 @@
  * will fill a supplied 16-byte array with the digest.
  */
 
-/**
- * \file md5.c
- * \brief MD5 algorithm.
- */
+//! 
+//!  \file md5.c
+//!  \brief MD5 algorithm.
+//!  
 
 #include <string.h>    /* for memcpy() */
 #include "md5.h"
 
-/**
- * \brief Reverse bytes order.
- *
- * [0 1 2 3] => [3, 2, 1, 0]
- * \param buf buffer which have to be byte reversed
- * \param longs number of "4-bytes" to reverse
- * \note this code is harmless on little-endian machines.
- */
+//! 
+//!  \brief Reverse bytes order.
+//! 
+//!  [0 1 2 3] => [3, 2, 1, 0]
+//!  \param buf buffer which have to be byte reversed
+//!  \param longs number of "4-bytes" to reverse
+//!  \note this code is harmless on little-endian machines.
+//!  
 static void byteReverse(unsigned char *buf, unsigned longs)
 {
   uint32_t t;
@@ -187,9 +187,9 @@ void MD5Final(unsigned char digest[16], struct MD5Context *ctx)
 #define F3(x, y, z) (x ^ y ^ z)         //!< Transformation for third round
 #define F4(x, y, z) (y ^ (x | ~z))      //!< Transformation for last round
 
-/**
- * \brief This is the central step in the MD5 algorithm.
- */
+//! 
+//!  \brief This is the central step in the MD5 algorithm.
+//!  
 #define MD5STEP(f, w, x, y, z, data, s) \
   ( w += f(x, y, z) + data,  w = w << s | w >> (32 - s),  w += x )
 

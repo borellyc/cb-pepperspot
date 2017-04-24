@@ -63,10 +63,10 @@
  *
  */
 
-/**
- * \file tun.h
- * \brief IPv4 tunnel interface (tun).
- */
+//! 
+//!  \file tun.h
+//!  \brief IPv4 tunnel interface (tun).
+//!  
 
 #ifndef _TUN_H
 #define _TUN_H
@@ -85,10 +85,10 @@
 #define TUN_NETLINK_MAX_SIZE 1024 //!< maximum netlink message size
 #endif
 
-/**
- * \struct tun_packet_t
- * \brief Describe an IPv4 packet.
- */
+//! 
+//!  \struct tun_packet_t
+//!  \brief Describe an IPv4 packet.
+//!  
 struct tun_packet_t
 {
   unsigned int ver:4;             //!< IPv4 version
@@ -110,10 +110,10 @@ struct tun_packet_t
  * Information storage for each tun_t instance
  *************************************************************/
 
-/**
- * \struct tun_t
- * \brief IPv4 tunnel interface information.
- */
+//! 
+//!  \struct tun_t
+//!  \brief IPv4 tunnel interface information.
+//!  
 struct tun_t
 {
   int fd;                         //!< File descriptor to tun interface
@@ -126,83 +126,83 @@ struct tun_t
   int (*cb_ind)(struct tun_t *this, void *pack, unsigned len); //!< Callback when receiving packet
 };
 
-/**
- * \brief Create an instance of tun.
- * \param this resulting pointer will be filled in
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Create an instance of tun.
+//!  \param this resulting pointer will be filled in
+//!  \return 0 if success, -1 otherwise
+//!  
 int tun_new(struct tun_t **this);
 
-/**
- * \brief Decapsulate packet coming from tun interface.
- * \param this tun_t instance
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Decapsulate packet coming from tun interface.
+//!  \param this tun_t instance
+//!  \return 0 if success, -1 otherwise
+//!  
 int tun_decaps(struct tun_t *this);
 
-/**
- * \brief Encapsulate packet coming from tun interface.
- * \param this tun_t instance
- * \param pack packet
- * \param len packet length
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Encapsulate packet coming from tun interface.
+//!  \param this tun_t instance
+//!  \param pack packet
+//!  \param len packet length
+//!  \return 0 if success, -1 otherwise
+//!  
 int tun_encaps(struct tun_t *this, void *pack, unsigned len);
 
-/**
- * \brief Add an address on tun interface.
- * \param this tun_t instance
- * \param addr IPv4 address
- * \param dstaddr IPv4 destination address
- * \param netmask IPv4 network mask
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Add an address on tun interface.
+//!  \param this tun_t instance
+//!  \param addr IPv4 address
+//!  \param dstaddr IPv4 destination address
+//!  \param netmask IPv4 network mask
+//!  \return 0 if success, -1 otherwise
+//!  
 int tun_addaddr(struct tun_t *this, struct in_addr *addr,
                 struct in_addr *dstaddr, struct in_addr *netmask);
 
-/**
- * \brief Set address on tun interface.
- * \param this tun_t instance
- * \param our_adr our IPv4 address
- * \param his_adr IPv4 address
- * \param net_mask IPv4 network mask
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Set address on tun interface.
+//!  \param this tun_t instance
+//!  \param our_adr our IPv4 address
+//!  \param his_adr IPv4 address
+//!  \param net_mask IPv4 network mask
+//!  \return 0 if success, -1 otherwise
+//!  
 int tun_setaddr(struct tun_t *this, struct in_addr *our_adr,
                 struct in_addr *his_adr, struct in_addr *net_mask);
 
-/**
- * \brief Add a route for tun interface.
- * \param this tun_t instance
- * \param dst IPv4 destination address
- * \param gateway IPv4 gateway
- * \param mask IPv4 network mask
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Add a route for tun interface.
+//!  \param this tun_t instance
+//!  \param dst IPv4 destination address
+//!  \param gateway IPv4 gateway
+//!  \param mask IPv4 network mask
+//!  \return 0 if success, -1 otherwise
+//!  
 int tun_addroute(struct tun_t *this, struct in_addr *dst,
                  struct in_addr *gateway, struct in_addr *mask);
 
-/**
- * \brief Run script.
- * \param this tun_t instance
- * \param script script pathname
- * \return 0
- */
+//! 
+//!  \brief Run script.
+//!  \param this tun_t instance
+//!  \param script script pathname
+//!  \return 0
+//!  
 int tun_runscript(struct tun_t *this, char *script);
 
-/**
- * \brief Release a tun interface.
- * \param this tun_t instance
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Release a tun interface.
+//!  \param this tun_t instance
+//!  \return 0 if success, -1 otherwise
+//!  
 int tun_free(struct tun_t *this);
 
-/**
- * \brief Set callback for receiving a packet from tun interface.
- * \param this tun_t instance
- * \param cb_ind callback
- * \return 0
- */
+//! 
+//!  \brief Set callback for receiving a packet from tun interface.
+//!  \param this tun_t instance
+//!  \param cb_ind callback
+//!  \return 0
+//!  
 
 int tun_set_cb_ind(struct tun_t *this,
                    int (*cb_ind)(struct tun_t *this, void *pack, unsigned len));

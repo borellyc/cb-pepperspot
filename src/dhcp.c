@@ -63,10 +63,10 @@
  *
  */
 
-/**
- * \file dhcp.c
- * \brief Packet authenticator and DHCP module.
- */
+//! 
+//!  \file dhcp.c
+//!  \brief Packet authenticator and DHCP module.
+//!  
 
 /* Usage
  *
@@ -136,11 +136,11 @@
 #include "ndisc.h"
 
 #ifndef timercmp
-/**
- * \def timercmp
- * \brief timercmp is BSD specific so it is
- * a replacement.
- */
+//! 
+//!  \def timercmp
+//!  \brief timercmp is BSD specific so it is
+//!  a replacement.
+//!  
 #define timercmp(a, b, CMP) \
   (((a)->tv_sec == (b)->tv_sec) ?  \
    ((a)->tv_usec CMP(b)->tv_usec) :\
@@ -153,11 +153,11 @@ const static int paranoid = 0; //!< Trust that the program has no bugs
 static const int paranoid = 1; //!< Check for errors which cannot happen
 #endif
 
-/**
- * \brief Generate an IPv4 header checksum.
- * \param pack IPv4 packet
- * \return 0
- */
+//! 
+//!  \brief Generate an IPv4 header checksum.
+//!  \param pack IPv4 packet
+//!  \return 0
+//!  
 static int dhcp_ip_check(struct dhcp_ip_packet_t *pack)
 {
   int i = 0;
@@ -174,11 +174,11 @@ static int dhcp_ip_check(struct dhcp_ip_packet_t *pack)
   return 0;
 }
 
-/**
- * \brief Generate an UDP header checksum.
- * \param pack Complete packet (IPv4 + transport protocol + data)
- * \return 0 if success, -1 otherwise (packet too long)
- */
+//! 
+//!  \brief Generate an UDP header checksum.
+//!  \param pack Complete packet (IPv4 + transport protocol + data)
+//!  \return 0 if success, -1 otherwise (packet too long)
+//!  
 static int dhcp_udp_check(struct dhcp_fullpacket_t *pack)
 {
   int i = 0;
@@ -227,12 +227,12 @@ static int dhcp_udp_check(struct dhcp_fullpacket_t *pack)
 
 #if 0
 
-/**
- * \brief Generate UDP checksum for IPv6 packet.
- * \param pack IPv6 packet
- * \param length length of packet
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Generate UDP checksum for IPv6 packet.
+//!  \param pack IPv6 packet
+//!  \param length length of packet
+//!  \return 0 if success, -1 otherwise
+//!  
 static int dhcp_udp_check6(struct dhcp_ipv6_packet_t *pack, int length)
 {
   int i = 0;
@@ -279,12 +279,12 @@ static int dhcp_udp_check6(struct dhcp_ipv6_packet_t *pack, int length)
 
 #endif
 
-/**
- * \brief Generate an TCP header checksum.
- * \param pack IPv4 packet
- * \param length length of packet
- * \return 0 if success, -1 otherwise (packet too long)
- */
+//! 
+//!  \brief Generate an TCP header checksum.
+//!  \param pack IPv4 packet
+//!  \param length length of packet
+//!  \return 0 if success, -1 otherwise (packet too long)
+//!  
 static int dhcp_tcp_check(struct dhcp_ip_packet_t *pack, int length)
 {
   int i = 0;
@@ -333,12 +333,12 @@ static int dhcp_tcp_check(struct dhcp_ip_packet_t *pack, int length)
   return 0;
 }
 
-/**
- * \brief Generate an TCP header checksum for IPv6 packet.
- * \param pack Complete packet (IPv6 + transport protocol + data)
- * \param length length of packet
- * \return 0 if success, -1 otherwise (packet too long)
- */
+//! 
+//!  \brief Generate an TCP header checksum for IPv6 packet.
+//!  \param pack Complete packet (IPv6 + transport protocol + data)
+//!  \param length length of packet
+//!  \return 0 if success, -1 otherwise (packet too long)
+//!  
 static int dhcp_tcp_check6(struct dhcp_ipv6_packet_t *pack, int length)
 {
   int i = 0;
@@ -386,12 +386,12 @@ static int dhcp_tcp_check6(struct dhcp_ipv6_packet_t *pack, int length)
   return 0;
 }
 
-/**
- * \brief Set interface flags.
- * \param devname interface name
- * \param flags interface flags to set
- * \return 0 if success, - 1 otherwise
- */
+//! 
+//!  \brief Set interface flags.
+//!  \param devname interface name
+//!  \param flags interface flags to set
+//!  \return 0 if success, - 1 otherwise
+//!  
 static int dhcp_set_interface_flags(char const *devname, int flags)
 {
   struct ifreq ifr;
@@ -417,12 +417,12 @@ static int dhcp_set_interface_flags(char const *devname, int flags)
   return 0;
 }
 
-/**
- * \brief Get interface flags.
- * \param devname interface name
- * \param flags interface flags will be set in it
- * \return 0 if success, - 1 otherwise
- */
+//! 
+//!  \brief Get interface flags.
+//!  \param devname interface name
+//!  \param flags interface flags will be set in it
+//!  \return 0 if success, - 1 otherwise
+//!  
 static int dhcp_get_interface_flags(char const *devname, int *flags)
 {
   struct ifreq ifr;
@@ -449,14 +449,14 @@ static int dhcp_get_interface_flags(char const *devname, int *flags)
   return 0;
 }
 
-/**
- * \brief Set IPv4 paramters on interface.
- * \param devname interface name
- * \param addr IPv4 address
- * \param dstaddr IPv4 destination address
- * \param netmask IPv4 netmask
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Set IPv4 paramters on interface.
+//!  \param devname interface name
+//!  \param addr IPv4 address
+//!  \param dstaddr IPv4 destination address
+//!  \param netmask IPv4 netmask
+//!  \return 0 if success, -1 otherwise
+//!  
 static int dhcp_set_addr(char const *devname,
                          struct in_addr *addr,
                          struct in_addr *dstaddr,
@@ -566,12 +566,12 @@ static int dhcp_set_addr(char const *devname,
 
 #if defined(__linux__)
 
-/**
- * \brief Get MAC address on Linux.
- * \param ifname interface name
- * \param macaddr MAC address will be filled in it
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Get MAC address on Linux.
+//!  \param ifname interface name
+//!  \param macaddr MAC address will be filled in it
+//!  \return 0 if success, -1 otherwise
+//!  
 int dhcp_get_mac(const char *ifname, unsigned char *macaddr)
 {
   int fd = -1;
@@ -625,19 +625,19 @@ int dhcp_get_mac(const char *ifname, unsigned char *macaddr)
   return 0;
 }
 
-/**
- * \brief Open an Ethernet interface.
- *
- * As an option the interface can be set in promisc mode.
- * If not null macaddr and ifindex are filled with the interface mac address and index.
- *
- * \param ifname interface name
- * \param protocol layer 3 protocol number
- * \param promisc set or not promiscuous mode
- * \param usemac use the macaddr instead of the interface own MAC address
- * \param ifindex interface index will be filled in it
- * \return socket descriptor if success, -1 otherwise
- */
+//! 
+//!  \brief Open an Ethernet interface.
+//! 
+//!  As an option the interface can be set in promisc mode.
+//!  If not null macaddr and ifindex are filled with the interface mac address and index.
+//! 
+//!  \param ifname interface name
+//!  \param protocol layer 3 protocol number
+//!  \param promisc set or not promiscuous mode
+//!  \param usemac use the macaddr instead of the interface own MAC address
+//!  \param ifindex interface index will be filled in it
+//!  \return socket descriptor if success, -1 otherwise
+//!  
 static int dhcp_open_eth(char const *ifname, uint16_t protocol, int promisc,
                          int usemac, unsigned char *macaddr, int *ifindex)
 {
@@ -750,12 +750,12 @@ static int dhcp_open_eth(char const *ifname, uint16_t protocol, int promisc,
 
 #elif defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__) || defined(__APPLE__)
 
-/**
- * \brief Get MAC address on *BSD.
- * \param ifname interface name
- * \param macaddr MAC address will be filled in it
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Get MAC address on *BSD.
+//!  \param ifname interface name
+//!  \param macaddr MAC address will be filled in it
+//!  \return 0 if success, -1 otherwise
+//!  
 int dhcp_get_mac(const char *ifname, unsigned char *macaddr)
 {
   struct ifaddrs *ifap = NULL;
@@ -801,19 +801,19 @@ int dhcp_get_mac(const char *ifname, unsigned char *macaddr)
   return -1;
 }
 
-/**
- * \brief Opens an Ethernet interface.
- *
- * As an option the interface can be set in promisc mode.
- * If not null macaddr and ifindex are filled with the interface mac address and index.
- *
- * \param ifname interface name
- * \param protocol layer 3 protocol number
- * \param promisc set or not promiscuous mode
- * \param usemac use the macaddr instead of the interface own MAC address
- * \param ifindex interface index will be filled in it
- * \return socket descriptor if success, -1 otherwise
- **/
+//! 
+//!  \brief Opens an Ethernet interface.
+//! 
+//!  As an option the interface can be set in promisc mode.
+//!  If not null macaddr and ifindex are filled with the interface mac address and index.
+//! 
+//!  \param ifname interface name
+//!  \param protocol layer 3 protocol number
+//!  \param promisc set or not promiscuous mode
+//!  \param usemac use the macaddr instead of the interface own MAC address
+//!  \param ifindex interface index will be filled in it
+//!  \return socket descriptor if success, -1 otherwise
+//!  *
 
 /* Relevant IOCTLs
    FIONREAD Get the number of bytes in input buffer
@@ -941,22 +941,22 @@ static int dhcp_open_eth(char const *ifname, uint16_t protocol, int promisc,
 
 #endif
 
-/**
- * \brief Generate a 32 bit hash based on a mac address.
- * \param hwaddr MAC address
- * \return resulting hash
- */
+//! 
+//!  \brief Generate a 32 bit hash based on a mac address.
+//!  \param hwaddr MAC address
+//!  \return resulting hash
+//!  
 static unsigned long int dhcp_hash(uint8_t *hwaddr)
 {
   return lookup(hwaddr, DHCP_ETH_ALEN, 0);
 }
 
-/**
- * Initialise hash tables.
- * \param this dhcp_t instance
- * \param listsize size of hash tables
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  Initialise hash tables.
+//!  \param this dhcp_t instance
+//!  \param listsize size of hash tables
+//!  \return 0 if success, -1 otherwise
+//!  
 static int dhcp_hash_init(struct dhcp_t *this, int listsize)
 {
   /* Determine hashlog */
@@ -987,12 +987,12 @@ static int dhcp_hash_init(struct dhcp_t *this, int listsize)
 }
 
 /* [SV] */
-/**
- * \brief Add a connection to the IPv4 hash table.
- * \param this dhcp_t instance
- * \param conn connection to add
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Add a connection to the IPv4 hash table.
+//!  \param this dhcp_t instance
+//!  \param conn connection to add
+//!  \return 0 if success, -1 otherwise
+//!  
 static int dhcp_hash_add(struct dhcp_t *this, struct dhcp_conn_t *conn)
 {
   uint32_t hash = 0;
@@ -1010,13 +1010,13 @@ static int dhcp_hash_add(struct dhcp_t *this, struct dhcp_conn_t *conn)
   return 0; /* Always OK to insert */
 }
 
-/**
- * \brief Add a connection to the IPv6 hash table.
- * \param this dhcp_t instance
- * \param conn connection to add
- * \return 0 if success, -1 otherwise
- * \author Sebastien VINCENT
- */
+//! 
+//!  \brief Add a connection to the IPv6 hash table.
+//!  \param this dhcp_t instance
+//!  \param conn connection to add
+//!  \return 0 if success, -1 otherwise
+//!  \author Sebastien VINCENT
+//!  
 static int dhcp_hash_add6(struct dhcp_t *this, struct dhcp_conn_t *conn)
 {
   uint32_t hash = 0;
@@ -1034,12 +1034,12 @@ static int dhcp_hash_add6(struct dhcp_t *this, struct dhcp_conn_t *conn)
   return 0; /* Always OK to insert */
 }
 
-/**
- * \brief Remove a connection from the IPv4 hash table.
- * \param this dhcp_t instance
- * \param conn connection to remove
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Remove a connection from the IPv4 hash table.
+//!  \param this dhcp_t instance
+//!  \param conn connection to remove
+//!  \return 0 if success, -1 otherwise
+//!  
 static int dhcp_hash_del(struct dhcp_t *this, struct dhcp_conn_t *conn)
 {
   uint32_t hash = 0;
@@ -1071,13 +1071,13 @@ static int dhcp_hash_del(struct dhcp_t *this, struct dhcp_conn_t *conn)
   return 0;
 }
 
-/**
- * \brief Remove a connection from the IPv6 hash table.
- * \param this dhcp_t instance
- * \param conn connection to remove
- * \return 0 if success, -1 otherwise
- * \author Sebastien VINCENT
- */
+//! 
+//!  \brief Remove a connection from the IPv6 hash table.
+//!  \param this dhcp_t instance
+//!  \param conn connection to remove
+//!  \return 0 if success, -1 otherwise
+//!  \author Sebastien VINCENT
+//!  
 static int dhcp_hash_del6(struct dhcp_t *this, struct dhcp_conn_t *conn)
 {
   uint32_t hash = 0;
@@ -1109,11 +1109,11 @@ static int dhcp_hash_del6(struct dhcp_t *this, struct dhcp_conn_t *conn)
   return 0;
 }
 
-/**
- * \brief Valides reference structures of IPv4 connections.
- * \param this dhcp_t instance
- * \return number of active IPv4 connections
- */
+//! 
+//!  \brief Valides reference structures of IPv4 connections.
+//!  \param this dhcp_t instance
+//!  \return number of active IPv4 connections
+//!  
 static int dhcp_validate(struct dhcp_t *this)
 {
   int used = 0;
@@ -1174,11 +1174,11 @@ static int dhcp_validate(struct dhcp_t *this)
   return used;
 }
 
-/**
- * \brief Valides reference structures of IPv6 connections.
- * \param this dhcp_t instance
- * \return number of active IPv6 connections
- */
+//! 
+//!  \brief Valides reference structures of IPv6 connections.
+//!  \param this dhcp_t instance
+//!  \return number of active IPv6 connections
+//!  
 static int dhcp_validate6(struct dhcp_t *this)
 {
   int used = 0;
@@ -1239,11 +1239,11 @@ static int dhcp_validate6(struct dhcp_t *this)
   return used;
 }
 
-/**
- * \brief Initialise IPv4 connection references.
- * \param this dhcp_t instance
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Initialise IPv4 connection references.
+//!  \param this dhcp_t instance
+//!  \return 0 if success, -1 otherwise
+//!  
 static int dhcp_init_conn(struct dhcp_t *this)
 {
   int n = 0;
@@ -1275,11 +1275,11 @@ static int dhcp_init_conn(struct dhcp_t *this)
   return 0;
 }
 
-/**
- * \brief Initialise IPv6 connection references.
- * \param this dhcp_t instance
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Initialise IPv6 connection references.
+//!  \param this dhcp_t instance
+//!  \return 0 if success, -1 otherwise
+//!  
 static int dhcp_init_conn6(struct dhcp_t *this)
 {
   int n = 0;
@@ -1316,11 +1316,11 @@ static int dhcp_init_conn6(struct dhcp_t *this)
   return 0;
 }
 
-/**
- * \brief Check IPv4 client connections to see if the lease has expired.
- * \param this dhcp_t instance
- * \return 0
- */
+//! 
+//!  \brief Check IPv4 client connections to see if the lease has expired.
+//!  \param this dhcp_t instance
+//!  \return 0
+//!  
 static int dhcp_check_conn(struct dhcp_t *this)
 {
   struct dhcp_conn_t *conn = NULL;
@@ -1343,11 +1343,11 @@ static int dhcp_check_conn(struct dhcp_t *this)
   return 0;
 }
 
-/**
- * \brief Check IPv6 client connections to see if the lease has expired.
- * \param this dhcp_t instance
- * \return 0
- */
+//! 
+//!  \brief Check IPv6 client connections to see if the lease has expired.
+//!  \param this dhcp_t instance
+//!  \return 0
+//!  
 static int dhcp_check_conn6(struct dhcp_t *this)
 {
   struct dhcp_conn_t *conn = NULL;
@@ -1370,13 +1370,13 @@ static int dhcp_check_conn6(struct dhcp_t *this)
   return 0;
 }
 
-/**
- * \brief Change IPv4 destination address to authentication server.
- * \param conn client connection
- * \param pack IPv4 packet
- * \param len length of packet
- * \return 0 or -1 if error
- */
+//! 
+//!  \brief Change IPv4 destination address to authentication server.
+//!  \param conn client connection
+//!  \param pack IPv4 packet
+//!  \param len length of packet
+//!  \return 0 or -1 if error
+//!  
 static int dhcp_do_dnat(struct dhcp_conn_t *conn, struct dhcp_ip_packet_t *pack, int len)
 {
   struct dhcp_t *this = conn->parent;
@@ -1459,13 +1459,13 @@ static int dhcp_do_dnat(struct dhcp_conn_t *conn, struct dhcp_ip_packet_t *pack,
   return -1; /* Something else */
 }
 
-/**
- * \brief DNAT the packet to the UAM server.
- * \param conn the dhcp_conn_t instance
- * \param pack the packet
- * \param len length of the packet
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief DNAT the packet to the UAM server.
+//!  \param conn the dhcp_conn_t instance
+//!  \param pack the packet
+//!  \param len length of the packet
+//!  \return 0 if success, -1 otherwise
+//!  
 static int dhcp_do_dnat6(struct dhcp_conn_t *conn, struct dhcp_ipv6_packet_t *pack, int len)
 {
   struct dhcp_t *this = conn->parent;
@@ -1542,13 +1542,13 @@ static int dhcp_do_dnat6(struct dhcp_conn_t *conn, struct dhcp_ipv6_packet_t *pa
   return -1;
 }
 
-/**
- * \brief Change IPv4 source address back to original server.
- * \param conn client connection
- * \param pack IPv4 packet
- * \param len length of packet
- * \return 0 or -1 if error
- */
+//! 
+//!  \brief Change IPv4 source address back to original server.
+//!  \param conn client connection
+//!  \param pack IPv4 packet
+//!  \param len length of packet
+//!  \return 0 or -1 if error
+//!  
 static int dhcp_undo_dnat(struct dhcp_conn_t *conn, struct dhcp_ip_packet_t *pack, int len)
 {
   struct dhcp_t *this = conn->parent;
@@ -1625,13 +1625,13 @@ static int dhcp_undo_dnat(struct dhcp_conn_t *conn, struct dhcp_ip_packet_t *pac
   return -1; /* Something else */
 }
 
-/**
- * \brief Change IPv6 source address back to original server.
- * \param conn client connection
- * \param pack IPv6 packet
- * \param len length of packet
- * \return 0 or -1 if error
- */
+//! 
+//!  \brief Change IPv6 source address back to original server.
+//!  \param conn client connection
+//!  \param pack IPv6 packet
+//!  \param len length of packet
+//!  \return 0 or -1 if error
+//!  
 static int dhcp_undo_dnat6(struct dhcp_conn_t *conn, struct dhcp_ipv6_packet_t *pack, int len)
 {
   struct dhcp_t *this = conn->parent;
@@ -1690,17 +1690,17 @@ static int dhcp_undo_dnat6(struct dhcp_conn_t *conn, struct dhcp_ipv6_packet_t *
 }
 
 #ifdef DHCP_CHECKDNS
-/**
- * \brief Check if it was request for known domain name.
- *
- * In case it was a request for a known keyword then
- * redirect to the login/logout page
- * 2005-09-19: This stuff is highly experimental.
- * \param conn low-level connection
- * \param pack IPv4 packet
- * \param len length of packet
- * \return 0 or -1 if failure
- */
+//! 
+//!  \brief Check if it was request for known domain name.
+//! 
+//!  In case it was a request for a known keyword then
+//!  redirect to the login/logout page
+//!  2005-09-19: This stuff is highly experimental.
+//!  \param conn low-level connection
+//!  \param pack IPv4 packet
+//!  \param len length of packet
+//!  \return 0 or -1 if failure
+//!  
 static int dhcp_check_dns(struct dhcp_conn_t *conn, struct dhcp_ip_packet_t *pack, int len)
 {
   struct dhcp_t *this = conn->parent;
@@ -1814,11 +1814,11 @@ static int dhcp_check_dns(struct dhcp_conn_t *conn, struct dhcp_ip_packet_t *pac
 
 #endif
 
-/**
- * \brief Fill in a DHCP packet with most essential values.
- * \param pack DHCP packet
- * \return 0
- */
+//! 
+//!  \brief Fill in a DHCP packet with most essential values.
+//!  \param pack DHCP packet
+//!  \return 0
+//!  
 static int dhcp_get_packet_default(struct dhcp_fullpacket_t *pack)
 {
   /* Initialise reply packet with request */
@@ -1850,14 +1850,14 @@ static int dhcp_get_packet_default(struct dhcp_fullpacket_t *pack)
   return 0;
 }
 
-/**
- * \brief Search a DHCP packet for a particular tag.
- * \param pack DHCP packet
- * \param length length of DHCP packet
- * \param tag if found tag will be filled in this variable
- * \param tagtype type of tag to search
- * \return -1 if not found.
- */
+//! 
+//!  \brief Search a DHCP packet for a particular tag.
+//!  \param pack DHCP packet
+//!  \param length length of DHCP packet
+//!  \param tag if found tag will be filled in this variable
+//!  \param tagtype type of tag to search
+//!  \return -1 if not found.
+//!  
 static int dhcp_get_packet_tag(struct dhcp_packet_t *pack, int length,
                                struct dhcp_tag_t **tag, uint8_t tagtype)
 {
@@ -1886,17 +1886,17 @@ static int dhcp_get_packet_tag(struct dhcp_packet_t *pack, int length,
   return -1; /* Not found  */
 }
 
-/**
- * \brief Send packet to interface.
- * \param this dhcp_t instance
- * \param fd descriptor of the layer 2 socket
- * \param protocol layer 3 protocol
- * \param hismac destination MAC address
- * \param ifindex interface index to send packet
- * \param packet packet data
- * \param length length of packet
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Send packet to interface.
+//!  \param this dhcp_t instance
+//!  \param fd descriptor of the layer 2 socket
+//!  \param protocol layer 3 protocol
+//!  \param hismac destination MAC address
+//!  \param ifindex interface index to send packet
+//!  \param packet packet data
+//!  \param length length of packet
+//!  \return 0 if success, -1 otherwise
+//!  
 static int dhcp_send(struct dhcp_t *this,
                      int fd, uint16_t protocol, unsigned char *hismac, int ifindex,
                      void *packet, int length)
@@ -1951,13 +1951,13 @@ static int dhcp_send(struct dhcp_t *this,
   return 0;
 }
 
-/**
- * \brief Send ARP reply message to peer.
- * \param conn connection that sent previous ARP request
- * \param pack ARP request
- * \param len length of packet
- * \return 0
- */
+//! 
+//!  \brief Send ARP reply message to peer.
+//!  \param conn connection that sent previous ARP request
+//!  \param pack ARP request
+//!  \param len length of packet
+//!  \return 0
+//!  
 static int dhcp_send_arp(struct dhcp_conn_t *conn, struct dhcp_arp_fullpacket_t *pack, int len)
 {
   struct dhcp_t *this = conn->parent;
@@ -2009,13 +2009,13 @@ static int dhcp_send_arp(struct dhcp_conn_t *conn, struct dhcp_arp_fullpacket_t 
                    this->arp_ifindex, &packet, length);
 }
 
-/**
- * \brief Send of a DHCP offer message to a peer.
- * \param conn DHCP connectino
- * \param pack packet
- * \param len length of packet
- * \return 0 if success, -1 otherwise4
- */
+//! 
+//!  \brief Send of a DHCP offer message to a peer.
+//!  \param conn DHCP connectino
+//!  \param pack packet
+//!  \param len length of packet
+//!  \return 0 if success, -1 otherwise4
+//!  
 static int dhcp_send_dhcp_offer(struct dhcp_conn_t *conn, struct dhcp_fullpacket_t *pack, int len)
 {
   struct dhcp_t *this = conn->parent;
@@ -2130,13 +2130,13 @@ static int dhcp_send_dhcp_offer(struct dhcp_conn_t *conn, struct dhcp_fullpacket
                    &packet, length);
 }
 
-/**
- * \brief Send of a DHCP acknowledge message to a peer.
- * \param conn low-level connection
- * \param pack packet
- * \param len length of packet
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Send of a DHCP acknowledge message to a peer.
+//!  \param conn low-level connection
+//!  \param pack packet
+//!  \param len length of packet
+//!  \return 0 if success, -1 otherwise
+//!  
 static int dhcp_send_dhcp_ack(struct dhcp_conn_t *conn, struct dhcp_fullpacket_t *pack, int len)
 {
   struct dhcp_t *this = conn->parent;
@@ -2259,16 +2259,16 @@ static int dhcp_send_dhcp_ack(struct dhcp_conn_t *conn, struct dhcp_fullpacket_t
                    &packet, length);
 }
 
-/**
- * \brief Send of a DHCP negative acknowledge message to a peer.
- *
- * NAK messages are always sent to broadcast IP address (
- * except when using a DHCP relay server)
- * \param conn low-level connection
- * \param pack DHCP packet
- * \param len length of packet
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Send of a DHCP negative acknowledge message to a peer.
+//! 
+//!  NAK messages are always sent to broadcast IP address (
+//!  except when using a DHCP relay server)
+//!  \param conn low-level connection
+//!  \param pack DHCP packet
+//!  \param len length of packet
+//!  \return 0 if success, -1 otherwise
+//!  
 static int dhcp_send_dhcp_nak(struct dhcp_conn_t *conn, struct dhcp_fullpacket_t *pack, int len)
 {
   struct dhcp_t *this = conn->parent;
@@ -2331,13 +2331,13 @@ static int dhcp_send_dhcp_nak(struct dhcp_conn_t *conn, struct dhcp_fullpacket_t
                    &packet, length);
 }
 
-/**
- * \brief Send 802.1X packet.
- * \param conn low-level connection
- * \param pack 802.1X packet
- * \param len length of packet
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Send 802.1X packet.
+//!  \param conn low-level connection
+//!  \param pack 802.1X packet
+//!  \param len length of packet
+//!  \return 0 if success, -1 otherwise
+//!  
 static int dhcp_send_dot1x(struct dhcp_conn_t *conn, struct dhcp_dot1x_packet_t *pack, int len)
 {
   struct dhcp_t *this = conn->parent;
@@ -2346,13 +2346,13 @@ static int dhcp_send_dot1x(struct dhcp_conn_t *conn, struct dhcp_dot1x_packet_t 
                    pack, len);
 }
 
-/**
- * \brief Process a received DHCP request MESSAGE.
- * \param this dhcp_t instance
- * \param pack DHCP packet
- * \param len length of packet
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Process a received DHCP request MESSAGE.
+//!  \param this dhcp_t instance
+//!  \param pack DHCP packet
+//!  \param len length of packet
+//!  \return 0 if success, -1 otherwise
+//!  
 static int dhcp_receive_dhcp(struct dhcp_t *this, struct dhcp_fullpacket_t *pack, int len)
 {
   struct dhcp_conn_t *conn = NULL;
@@ -2458,14 +2458,14 @@ static int dhcp_receive_dhcp(struct dhcp_t *this, struct dhcp_fullpacket_t *pack
   return 0;
 }
 
-/**
- * \brief Process an newly IPv4 packet received, it can block packets,
- * request IPv4 address via DHCP, ...
- * \param this dhcp_t instance
- * \param pack IPv4 packet
- * \param len length of packet
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Process an newly IPv4 packet received, it can block packets,
+//!  request IPv4 address via DHCP, ...
+//!  \param this dhcp_t instance
+//!  \param pack IPv4 packet
+//!  \param len length of packet
+//!  \return 0 if success, -1 otherwise
+//!  
 static int dhcp_receive_ip(struct dhcp_t *this, struct dhcp_ip_packet_t *pack, int len)
 {
   struct dhcp_conn_t *conn = NULL;
@@ -2576,13 +2576,13 @@ static int dhcp_receive_ip(struct dhcp_t *this, struct dhcp_ip_packet_t *pack, i
   return 0;
 }
 
-/**
- * \brief Process ARP requests.
- * \param this dhcp_t instance
- * \param pack ARP packet
- * \param len length of packet
- * \return 0
- */
+//! 
+//!  \brief Process ARP requests.
+//!  \param this dhcp_t instance
+//!  \param pack ARP packet
+//!  \param len length of packet
+//!  \return 0
+//!  
 static int dhcp_receive_arp(struct dhcp_t *this, struct dhcp_arp_fullpacket_t *pack, int len)
 {
   struct dhcp_conn_t *conn = NULL;
@@ -2640,14 +2640,14 @@ static int dhcp_receive_arp(struct dhcp_t *this, struct dhcp_arp_fullpacket_t *p
   return 0;
 }
 
-/**
- * \brief Process IPv6 packet.
- * \param this the dhcp_t instance
- * \param pack the packet
- * \param len length of the packet
- * \return 0 if success, -1 otherwise
- * \author Sebastien VINCENT
- */
+//! 
+//!  \brief Process IPv6 packet.
+//!  \param this the dhcp_t instance
+//!  \param pack the packet
+//!  \param len length of the packet
+//!  \return 0 if success, -1 otherwise
+//!  \author Sebastien VINCENT
+//!  
 static int dhcp_receive_ipv6(struct dhcp_t *this, struct dhcp_ipv6_packet_t *pack, int len)
 {
   struct dhcp_conn_t *conn = NULL;

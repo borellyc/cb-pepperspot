@@ -47,10 +47,10 @@
  * 02111-1307 USA.
  */
 
-/**
- * \file ndisc.c
- * \brief IPv6 neighbor discovery.
- */
+//! 
+//!  \file ndisc.c
+//!  \brief IPv6 neighbor discovery.
+//!  
 
 #include <stdio.h>
 #include <pthread.h>
@@ -77,26 +77,26 @@
 #include "util.h"
 #include "ndisc.h"
 
-/**
- * \var in6addr_all_nodes_mc
- * \brief Multicast address for all nodes (FF02::3).
- */
+//! 
+//!  \var in6addr_all_nodes_mc
+//!  \brief Multicast address for all nodes (FF02::3).
+//!  
 static const struct in6_addr in6addr_all_nodes_mc = IN6ADDR_ALL_NODES_MC_INIT;
 
-/**
- * \var in6addr_all_routers_mc
- * \brief Multicast address for all routers (FF02::2).
- */
+//! 
+//!  \var in6addr_all_routers_mc
+//!  \brief Multicast address for all routers (FF02::2).
+//!  
 static const struct in6_addr in6addr_all_routers_mc = IN6ADDR_ALL_ROUTERS_MC_INIT;
 
-/**
- * \brief Create an ICMPv6 option.
- * \param iov vector
- * \param type ICMPv6 type
- * \param len length
- * \param value data
- * \return header or NULL if failure
- */
+//! 
+//!  \brief Create an ICMPv6 option.
+//!  \param iov vector
+//!  \param type ICMPv6 type
+//!  \param len length
+//!  \param value data
+//!  \return header or NULL if failure
+//!  
 static struct nd_opt_hdr *ndisc_opt_create(struct iovec *iov, uint8_t type,
                                            uint16_t len, uint8_t *value)
 {
@@ -117,11 +117,11 @@ static struct nd_opt_hdr *ndisc_opt_create(struct iovec *iov, uint8_t type,
   return opt;
 }
 
-/**
- * \brief Get L2 address (MAC address) length of an address type.
- * \param iface_type type of an address
- * \return length of L2 address
- */
+//! 
+//!  \brief Get L2 address (MAC address) length of an address type.
+//!  \param iface_type type of an address
+//!  \return length of L2 address
+//!  
 static inline short ndisc_get_l2addr_len(unsigned short iface_type)
 {
   switch(iface_type)
@@ -149,12 +149,12 @@ static inline short ndisc_get_l2addr_len(unsigned short iface_type)
   }
 }
 
-/**
- * \brief Get L2 address of an interface.
- * \param ifindex interface index
- * \param addr resulting address will be filled in
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Get L2 address of an interface.
+//!  \param ifindex interface index
+//!  \param addr resulting address will be filled in
+//!  \return 0 if success, -1 otherwise
+//!  
 static int ndisc_get_l2addr(int ifindex, uint8_t *addr)
 {
   int res = 0;

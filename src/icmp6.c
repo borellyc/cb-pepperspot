@@ -47,10 +47,10 @@
  * 02111-1307 USA.
  */
 
-/**
- * \file icmp6.c
- * \brief ICMPv6 related function (send/receive).
- */
+//! 
+//!  \file icmp6.c
+//!  \brief ICMPv6 related function (send/receive).
+//!  
 
 #include <errno.h>
 #include <stdio.h>

@@ -24,26 +24,26 @@
  * $Id: tun6.c 1894 2006-12-31 11:15:54Z remi $
  */
 
-/**
- * \file tun6.c
- * \brief IPv6 tunnel interface (tun).
- */
+//! 
+//!  \file tun6.c
+//!  \brief IPv6 tunnel interface (tun).
+//!  
 
-/***********************************************************************
- *  Copyright (c) 2004-2006 Remi DENIS-COURMONT.                       *
- *  This program is free software; you can redistribute and/or modify  *
- *  it under the terms of the GNU General Public License as published  *
- *  by the Free Software Foundation; version 2 of the license.         *
- *                                                                     *
- *  This program is distributed in the hope that it will be useful,    *
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of     *
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.               *
- *  See the GNU General Public License for more details.               *
- *                                                                     *
- *  You should have received a copy of the GNU General Public License  *
- *  along with this program; if not, you can get it from:              *
- *  http://www.gnu.org/copyleft/gpl.html                               *
- ***********************************************************************/
+//! *********************************************************************
+//!   Copyright (c) 2004-2006 Remi DENIS-COURMONT.                       *
+//!   This program is free software; you can redistribute and/or modify  *
+//!   it under the terms of the GNU General Public License as published  *
+//!   by the Free Software Foundation; version 2 of the license.         *
+//!                                                                      *
+//!   This program is distributed in the hope that it will be useful,    *
+//!   but WITHOUT ANY WARRANTY; without even the implied warranty of     *
+//!   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.               *
+//!   See the GNU General Public License for more details.               *
+//!                                                                      *
+//!   You should have received a copy of the GNU General Public License  *
+//!   along with this program; if not, you can get it from:              *
+//!   http://www.gnu.org/copyleft/gpl.html                               *
+//!  **********************************************************************
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -68,9 +68,9 @@
 #include <net/if.h>     /* struct ifreq, if_nametoindex(), if_indextoname() */
 
 #if defined(__linux__)
-/**
- * \brief Linux tunneling driver
- */
+//! 
+//!  \brief Linux tunneling driver
+//!  
 const char os_driver[] = "Linux";
 #define USE_LINUX 1
 
@@ -78,11 +78,11 @@ const char os_driver[] = "Linux";
 #include <net/route.h>        /* struct in6_rtmsg */
 #include <netinet/if_ether.h> /* ETH_P_IPV6 */
 
-/**
- * \struct in6_ifreq
- * \brief <linux/ipv6.h> conflicts with <netinet/in.h> and <arpa/inet.h>,
- * so we've got to declare this structure by hand.
- */
+//! 
+//!  \struct in6_ifreq
+//!  \brief <linux/ipv6.h> conflicts with <netinet/in.h> and <arpa/inet.h>,
+//!  so we've got to declare this structure by hand.
+//!  
 struct in6_ifreq
 {
   struct in6_addr ifr6_addr;  //!< IPv6 address
@@ -104,10 +104,10 @@ typedef struct
       defined(__OpenBSD__) || defined(__OpenBSD_kernel__) || \
       defined(__DragonFly__) || \
       defined(__APPLE__) /* Darwin */
-/**
- * \brief BSD tunneling driver
- * NOTE: the driver is NOT tested on Darwin (Mac OS X).
- */
+//! 
+//!  \brief BSD tunneling driver
+//!  NOTE: the driver is NOT tested on Darwin (Mac OS X).
+//!  
 const char os_driver[] = "BSD";
 #define USE_BSD 1
 
@@ -136,9 +136,9 @@ typedef uint32_t tun_head_t;
 #define tun_head_is_ipv6(h) (h == htonl(AF_INET6))
 
 #else
-/**
- * \brief Tunneling driver
- */
+//! 
+//!  \brief Tunneling driver
+//!  
 const char os_driver[] = "Generic";
 
 #warning Unknown host OS. The driver will probably not work.
@@ -147,17 +147,17 @@ const char os_driver[] = "Generic";
 #include "tun6.h"
 #include "syserr.h"
 
-/**
- * Originally there was strlcpy but it lacks in Linux libc... replace this latter!
- * for the moment cross the finger... this function is not safe...
- */
+//! 
+//!  Originally there was strlcpy but it lacks in Linux libc... replace this latter!
+//!  for the moment cross the finger... this function is not safe...
+//!  
 #define safe_strcpy(tgt, src) \
   (strncpy(tgt, src, sizeof(tgt)))
 
-/**
- * \struct tun6
- * \brief tun6 descriptor.
- */
+//! 
+//!  \struct tun6
+//!  \brief tun6 descriptor.
+//!  
 struct tun6
 {
   int id;                     //!< Interface index
@@ -192,9 +192,9 @@ static int proc_write_zero(const char *path)
 #endif
 
 #if defined(USE_BSD)
-/**
- * Converts a prefix length to a netmask (used for the BSD routing)
- */
+//! 
+//!  Converts a prefix length to a netmask (used for the BSD routing)
+//!  
 static void plen_to_mask(unsigned plen, struct in6_addr *mask)
 {
   assert(plen <= 128);
@@ -212,9 +212,9 @@ static void plen_to_mask(unsigned plen, struct in6_addr *mask)
     mask->s6_addr[i++] = 0;
 }
 
-/**
- * Converts a prefix length to a struct sockaddr_in6 (used for the BSD routing)
- */
+//! 
+//!  Converts a prefix length to a struct sockaddr_in6 (used for the BSD routing)
+//!  
 static void plen_to_sin6(unsigned plen, struct sockaddr_in6 *sin6)
 {
   memset(sin6, 0, sizeof(struct sockaddr_in6));
@@ -228,13 +228,13 @@ static void plen_to_sin6(unsigned plen, struct sockaddr_in6 *sin6)
 }
 #endif /* ifdef SOCAIFADDR_IN6 */
 
-/**
- * Set the flags on the interface.
- *
- * \param this tun6_t instance
- * \param flags flags to set
- * \return 0 on success, -1 on error (see errno).
- */
+//! 
+//!  Set the flags on the interface.
+//! 
+//!  \param this tun6_t instance
+//!  \param flags flags to set
+//!  \return 0 on success, -1 on error (see errno).
+//!  
 static int tun6_set_interface_flags(struct tun6_t *this, int flags)
 {
   struct ifreq ifr;
@@ -265,15 +265,15 @@ static int tun6_set_interface_flags(struct tun6_t *this, int flags)
   close(fd);
   return 0;
 }
-/**
- * Tries to allocate a tunnel interface from the kernel.
- *
- * \param req_name may be an interface name for the virtual network device
- * (it might be ignored on some OSes).
- * If NULL, an internal default will be used.
- *
- * \return NULL on error.
- */
+//! 
+//!  Tries to allocate a tunnel interface from the kernel.
+//! 
+//!  \param req_name may be an interface name for the virtual network device
+//!  (it might be ignored on some OSes).
+//!  If NULL, an internal default will be used.
+//! 
+//!  \return NULL on error.
+//!  
 static struct tun6 *tun6_create(const char *req_name)
 {
   /*  (void)bindtextdomain (PACKAGE_NAME, LOCALEDIR); */
@@ -476,13 +476,13 @@ error:
   return NULL;
 }
 
-/**
- * Brings a tunnel interface up or down.
- *
- * \param t tun6 descriptor
- * \param up if 1 bring this interface UP, DOWN otherwise
- * \return 0 on success, -1 on error (see errno).
- */
+//! 
+//!  Brings a tunnel interface up or down.
+//! 
+//!  \param t tun6 descriptor
+//!  \param up if 1 bring this interface UP, DOWN otherwise
+//!  \return 0 on success, -1 on error (see errno).
+//!  
 static int tun6_set_state(struct tun6 *t, int up)
 {
   assert(t != NULL);
@@ -510,14 +510,14 @@ static int tun6_set_state(struct tun6 *t, int up)
   return 0;
 }
 
-/**
- * Removes a tunnel from the kernel.
- * BEWARE: if you fork, child processes must call tun6_destroy() too.
- *
- * The kernel will destroy the tunnel interface once all processes called
- * tun6_destroy and/or were terminated.
- * \param t tun6 descriptor to destroy
- */
+//! 
+//!  Removes a tunnel from the kernel.
+//!  BEWARE: if you fork, child processes must call tun6_destroy() too.
+//! 
+//!  The kernel will destroy the tunnel interface once all processes called
+//!  tun6_destroy and/or were terminated.
+//!  \param t tun6 descriptor to destroy
+//!  
 static void tun6_destroy(struct tun6 *t)
 {
   assert(t != NULL);
@@ -556,15 +556,15 @@ static void tun6_destroy(struct tun6 *t)
   free(t);
 }
 
-/**
- * \brief Add/remove an address on interface.
- * \param reqfd socket descriptor to handle ioctl request(s).
- * \param id interface index
- * \param add if 1 add address, 0 remove address
- * \param addr IPv6 address to add/remove
- * \param prefix_len IPv6 prefix length
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Add/remove an address on interface.
+//!  \param reqfd socket descriptor to handle ioctl request(s).
+//!  \param id interface index
+//!  \param add if 1 add address, 0 remove address
+//!  \param addr IPv6 address to add/remove
+//!  \param prefix_len IPv6 prefix length
+//!  \return 0 if success, -1 otherwise
+//!  
 static int tun6_iface_addr(int reqfd, int id, int add,
                            const struct in6_addr *addr, unsigned prefix_len)
 {
@@ -642,14 +642,14 @@ static int tun6_iface_addr(int reqfd, int id, int add,
   return ioctl(reqfd, cmd, req) >= 0 ? 0 : -1;
 }
 
-/**
- * Adds an address with a netmask to a tunnel.
- * Requires CAP_NET_ADMIN or root privileges.
- * \param t tun6 instance
- * \param addr address to add
- * \param prefixlen length of IPv6 prefix
- * \return 0 on success, -1 in case error.
- */
+//! 
+//!  Adds an address with a netmask to a tunnel.
+//!  Requires CAP_NET_ADMIN or root privileges.
+//!  \param t tun6 instance
+//!  \param addr address to add
+//!  \param prefixlen length of IPv6 prefix
+//!  \return 0 on success, -1 in case error.
+//!  
 static int tun6_add_address(struct tun6 *t, const struct in6_addr *addr, unsigned prefixlen)
 {
   assert(t != NULL);
@@ -683,16 +683,16 @@ static int tun6_add_address(struct tun6 *t, const struct in6_addr *addr, unsigne
   return res;
 }
 
-/**
- * Receives a packet from a tunnel device.
- * \param fd socket descriptor
- * \param buffer address to store packet
- * \param maxlen buffer length in bytes (should be 65535)
- *
- * This function will block if there is no input.
- *
- * \return the packet length on success, -1 if no packet were to be received.
- */
+//! 
+//!  Receives a packet from a tunnel device.
+//!  \param fd socket descriptor
+//!  \param buffer address to store packet
+//!  \param maxlen buffer length in bytes (should be 65535)
+//! 
+//!  This function will block if there is no input.
+//! 
+//!  \return the packet length on success, -1 if no packet were to be received.
+//!  
 static inline int tun6_recv_inner(int fd, void *buffer, size_t maxlen)
 {
   struct iovec vect[2];
@@ -711,15 +711,15 @@ static inline int tun6_recv_inner(int fd, void *buffer, size_t maxlen)
   return len - sizeof(head);
 }
 
-/**
- * Sends an IPv6 packet.
- * \param t tun6 instance
- * \param packet pointer to packet
- * \param len packet length (bytes)
- *
- * \return the number of bytes succesfully transmitted on success,
- * -1 on error.
- */
+//! 
+//!  Sends an IPv6 packet.
+//!  \param t tun6 instance
+//!  \param packet pointer to packet
+//!  \param len packet length (bytes)
+//! 
+//!  \return the number of bytes succesfully transmitted on success,
+//!  -1 on error.
+//!  
 static int tun6_send(struct tun6 *t, const void *packet, size_t len)
 {
   assert(t != NULL);

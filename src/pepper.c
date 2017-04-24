@@ -63,10 +63,10 @@
  *
  */
 
-/**
- * \file pepper.c
- * \brief PepperSpot: next generation captive portal.
- */
+//! 
+//!  \file pepper.c
+//!  \brief PepperSpot: next generation captive portal.
+//!  
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -135,11 +135,11 @@
 #include "compat.h"
 
 #ifndef DEBUG_REDIR
-/**
- * \def DEBUG_REDIR
- * \brief Activate or not debug in 
- * redir module.
- */
+//! 
+//!  \def DEBUG_REDIR
+//!  \brief Activate or not debug in 
+//!  redir module.
+//!  
 #define DEBUG_REDIR 1
 #endif
 
@@ -163,10 +163,10 @@ static struct app_conn_t *g_pepper_lastfreeconn = NULL;         //!< Last free i
 static struct app_conn_t *g_pepper_firstusedconn = NULL;        //!< First used in linked list
 static struct app_conn_t *g_pepper_lastusedconn = NULL;         //!< Last used in linked list
 
-/**
- * \brief Signal handler for sigaction.
- * \param signum signal number received
- */
+//! 
+//!  \brief Signal handler for sigaction.
+//!  \param signum signal number received
+//!  
 static void sig_handler(int signum)
 {
   switch(signum)
@@ -193,10 +193,10 @@ static void sig_handler(int signum)
   }
 }
 
-/**
- * \brief Set the session ID of an "high level" connection.
- * \param conn connection
- */
+//! 
+//!  \brief Set the session ID of an "high level" connection.
+//!  \param conn connection
+//!  
 static void set_sessionid(struct app_conn_t *conn)
 {
   struct timeval timenow;
@@ -205,10 +205,10 @@ static void set_sessionid(struct app_conn_t *conn)
                   (int) timenow.tv_sec, conn->unit);
 }
 
-/**
- * \brief Used to write process ID to file. Assume someone else will delete.
- * \param pidfile file used to write PID.
- */
+//! 
+//!  \brief Used to write process ID to file. Assume someone else will delete.
+//!  \param pidfile file used to write PID.
+//!  
 static void log_pid(char *pidfile)
 {
   FILE *file = NULL;
@@ -224,13 +224,13 @@ static void log_pid(char *pidfile)
 }
 
 #ifndef NO_LEAKY_BUCKET
-/**
- * \brief Perform leaky bucket on up- and downlink traffic.
- * \param conn connection
- * \param octetsup bytes sent
- * \param octetsdown bytes received
- * \return 0 if connection does not reach limits, -1 otherwise
- */
+//! 
+//!  \brief Perform leaky bucket on up- and downlink traffic.
+//!  \param conn connection
+//!  \param octetsup bytes sent
+//!  \param octetsdown bytes received
+//!  \return 0 if connection does not reach limits, -1 otherwise
+//!  
 static int leaky_bucket(struct app_conn_t *conn, int octetsup, int octetsdown)
 {
   struct timeval timenow;
@@ -296,19 +296,19 @@ static int leaky_bucket(struct app_conn_t *conn, int octetsup, int octetsdown)
 }
 #endif /* ifndef NO_LEAKY_BUCKET */
 
-/**
- * \brief Set some environment variables in order to run external script.
- *
- * Only one parameter MUST be non-NULL among "value" (and "len"), "addr",
- * "mac" and "integer".
- * \param name name of the environment variable
- * \param value value (len parameter determine its length)
- * \param len length
- * \param addr IPv4 address
- * \param mac MAC address
- * \param integer integer value
- * \return 0
- */
+//! 
+//!  \brief Set some environment variables in order to run external script.
+//! 
+//!  Only one parameter MUST be non-NULL among "value" (and "len"), "addr",
+//!  "mac" and "integer".
+//!  \param name name of the environment variable
+//!  \param value value (len parameter determine its length)
+//!  \param len length
+//!  \param addr IPv4 address
+//!  \param mac MAC address
+//!  \param integer integer value
+//!  \return 0
+//!  
 static int set_env(char *name, char *value, unsigned int len, struct in_addr *addr,
                    uint8_t *mac, long int *integer)
 {
@@ -356,19 +356,19 @@ static int set_env(char *name, char *value, unsigned int len, struct in_addr *ad
   return 0;
 }
 
-/**
- * \brief Set some environment variables in order to run external script.
- *
- * Only one parameter MUST be non-NULL among "value" (and "len"), "addr",
- * "mac" and "integer".
- * \param name name of the environment variable
- * \param value value (len parameter determine its length)
- * \param len length
- * \param addr IPv6 address
- * \param mac MAC address
- * \param integer integer value
- * \return 0
- */
+//! 
+//!  \brief Set some environment variables in order to run external script.
+//! 
+//!  Only one parameter MUST be non-NULL among "value" (and "len"), "addr",
+//!  "mac" and "integer".
+//!  \param name name of the environment variable
+//!  \param value value (len parameter determine its length)
+//!  \param len length
+//!  \param addr IPv6 address
+//!  \param mac MAC address
+//!  \param integer integer value
+//!  \return 0
+//!  
 static int set_env6(char *name, char *value, unsigned int len, struct in6_addr *addr,
                     uint8_t *mac, long int *integer)
 {
@@ -413,12 +413,12 @@ static int set_env6(char *name, char *value, unsigned int len, struct in6_addr *
   return 0;
 }
 
-/**
- * \brief Run external script for a client.
- * \param conn connection
- * \param script script pathname
- * \return 0 if script succeed, false otherwise (fork/exec error, ...)
- */
+//! 
+//!  \brief Run external script for a client.
+//!  \param conn connection
+//!  \param script script pathname
+//!  \return 0 if script succeed, false otherwise (fork/exec error, ...)
+//!  
 static int runscript(struct app_conn_t *conn, char *script)
 {
   long int l = 0;
@@ -525,14 +525,14 @@ static int runscript(struct app_conn_t *conn, char *script)
   exit(0);
 }
 
-/**
- * \brief Extract domain name and port from IPv4 URL.
- * \param src source URL (http or https)
- * \param host FQDN (will be filled if function succeed)
- * \param hostsize length of host
- * \param port port
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Extract domain name and port from IPv4 URL.
+//!  \param src source URL (http or https)
+//!  \param host FQDN (will be filled if function succeed)
+//!  \param hostsize length of host
+//!  \param port port
+//!  \return 0 if success, -1 otherwise
+//!  
 static int get_namepart(char *src, char *host, int hostsize, int *port)
 {
   char *slashslash = NULL;
@@ -606,13 +606,13 @@ static int get_namepart(char *src, char *host, int hostsize, int *port)
   return 0;
 }
 
-/**
- * \brief Extract domain name and port from IPv6 URL.
- * \param src source URL (http or https)
- * \param host FQDN (will be filled if function succeed)
- * \param port port
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Extract domain name and port from IPv6 URL.
+//!  \param src source URL (http or https)
+//!  \param host FQDN (will be filled if function succeed)
+//!  \param port port
+//!  \return 0 if success, -1 otherwise
+//!  
 static int get_namepart6(char *src, char *host, int *port)
 {
   char *croch = NULL;
@@ -666,13 +666,13 @@ static int get_namepart6(char *src, char *host, int *port)
   return 0;
 }
 
-/**
- * \brief Allow a FQDN, address to be accessed without
- * restrictions.
- * \param uamallowed FQDN or address
- * \param len length of uamallowed parameter
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Allow a FQDN, address to be accessed without
+//!  restrictions.
+//!  \param uamallowed FQDN or address
+//!  \param len length of uamallowed parameter
+//!  \return 0 if success, -1 otherwise
+//!  
 static int set_uamallowed(char *uamallowed, int len)
 {
   char *p1 = NULL;
@@ -850,12 +850,12 @@ static int set_uamallowed(char *uamallowed, int len)
   return 0;
 }
 
-/**
- * \brief Allow a MAC address to pass.
- * \param macallowed MAC address
- * \param len length of MAC address
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Allow a MAC address to pass.
+//!  \param macallowed MAC address
+//!  \param len length of MAC address
+//!  \return 0 if success, -1 otherwise
+//!  
 static int set_macallowed(char *macallowed, int len)
 {
   char *p1 = NULL;
@@ -935,11 +935,11 @@ static int set_macallowed(char *macallowed, int len)
   return 0;
 }
 
-/**
- * \brief Compare a MAC address to the addresses given in the macallowed option.
- * \param mac MAC address to compare
- * \return 0 if MAC address correspond, -1 otherwise
- */
+//! 
+//!  \brief Compare a MAC address to the addresses given in the macallowed option.
+//!  \param mac MAC address to compare
+//!  \return 0 if MAC address correspond, -1 otherwise
+//!  
 static int maccmp(unsigned char *mac)
 {
   int i = 0;
@@ -953,10 +953,10 @@ static int maccmp(unsigned char *mac)
   return -1;
 }
 
-/**
- * \brief Get remote config from Radius server.
- * \return 0 if successfully configured, -1 otherwise
- */
+//! 
+//!  \brief Get remote config from Radius server.
+//!  \return 0 if successfully configured, -1 otherwise
+//!  
 static int get_remote_config_from_radius(void)
 {
   struct radius_packet_t radius_pack;
@@ -1012,13 +1012,13 @@ static int get_remote_config_from_radius(void)
   return radius_req(g_pepper_radius, &radius_pack, NULL);
 }
 
-/**
- * \brief Process the command-line option.
- * \param argc number of command-line arguments
- * \param argv array of command-line arguments
- * \param firsttime if it is the first time the g_pepper_options is processed
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Process the command-line option.
+//!  \param argc number of command-line arguments
+//!  \param argv array of command-line arguments
+//!  \param firsttime if it is the first time the g_pepper_options is processed
+//!  \return 0 if success, -1 otherwise
+//!  
 static int process_options(int argc, char **argv, int firsttime)
 {
   char hostname[USERURLSIZE];
@@ -2004,11 +2004,11 @@ static int process_options(int argc, char **argv, int firsttime)
   return 0;
 }
 
-/**
- * \brief Process again g_pepper_options.
- * \param argc number of command-line arguments
- * \param argv array of command-line arguments
- */
+//! 
+//!  \brief Process again g_pepper_options.
+//!  \param argc number of command-line arguments
+//!  \param argv array of command-line arguments
+//!  
 static void reprocess_options(int argc, char **argv)
 {
   struct options_t options2;
@@ -2103,26 +2103,26 @@ static void reprocess_options(int argc, char **argv)
   (void)get_remote_config_from_radius();
 }
 
-/**
- * \brief Release g_pepper_options.
- */
+//! 
+//!  \brief Release g_pepper_options.
+//!  
 static void free_options(void)
 {
   if(g_pepper_options.radiuscalled) free(g_pepper_options.radiuscalled);
 }
 
-/*********************************************************
- *
- * Radius proxy functions
- * Used to send a response to a received Radius request
- *
- *********************************************************/
+//! *******************************************************
+//! 
+//!  Radius proxy functions
+//!  Used to send a response to a received Radius request
+//! 
+//!  ********************************************************
 
-/**
- * \brief Reply with an access reject.
- * \param conn connection
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Reply with an access reject.
+//!  \param conn connection
+//!  \return 0 if success, -1 otherwise
+//!  
 static int send_radius_access_reject(struct app_conn_t *conn)
 {
   struct radius_packet_t radius_pack;
@@ -2139,11 +2139,11 @@ static int send_radius_access_reject(struct app_conn_t *conn)
   return 0;
 }
 
-/**
- * \brief Reply with an access challenge.
- * \param conn connection
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Reply with an access challenge.
+//!  \param conn connection
+//!  \return 0 if success, -1 otherwise
+//!  
 static int send_radius_access_challenge(struct app_conn_t *conn)
 {
   struct radius_packet_t radius_pack;
@@ -2191,11 +2191,11 @@ static int send_radius_access_challenge(struct app_conn_t *conn)
   return 0;
 }
 
-/**
- * \brief Send off an access accept.
- * \param conn connection 
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Send off an access accept.
+//!  \param conn connection 
+//!  \return 0 if success, -1 otherwise
+//!  
 static int send_radius_access_accept(struct app_conn_t *conn)
 {
   struct radius_packet_t radius_pack;
@@ -2259,12 +2259,12 @@ static int send_radius_access_accept(struct app_conn_t *conn)
   return 0;
 }
 
-/**
- * \brief Used to send accounting request to Radius server.
- * \param conn connection
- * \param status_type status
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Used to send accounting request to Radius server.
+//!  \param conn connection
+//!  \param status_type status
+//!  \return 0 if success, -1 otherwise
+//!  
 static int send_radius_accounting_request(struct app_conn_t *conn, int status_type)
 {
   struct radius_packet_t radius_pack;
@@ -2435,11 +2435,11 @@ static int send_radius_accounting_request(struct app_conn_t *conn, int status_ty
   return 0;
 }
 
-/**
- * \brief Send a Radius request for a MAC address authentication.
- * \param conn connection 
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Send a Radius request for a MAC address authentication.
+//!  \param conn connection 
+//!  \return 0 if success, -1 otherwise
+//!  
 static int send_radius_macauth(struct app_conn_t *conn)
 {
   struct radius_packet_t radius_pack;
@@ -2528,18 +2528,18 @@ static int send_radius_macauth(struct app_conn_t *conn)
   return radius_req(g_pepper_radius, &radius_pack, conn);
 }
 
-/***********************************************************
- *
- * Functions handling downlink protocol authentication.
- * Called in response to Radius access request response.
- *
- ***********************************************************/
+//! *********************************************************
+//! 
+//!  Functions handling downlink protocol authentication.
+//!  Called in response to Radius access request response.
+//! 
+//!  **********************************************************
 
-/**
- * \brief Reject client authentication.
- * \param conn client connection
- * \return 0
- */
+//! 
+//!  \brief Reject client authentication.
+//!  \param conn client connection
+//!  \return 0
+//!  
 static int dnprot_reject(struct app_conn_t *conn)
 {
   struct dhcp_conn_t *dhcpconn = NULL;
@@ -2618,11 +2618,11 @@ static int dnprot_reject(struct app_conn_t *conn)
   }
 }
 
-/**
- * \brief Challenge for the authentication with Radius protocol.
- * \param conn client connection
- * \return 0
- */
+//! 
+//!  \brief Challenge for the authentication with Radius protocol.
+//!  \param conn client connection
+//!  \return 0
+//!  
 static int dnprot_challenge(struct app_conn_t *conn)
 {
   struct dhcp_conn_t *dhcpconn = NULL;
@@ -2650,11 +2650,11 @@ static int dnprot_challenge(struct app_conn_t *conn)
   return 0;
 }
 
-/**
- * \brief Accept authentication of the client.
- * \param conn client connection
- * \return 0
- */
+//! 
+//!  \brief Accept authentication of the client.
+//!  \param conn client connection
+//!  \return 0
+//!  
 static int dnprot_accept(struct app_conn_t *conn)
 {
   struct dhcp_conn_t *dhcpconn = NULL;
@@ -2824,11 +2824,11 @@ static int dnprot_accept(struct app_conn_t *conn)
   return 0;
 }
 
-/**
- * \brief Terminate downlink connection.
- * \param conn connection
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Terminate downlink connection.
+//!  \param conn connection
+//!  \return 0 if success, -1 otherwise
+//!  
 static int dnprot_terminate(struct app_conn_t *conn)
 {
   conn->authenticated = 0;
@@ -2860,21 +2860,21 @@ static int dnprot_terminate(struct app_conn_t *conn)
   }
 }
 
-/***********************************************************
- *
- * Functions handling uplink protocol authentication.
- * Called in response to Radius access request response.
- *
- ***********************************************************/
+//! *********************************************************
+//! 
+//!  Functions handling uplink protocol authentication.
+//!  Called in response to Radius access request response.
+//! 
+//!  **********************************************************
 
-/**
- * \brief Allocate IPv4 address for the client or
- * get the one already obtained (UAM case).
- * \param conn uplink connection
- * \param hisip IPv4 address of client that will be filled
- * \param statip use static IPv4 addressing
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Allocate IPv4 address for the client or
+//!  get the one already obtained (UAM case).
+//!  \param conn uplink connection
+//!  \param hisip IPv4 address of client that will be filled
+//!  \param statip use static IPv4 addressing
+//!  \return 0 if success, -1 otherwise
+//!  
 static int upprot_getip(struct app_conn_t *conn, struct in_addr *hisip, int statip)
 {
   struct ippoolm_t *ipm = NULL;
@@ -2925,13 +2925,13 @@ static int upprot_getip(struct app_conn_t *conn, struct in_addr *hisip, int stat
   return dnprot_accept(conn);
 }
 
-/**
- * \brief Allocate IPv6 address for the client or
- * get the one already obtained (UAM case).
- * \param conn uplink connection
- * \param hisip IPv6 address of client that will be filled
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Allocate IPv6 address for the client or
+//!  get the one already obtained (UAM case).
+//!  \param conn uplink connection
+//!  \param hisip IPv6 address of client that will be filled
+//!  \return 0 if success, -1 otherwise
+//!  
 static int upprot_getip6(struct app_conn_t *conn, struct in6_addr *hisip)
 {
   struct ippoolm_t *ipm = NULL;
@@ -2978,18 +2978,18 @@ static int upprot_getip6(struct app_conn_t *conn, struct in6_addr *hisip)
   return dnprot_accept(conn);
 }
 
-/***********************************************************
- *
- * A few functions to manage connections.
- *
- ***********************************************************/
+//! *********************************************************
+//! 
+//!  A few functions to manage connections.
+//! 
+//!  **********************************************************
 
-/**
- * \brief Initialize "high level" connection (i.e. client).
- *
- * In fact it initialize and zeroed list of connections.
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Initialize "high level" connection (i.e. client).
+//! 
+//!  In fact it initialize and zeroed list of connections.
+//!  \return 0 if success, -1 otherwise
+//!  
 static int init_conn(void)
 {
   int n = 0;
@@ -3023,11 +3023,11 @@ static int init_conn(void)
   return 0;
 }
 
-/**
- * \brief Get a a free pointer of connection to be used.
- * \param conn a valid connection pointer will be filled in
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Get a a free pointer of connection to be used.
+//!  \param conn a valid connection pointer will be filled in
+//!  \return 0 if success, -1 otherwise
+//!  
 static int new_conn(struct app_conn_t **conn)
 {
   if(!g_pepper_firstfreeconn)
@@ -3073,11 +3073,11 @@ static int new_conn(struct app_conn_t **conn)
   return 0; /* Success */
 }
 
-/**
- * \brief Restore a connection.
- * \param conn connection to be deleted
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Restore a connection.
+//!  \param conn connection to be deleted
+//!  \return 0 if success, -1 otherwise
+//!  
 static int free_conn(struct app_conn_t *conn)
 {
   /* Remove from link of used */
@@ -3121,16 +3121,16 @@ static int free_conn(struct app_conn_t *conn)
   return 0;
 }
 
-/**
- * \brief Check connection for various parameters.
- *
- * It checks for:\n
- * - Session-Timeout\n
- * - Idle-Timeout\n
- * - Interim-Interim accounting\n
- * - Reread configuration file and DNS entries\n
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Check connection for various parameters.
+//! 
+//!  It checks for:\n
+//!  - Session-Timeout\n
+//!  - Idle-Timeout\n
+//!  - Interim-Interim accounting\n
+//!  - Reread configuration file and DNS entries\n
+//!  \return 0 if success, -1 otherwise
+//!  
 static int check_conn(void)
 {
   int n = 0;
@@ -3242,10 +3242,10 @@ static int check_conn(void)
   return 0;
 }
 
-/**
- * \brief Kill all connections and send Radius Acct Stop.
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Kill all connections and send Radius Acct Stop.
+//!  \return 0 if success, -1 otherwise
+//!  
 static int kill_conn(void)
 {
   int n = 0;
@@ -3271,13 +3271,13 @@ static int kill_conn(void)
   return 0;
 }
 
-/**
- * \brief Get an existing connection by looking for its NAS.
- * \param conn valid pointer of connection will be filled if function succeed
- * \param nasip NAS IP address
- * \param nasport NAS port
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Get an existing connection by looking for its NAS.
+//!  \param conn valid pointer of connection will be filled if function succeed
+//!  \param nasip NAS IP address
+//!  \param nasport NAS port
+//!  \return 0 if success, -1 otherwise
+//!  
 static int get_conn(struct app_conn_t **conn, struct sockaddr_storage nasip, uint32_t nasport)
 {
   struct app_conn_t *appconn = NULL;
@@ -3301,13 +3301,13 @@ static int get_conn(struct app_conn_t **conn, struct sockaddr_storage nasip, uin
   return -1; /* Not found */
 }
 
-/**
- * \brief Get an existing connection by looking for its username.
- * \param conn valid pointer of connection will be filled if function succeed
- * \param username username
- * \param usernamelen username length
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Get an existing connection by looking for its username.
+//!  \param conn valid pointer of connection will be filled if function succeed
+//!  \param username username
+//!  \param usernamelen username length
+//!  \return 0 if success, -1 otherwise
+//!  
 static int get_conn_username(struct app_conn_t **conn, char *username, int usernamelen)
 {
   struct app_conn_t *appconn = NULL;
@@ -3337,19 +3337,19 @@ static int get_conn_username(struct app_conn_t **conn, char *username, int usern
   return -1; /* Not found */
 }
 
-/***********************************************************
- *
- * uam message handling functions
- *
- ***********************************************************/
+//! *********************************************************
+//! 
+//!  uam message handling functions
+//! 
+//!  **********************************************************
 
-/**
- * \brief Handler of message coming from UAM server.
- * 
- * Typically message could be login/logout message of clients.
- * \param msg message
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Handler of message coming from UAM server.
+//!  
+//!  Typically message could be login/logout message of clients.
+//!  \param msg message
+//!  \return 0 if success, -1 otherwise
+//!  
 static int handle_redir_uam_msg(struct redir_msg_t *msg)
 {
   struct ippoolm_t *ipm = NULL;
@@ -3538,18 +3538,18 @@ static int handle_redir_uam_msg(struct redir_msg_t *msg)
   return 0;
 }
 
-/*********************************************************
- *
- * Functions supporting Radius requests
- *
- *********************************************************/
+//! *******************************************************
+//! 
+//!  Functions supporting Radius requests
+//! 
+//!  ********************************************************
 
-/**
- * \brief request an access for a client.
- * \param pack Radius packet
- * \param peer peer address
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief request an access for a client.
+//!  \param pack Radius packet
+//!  \param peer peer address
+//!  \return 0 if success, -1 otherwise
+//!  
 int parse_radius_access_request(struct radius_packet_t *pack, struct sockaddr_storage *peer)
 {
   int n = 0;
@@ -3933,12 +3933,12 @@ int parse_radius_access_request(struct radius_packet_t *pack, struct sockaddr_st
   return radius_req(g_pepper_radius, &radius_pack, conn);
 }
 
-/**
- * \brief Handle an accounting request.
- * \param pack Radius packet
- * \param peer address of the peer
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Handle an accounting request.
+//!  \param pack Radius packet
+//!  \param peer address of the peer
+//!  \return 0 if success, -1 otherwise
+//!  
 int parse_radius_accounting_request(struct radius_packet_t *pack, struct sockaddr_storage *peer)
 {
   int n = 0;
@@ -4129,19 +4129,19 @@ int parse_radius_accounting_request(struct radius_packet_t *pack, struct sockadd
   return 0;
 }
 
-/*********************************************************
- *
- * Radius callback functions (response from Radius server)
- *
- *********************************************************/
+//! *******************************************************
+//! 
+//!  Radius callback functions (response from Radius server)
+//! 
+//!  ********************************************************
 
-/**
- * \brief Radius handler for configuration management
- * \param radius radius_t instance
- * \param pack Radius packet
- * \param pack_req packet for request
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Radius handler for configuration management
+//!  \param radius radius_t instance
+//!  \param pack Radius packet
+//!  \param pack_req packet for request
+//!  \return 0 if success, -1 otherwise
+//!  
 int parse_radius_conf_packet(struct radius_t *radius, struct radius_packet_t *pack,
                              struct radius_packet_t *pack_req)
 {
@@ -4256,19 +4256,19 @@ int parse_radius_conf_packet(struct radius_t *radius, struct radius_packet_t *pa
   return 0;
 }
 
-/*********************************************************
- *
- * Radius proxy callback functions (request from Radius server)
- *
- *********************************************************/
+//! *******************************************************
+//! 
+//!  Radius proxy callback functions (request from Radius server)
+//! 
+//!  ********************************************************
 
-/**
- * \brief Radius callback when Radius request has been received.
- * \param radius radius_t instance
- * \param pack Radius packet
- * \param peer peer address
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Radius callback when Radius request has been received.
+//!  \param radius radius_t instance
+//!  \param pack Radius packet
+//!  \param peer peer address
+//!  \return 0 if success, -1 otherwise
+//!  
 int cb_radius_ind(struct radius_t *radius, struct radius_packet_t *pack,
                   struct sockaddr_storage *peer)
 {
@@ -4299,15 +4299,15 @@ int cb_radius_ind(struct radius_t *radius, struct radius_packet_t *pack,
   }
 }
 
-/**
- * \brief Radius callback when access accept/reject/challenge 
- * has been received. 
- * \param radius radius_t instance
- * \param pack Radius packet
- * \param pack_req packet for request
- * \param cbp pointer for Radius callback
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Radius callback when access accept/reject/challenge 
+//!  has been received. 
+//!  \param radius radius_t instance
+//!  \param pack Radius packet
+//!  \param pack_req packet for request
+//!  \param cbp pointer for Radius callback
+//!  \return 0 if success, -1 otherwise
+//!  
 int cb_radius_auth_conf(struct radius_t *radius, struct radius_packet_t *pack,
                         struct radius_packet_t *pack_req, void *cbp)
 {
@@ -4881,13 +4881,13 @@ int cb_radius_auth_conf(struct radius_t *radius, struct radius_packet_t *pack,
     return upprot_getip(conn, hisip, statip);
 }
 
-/**
- * \brief Radius callback when coa or disconnect request has been received 
- * \param radius radius_t instance
- * \param pack Radius packet
- * \param peer peer address
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Radius callback when coa or disconnect request has been received 
+//!  \param radius radius_t instance
+//!  \param pack Radius packet
+//!  \param peer peer address
+//!  \return 0 if success, -1 otherwise
+//!  
 int cb_radius_coa_ind(struct radius_t *radius, struct radius_packet_t *pack,
                       struct sockaddr_storage *peer)
 {
@@ -4950,20 +4950,20 @@ int cb_radius_coa_ind(struct radius_t *radius, struct radius_packet_t *pack,
   return 0;
 }
 
-/*********************************************************
- *
- * Redir callbacks
- *
- *********************************************************/
+//! *******************************************************
+//! 
+//!  Redir callbacks
+//! 
+//!  ********************************************************
 
-/**
- * \brief Callback when there is a new connection to redir socket to
- * get the state of the connection.
- * \param redir the redir_t instance
- * \param addr IPv4 address of the client
- * \param conn redir connection that we will filled up up-to-date value
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Callback when there is a new connection to redir socket to
+//!  get the state of the connection.
+//!  \param redir the redir_t instance
+//!  \param addr IPv4 address of the client
+//!  \param conn redir connection that we will filled up up-to-date value
+//!  \return 0 if success, -1 otherwise
+//!  
 static int cb_redir_getstate(struct redir_t *redir, struct in_addr *addr, struct redir_conn_t *conn)
 {
   struct ippoolm_t *ipm = NULL;
@@ -5020,14 +5020,14 @@ static int cb_redir_getstate(struct redir_t *redir, struct in_addr *addr, struct
     return 0;
 }
 
-/**
- * \brief Callback when there is a new connection to redir socket to
- * get the state of the connection.
- * \param redir the redir_t instance
- * \param addr IPv6 address of the client
- * \param conn redir connection that we will filled up up-to-date value
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Callback when there is a new connection to redir socket to
+//!  get the state of the connection.
+//!  \param redir the redir_t instance
+//!  \param addr IPv6 address of the client
+//!  \param conn redir connection that we will filled up up-to-date value
+//!  \return 0 if success, -1 otherwise
+//!  
 static int cb_redir_getstate6(struct redir_t *redir, struct in6_addr *addr, struct redir_conn_t *conn)
 {
   struct ippoolm_t *ipm = NULL;
@@ -5089,19 +5089,19 @@ static int cb_redir_getstate6(struct redir_t *redir, struct in6_addr *addr, stru
     return 0;
 }
 
-/*********************************************************
- *
- * Tun callbacks
- *
- *********************************************************/
+//! *******************************************************
+//! 
+//!  Tun callbacks
+//! 
+//!  ********************************************************
 
-/**
- * \brief Callback for receiving messages from tun.
- * \param tun tun_t instance
- * \param pack packet data
- * \param len data length
- * \return 0
- */
+//! 
+//!  \brief Callback for receiving messages from tun.
+//!  \param tun tun_t instance
+//!  \param pack packet data
+//!  \param len data length
+//!  \return 0
+//!  
 static int cb_tun_ind(struct tun_t *tun, void *pack, unsigned len)
 {
   struct ippoolm_t *ipm = NULL;
@@ -5171,14 +5171,14 @@ static int cb_tun_ind(struct tun_t *tun, void *pack, unsigned len)
   return 0;
 }
 
-/**
- * \brief Callback for receiving messages from tun6.
- * \param tun the tun6_t instance
- * \param pack the packet
- * \param len length of the packet
- * \return 0
- * \author Sebastien VINCENT
- */
+//! 
+//!  \brief Callback for receiving messages from tun6.
+//!  \param tun the tun6_t instance
+//!  \param pack the packet
+//!  \param len length of the packet
+//!  \return 0
+//!  \author Sebastien VINCENT
+//!  
 static int cb_tun6_ind(struct tun6_t *tun, void *pack, unsigned len)
 {
   struct ippoolm_t *ipm = NULL;
@@ -5245,20 +5245,20 @@ static int cb_tun6_ind(struct tun6_t *tun, void *pack, unsigned len)
   return 0;
 }
 
-/***********************************************************
- *
- * Dhcp callback functions
- *
- ***********************************************************/
+//! *********************************************************
+//! 
+//!  Dhcp callback functions
+//! 
+//!  **********************************************************
 
-/**
- * \brief DHCP callback for allocating new IP address.
- * In the case of WPA it is allready allocated,
- * for UAM address is allocated before authentication.
- * \param conn dhcp connection instance
- * \param addr requested IPv4 address
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief DHCP callback for allocating new IP address.
+//!  In the case of WPA it is allready allocated,
+//!  for UAM address is allocated before authentication.
+//!  \param conn dhcp connection instance
+//!  \param addr requested IPv4 address
+//!  \return 0 if success, -1 otherwise
+//!  
 static int cb_dhcp_request(struct dhcp_conn_t *conn, struct in_addr *addr)
 {
   struct ippoolm_t *ipm = NULL;
@@ -5341,13 +5341,13 @@ static int cb_dhcp_request(struct dhcp_conn_t *conn, struct in_addr *addr)
   return 0;
 }
 
-/**
- * \brief Callback function after client has autoconfigured his address.
- * \param conn the dhcp_conn_t instance
- * \param addr the IPv6 address of the client
- * \return 0 if success, -1 otherwise
- * \author Sebastien VINCENT
- */
+//! 
+//!  \brief Callback function after client has autoconfigured his address.
+//!  \param conn the dhcp_conn_t instance
+//!  \param addr the IPv6 address of the client
+//!  \return 0 if success, -1 otherwise
+//!  \author Sebastien VINCENT
+//!  
 static int cb_dhcp_request6(struct dhcp_conn_t *conn, struct in6_addr *addr)
 {
   struct ippoolm_t *ipm = NULL;
@@ -5407,11 +5407,11 @@ static int cb_dhcp_request6(struct dhcp_conn_t *conn, struct in6_addr *addr)
   return 0;
 }
 
-/**
- * \brief DHCP callback for establishing new connection.
- * \param conn dhcp_conn_t instance
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief DHCP callback for establishing new connection.
+//!  \param conn dhcp_conn_t instance
+//!  \return 0 if success, -1 otherwise
+//!  
 static int cb_dhcp_connect(struct dhcp_conn_t *conn)
 {
   struct app_conn_t *appconn = NULL;
@@ -5454,12 +5454,12 @@ static int cb_dhcp_connect(struct dhcp_conn_t *conn)
   return 0;
 }
 
-/**
- * \brief Callback function after client has connect to the portal (L2).
- * \param conn the dhcp_conn_t instance
- * \return 0 if success, -1 otherwise
- * \author Sebastien VINCENT
- */
+//! 
+//!  \brief Callback function after client has connect to the portal (L2).
+//!  \param conn the dhcp_conn_t instance
+//!  \return 0 if success, -1 otherwise
+//!  \author Sebastien VINCENT
+//!  
 static int cb_dhcp_connect6(struct dhcp_conn_t *conn)
 {
   struct app_conn_t *appconn = NULL;
@@ -5496,11 +5496,11 @@ static int cb_dhcp_connect6(struct dhcp_conn_t *conn)
   return 0;
 }
 
-/**
- * \brief Callback when a dhcp connection is deleted.
- * \param conn dhcp_conn_t instance
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Callback when a dhcp connection is deleted.
+//!  \param conn dhcp_conn_t instance
+//!  \return 0 if success, -1 otherwise
+//!  
 static int cb_dhcp_disconnect(struct dhcp_conn_t *conn)
 {
   struct app_conn_t *appconn = NULL;
@@ -5554,12 +5554,12 @@ static int cb_dhcp_disconnect(struct dhcp_conn_t *conn)
   return 0;
 }
 
-/**
- * \brief Callback function after client has disconnect from the AP (L2).
- * \param conn the dhcp_conn_t instance
- * \return 0 if success, -1 otherwise
- * \author Sebastien VINCENT
- */
+//! 
+//!  \brief Callback function after client has disconnect from the AP (L2).
+//!  \param conn the dhcp_conn_t instance
+//!  \return 0 if success, -1 otherwise
+//!  \author Sebastien VINCENT
+//!  
 static int cb_dhcp_disconnect6(struct dhcp_conn_t *conn)
 {
   struct app_conn_t *appconn = NULL;
@@ -5610,13 +5610,13 @@ static int cb_dhcp_disconnect6(struct dhcp_conn_t *conn)
   return 0;
 }
 
-/**
- * \brief Callback for receiving messages from dhcp.
- * \param conn low-level connection
- * \param pack packet received
- * \param len packet length
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Callback for receiving messages from dhcp.
+//!  \param conn low-level connection
+//!  \param pack packet received
+//!  \param len packet length
+//!  \return 0 if success, -1 otherwise
+//!  
 static int cb_dhcp_ip_ind(struct dhcp_conn_t *conn, void *pack, unsigned len)
 {
   struct tun_packet_t *iph = (struct tun_packet_t *) pack;
@@ -5659,14 +5659,14 @@ static int cb_dhcp_ip_ind(struct dhcp_conn_t *conn, void *pack, unsigned len)
   return tun_encaps(g_pepper_tun, pack, len);
 }
 
-/**
- * \brief Callback for receiving IPv6 message.
- * \param conn the connection
- * \param pack the packet
- * \param len length of the packet
- * \return 0 if success, -1 otherwise
- * \author Sebastien VINCENT
- */
+//! 
+//!  \brief Callback for receiving IPv6 message.
+//!  \param conn the connection
+//!  \param pack the packet
+//!  \param len length of the packet
+//!  \return 0 if success, -1 otherwise
+//!  \author Sebastien VINCENT
+//!  
 static int cb_dhcp_ipv6_ind(struct dhcp_conn_t * conn, void * pack, unsigned int len)
 {
   struct app_conn_t * appconn = conn->peer;
@@ -5697,13 +5697,13 @@ static int cb_dhcp_ipv6_ind(struct dhcp_conn_t * conn, void * pack, unsigned int
   return tun6_encaps(g_pepper_tun6, pack, len);
 }
 
-/**
- * \brief Callback for receiving messages from eapol.
- * \param conn DHCP connection
- * \param pack packet
- * \param len length of packet
- * \return 0
- */
+//! 
+//!  \brief Callback for receiving messages from eapol.
+//!  \param conn DHCP connection
+//!  \param pack packet
+//!  \param len length of packet
+//!  \return 0
+//!  
 static int cb_dhcp_eap_ind(struct dhcp_conn_t *conn, void *pack, unsigned int len)
 {
   struct dhcp_eap_hdr_t *eap = (struct dhcp_eap_hdr_t *) pack;
@@ -5802,12 +5802,12 @@ static int cb_dhcp_eap_ind(struct dhcp_conn_t *conn, void *pack, unsigned int le
   return radius_req(g_pepper_radius, &radius_pack, appconn);
 }
 
-/**
- * \brief Callback function to log in a client already logged in another IP version.
- * \param conn  Connection which we try to log in.
- * \return      0 if success, -1 otherwise.
- * \author      Simon Geissler
- */
+//! 
+//!  \brief Callback function to log in a client already logged in another IP version.
+//!  \param conn  Connection which we try to log in.
+//!  \return      0 if success, -1 otherwise.
+//!  \author      Simon Geissler
+//!  
 static int cb_dhcp_unauth_dnat(struct dhcp_conn_t *conn)
 {
   int result;
@@ -5881,12 +5881,12 @@ static int cb_dhcp_unauth_dnat(struct dhcp_conn_t *conn)
   return result;
 }
 
-/**
- * \brief Entry point of the program.
- * \param argc number of arguments
- * \param argv array of arguments
- * \return EXIT_SUCCESS or EXIT_FAILURE
- */
+//! 
+//!  \brief Entry point of the program.
+//!  \param argc number of arguments
+//!  \param argv array of arguments
+//!  \return EXIT_SUCCESS or EXIT_FAILURE
+//!  
 int main(int argc, char **argv)
 {
   int maxfd = 0; /* For select() */
@@ -6228,9 +6228,9 @@ int main(int argc, char **argv)
   if(g_pepper_options.debug)
     printf("Waiting for client request...\n");
 
-  /******************************************************************/
-  /* Main select loop                                               */
-  /******************************************************************/
+  /* **************************************************************** */
+  /* Main select loop                                                 */
+  /* **************************************************************** */
 
   while(g_pepper_keep_going)
   {

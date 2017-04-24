@@ -20,10 +20,10 @@
  *          sebastien.vincent@pepperspot.info
  */
 
-/**
- * \file compat.h
- * \brief Compatibility functions.
- */
+//! 
+//!  \file compat.h
+//!  \brief Compatibility functions.
+//!  
 
 #ifndef _COMPAT_H
 #define _COMPAT_H
@@ -46,33 +46,33 @@ extern "C"
 
 #if (!defined(HAVE_CLEARENV) && !defined(_XOPEN_SOURCE)) || defined(__APPLE__)
 
-  /* code from miredo */
-  #if defined(__APPLE__)
-  #include <crt_externs.h>
-  #define environ (*_NSGetEnviron())   //!< Extern variable environ replacement for Mac OS X
-  #else
-  extern char ** environ;              //!< environ variable which contains environment variable
-  #endif
+/* code from miredo */
+#if defined(__APPLE__)
+#include <crt_externs.h>
+#define environ (*_NSGetEnviron())   //!< Extern variable environ replacement for Mac OS X
+#else
+extern char ** environ;              //!< environ variable which contains environment variable
+#endif
 
-  /**
-   * \brief clearenv replacement function (non POSIX).
-   *
-   * Clear the environnement variables.
-   * \return 0
-   */
-  int clearenv(void);
+//! 
+//!  \brief clearenv replacement function (non POSIX).
+//! 
+//!  Clear the environnement variables.
+//!  \return 0
+//!  
+int clearenv(void);
 
 #endif
 
 #if !defined(HAVE_DAEMON) && !defined(_XOPEN_SOURCE)
 
-  /**
-   * \brief daemon replacement function (non POSIX).
-   * \param nochdir if 0, the child change to "/" directory
-   * \param noclose if 0, the child redirect stdin, stdout and stderr to /dev/null
-   * \return O if OK, -1 otherwise (errno is set).
-   */
-  int daemon(int nochdir, int noclose);
+//! 
+//!  \brief daemon replacement function (non POSIX).
+//!  \param nochdir if 0, the child change to "/" directory
+//!  \param noclose if 0, the child redirect stdin, stdout and stderr to /dev/null
+//!  \return O if OK, -1 otherwise (errno is set).
+//!  
+int daemon(int nochdir, int noclose);
 
 #endif
 

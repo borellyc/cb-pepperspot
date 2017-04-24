@@ -25,26 +25,26 @@
  * $Id: tun6.h 1552 2006-07-04 15:38:38Z remi $
  */
 
-/**
- * \file tun6.h
- * \brief IPv6 tunnel interface (tun).
- */
+//! 
+//!  \file tun6.h
+//!  \brief IPv6 tunnel interface (tun).
+//!  
 
-/***********************************************************************
- *  Copyright (c) 2004-2006 Remi DENIS-COURMONT.                       *
- *  This program is free software; you can redistribute and/or modify  *
- *  it under the terms of the GNU General Public License as published  *
- *  by the Free Software Foundation; version 2 of the license.         *
- *                                                                     *
- *  This program is distributed in the hope that it will be useful,    *
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of     *
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.               *
- *  See the GNU General Public License for more details.               *
- *                                                                     *
- *  You should have received a copy of the GNU General Public License  *
- *  along with this program; if not, you can get it from:              *
- *  http://www.gnu.org/copyleft/gpl.html                               *
- ***********************************************************************/
+//! *********************************************************************
+//!   Copyright (c) 2004-2006 Remi DENIS-COURMONT.                       *
+//!   This program is free software; you can redistribute and/or modify  *
+//!   it under the terms of the GNU General Public License as published  *
+//!   by the Free Software Foundation; version 2 of the license.         *
+//!                                                                      *
+//!   This program is distributed in the hope that it will be useful,    *
+//!   but WITHOUT ANY WARRANTY; without even the implied warranty of     *
+//!   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.               *
+//!   See the GNU General Public License for more details.               *
+//!                                                                      *
+//!   You should have received a copy of the GNU General Public License  *
+//!   along with this program; if not, you can get it from:              *
+//!   http://www.gnu.org/copyleft/gpl.html                               *
+//!  **********************************************************************
 
 #ifndef _TUN6_H
 #define _TUN6_H
@@ -76,11 +76,11 @@
  * that match function name of tun.h.
  */
 
-/**
- * \struct tun6_packet_t
- * \brief Describe an IPv6 packet.
- * \author Sebastien VINCENT
- */
+//! 
+//!  \struct tun6_packet_t
+//!  \brief Describe an IPv6 packet.
+//!  \author Sebastien VINCENT
+//!  
 struct tun6_packet_t
 {
   uint32_t version:4;            //!< Version of IPv6 (always 6)
@@ -93,13 +93,13 @@ struct tun6_packet_t
   uint8_t  dst_addr[16];         //!< IPv6 destination source address
 };
 
-/**
- * \typedef tun6_t
- * \brief IPv6 tunnel interface information.
- * \struct tun6_t
- * \brief IPv6 tunnel interface information.
- * \author Sebastien VINCENT
- */
+//! 
+//!  \typedef tun6_t
+//!  \brief IPv6 tunnel interface information.
+//!  \struct tun6_t
+//!  \brief IPv6 tunnel interface information.
+//!  \author Sebastien VINCENT
+//!  
 typedef struct tun6_t
 {
   int fd6;                       //!< File descriptor to IPv6 tun interface
@@ -113,78 +113,78 @@ typedef struct tun6_t
   int (*cb_ind6)(struct tun6_t *this, void *pack, unsigned len); //!< Callback when receiving IPv6 packet
 } tun6_t;
 
-/**
- * \brief Create a tun6_t instance
- * \param this a pointer on a pointer of tun6_t
- * \return 0 if success, -1 otherwise
- * \author Sebastien VINCENT
- */
+//! 
+//!  \brief Create a tun6_t instance
+//!  \param this a pointer on a pointer of tun6_t
+//!  \return 0 if success, -1 otherwise
+//!  \author Sebastien VINCENT
+//!  
 int tun6_new(struct tun6_t **this);
 
-/**
- * \brief Decapsulate a packet.
- * \param this the tun6_t instance
- * \return number of bytes readen or -1 if error
- * \author Sebastien VINCENT
- */
+//! 
+//!  \brief Decapsulate a packet.
+//!  \param this the tun6_t instance
+//!  \return number of bytes readen or -1 if error
+//!  \author Sebastien VINCENT
+//!  
 int tun6_decaps(struct tun6_t *this);
 
-/**
- * \brief Encapsulate a packet.
- * \param this the tun6_t instance
- * \param pack the packet to encapsulate
- * \param len length of the packet
- * \return number of bytes written or -1 if error
- * \author Sebastien VINCENT
- */
+//! 
+//!  \brief Encapsulate a packet.
+//!  \param this the tun6_t instance
+//!  \param pack the packet to encapsulate
+//!  \param len length of the packet
+//!  \return number of bytes written or -1 if error
+//!  \author Sebastien VINCENT
+//!  
 int tun6_encaps(struct tun6_t *this, void *pack, unsigned int len);
 
-/**
- * \brief Set an IPv6 address on the interface.
- * \param this the tun6_t instance
- * \param addr IPv6 address to set
- * \param prefixlen prefix length of the address
- * \return 0 if success, -1 otherwise
- * \author Sebastien VINCENT
- */
+//! 
+//!  \brief Set an IPv6 address on the interface.
+//!  \param this the tun6_t instance
+//!  \param addr IPv6 address to set
+//!  \param prefixlen prefix length of the address
+//!  \return 0 if success, -1 otherwise
+//!  \author Sebastien VINCENT
+//!  
 int tun6_setaddr(struct tun6_t *this, struct in6_addr *addr, uint8_t prefixlen);
 
-/**
- * \brief Set an IPv6 route on the interface.
- * \param this the tun6_t instance
- * \param dst destnation IPv6 address
- * \param gateway gateway for IPv6 destination
- * \param prefixlen prefix length of the address
- * \return 0 if success, -1 otherwise
- * \author Sebastien VINCENT
- */
+//! 
+//!  \brief Set an IPv6 route on the interface.
+//!  \param this the tun6_t instance
+//!  \param dst destnation IPv6 address
+//!  \param gateway gateway for IPv6 destination
+//!  \param prefixlen prefix length of the address
+//!  \return 0 if success, -1 otherwise
+//!  \author Sebastien VINCENT
+//!  
 int tun6_addroute(struct tun6_t *this, struct in6_addr *dst,
                   struct in6_addr *gateway, uint8_t prefixlen);
 
-/**
- * \brief Run script.
- * \param this the tun6_t instance
- * \param script path of the script
- * \return 0 if success, -1 otherwise
- * \author Sebastien VINCENT
- */
+//! 
+//!  \brief Run script.
+//!  \param this the tun6_t instance
+//!  \param script path of the script
+//!  \return 0 if success, -1 otherwise
+//!  \author Sebastien VINCENT
+//!  
 int tun6_runscript(struct tun6_t *this, char *script);
 
-/**
- * \brief Free the ressource associated with the tun6_t instance
- * \param this the tun6_t instance
- * \return 0 if success, -1 otherwis
- * \author Sebastien VINCENT
- */
+//! 
+//!  \brief Free the ressource associated with the tun6_t instance
+//!  \param this the tun6_t instance
+//!  \return 0 if success, -1 otherwis
+//!  \author Sebastien VINCENT
+//!  
 int tun6_free(struct tun6_t *this);
 
-/**
- * \brief Set an IPv6 address on the interface.
- * \param this the tun6_t instance
- * \param cb_ind callbacl when receiving packet
- * \return 0 if success, -1 otherwise
- * \author Sebastien VINCENT
- */
+//! 
+//!  \brief Set an IPv6 address on the interface.
+//!  \param this the tun6_t instance
+//!  \param cb_ind callbacl when receiving packet
+//!  \return 0 if success, -1 otherwise
+//!  \author Sebastien VINCENT
+//!  
 int tun6_set_cb_ind(struct tun6_t *this,
                     int (*cb_ind)(struct tun6_t *this, void *pack, unsigned len));
 

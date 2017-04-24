@@ -70,10 +70,10 @@
  *
  */
 
-/**
- * \file tun.c
- * \brief IPv4 tunnel interface (tun).
- */
+//! 
+//!  \file tun.c
+//!  \brief IPv4 tunnel interface (tun).
+//!  
 
 #include <syslog.h>
 #include <stdio.h>
@@ -126,15 +126,15 @@
 
 #if defined(__linux__)
 
-/**
- * \brief Copies netlink attribute (see tun_addaddr() under linux).
- * \param n pointer to netlink message header structure
- * \param nsize size of nlmsghdr structure
- * \param type type of data
- * \param d pointer to data
- * \param dlen data length
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Copies netlink attribute (see tun_addaddr() under linux).
+//!  \param n pointer to netlink message header structure
+//!  \param nsize size of nlmsghdr structure
+//!  \param type type of data
+//!  \param d pointer to data
+//!  \param dlen data length
+//!  \return 0 if success, -1 otherwise
+//!  
 static int tun_netlink_attr(struct nlmsghdr *n, int nsize, int type, void *d, int dlen)
 {
   int len = RTA_LENGTH(dlen);
@@ -149,12 +149,12 @@ static int tun_netlink_attr(struct nlmsghdr *n, int nsize, int type, void *d, in
   return 0;
 }
 
-/**
- * \brief Get interface index for tun_t instance
- * \param this tun_t instance
- * \param ifindex interface index will be filled in this variable
- * \return 0
- */
+//! 
+//!  \brief Get interface index for tun_t instance
+//!  \param this tun_t instance
+//!  \param ifindex interface index will be filled in this variable
+//!  \return 0
+//!  
 static int tun_get_interface_index(struct tun_t *this, unsigned int *ifindex)
 {
   struct ifreq ifr;
@@ -185,12 +185,12 @@ static int tun_get_interface_index(struct tun_t *this, unsigned int *ifindex)
 
 #endif
 
-/**
- * \brief Set flags on tun interface.
- * \param this tun_t instance
- * \param flags flags to set
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Set flags on tun interface.
+//!  \param this tun_t instance
+//!  \param flags flags to set
+//!  \return 0 if success, -1 otherwise
+//!  
 static int tun_set_interface_flags(struct tun_t *this, int flags)
 {
   struct ifreq ifr;
@@ -757,15 +757,15 @@ int tun_setaddr(struct tun_t *this, struct in_addr *addr,
   return 0;
 }
 
-/**
- * \brief Add/remove route.
- * \param this tun_t instance
- * \param dst destination address
- * \param gateway gateway address
- * \param mask IPv4 mask
- * \param delete 1 = delete route, 0 = add route
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Add/remove route.
+//!  \param this tun_t instance
+//!  \param dst destination address
+//!  \param gateway gateway address
+//!  \param mask IPv4 mask
+//!  \param delete 1 = delete route, 0 = add route
+//!  \return 0 if success, -1 otherwise
+//!  
 static int tun_route(struct tun_t *this, struct in_addr *dst,
                      struct in_addr *gateway, struct in_addr *mask, int delete)
 {
@@ -897,14 +897,14 @@ int tun_addroute(struct tun_t *this, struct in_addr *dst,
   return tun_route(this, dst, gateway, mask, 0);
 }
 
-/**
- * \brief Remove a route.
- * \param this tun_t instance
- * \param dst destination address
- * \param gateway for destination address
- * \param mask IPv4 mask
- * \return 0 if success, -1 otherwise
- */
+//! 
+//!  \brief Remove a route.
+//!  \param this tun_t instance
+//!  \param dst destination address
+//!  \param gateway for destination address
+//!  \param mask IPv4 mask
+//!  \return 0 if success, -1 otherwise
+//!  
 static int tun_delroute(struct tun_t *this, struct in_addr *dst,
                         struct in_addr *gateway, struct in_addr *mask)
 {

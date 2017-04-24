@@ -66,10 +66,10 @@
  *
  */
 
-/**
- * \file pepper.h
- * \brief PepperSpot: next generation captive portal.
- */
+//! 
+//!  \file pepper.h
+//!  \brief PepperSpot: next generation captive portal.
+//!  
 
 #ifndef _PEPPER_H
 #define _PEPPER_H
@@ -138,10 +138,10 @@
 #define DEBUG_REDIR                            8 //!< Allow debug print for redir module
 #define DEBUG_CONF                            16 //!< Allow debug print for configuration module
 
-/**
- * \struct app_conn_t
- * \brief Struct information for each connection.
- */
+//! 
+//!  \struct app_conn_t
+//!  \brief Struct information for each connection.
+//!  
 struct app_conn_t
 {
   /* Management of connections */
@@ -248,10 +248,10 @@ struct app_conn_t
   int uamabort;                                  //!< If UAM authentication is aborted
 };
 
-/**
- * \struct options_t
- * \brief Struct with local versions of gengetopt options.
- */
+//! 
+//!  \struct options_t
+//!  \brief Struct with local versions of gengetopt options.
+//!  
 struct options_t
 {
   /* fg */

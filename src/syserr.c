@@ -63,10 +63,10 @@
  *
  */
 
-/**
- * \file syserr.c
- * \brief Logging via syslog.
- */
+//! 
+//!  \file syserr.c
+//!  \brief Logging via syslog.
+//!  
 
 #include <stdarg.h>
 #include <sys/types.h>

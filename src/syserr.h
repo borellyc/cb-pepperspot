@@ -63,10 +63,10 @@
  *
  */
 
-/**
- * \file syserr.h
- * \brief Logging via syslog.
- */
+//! 
+//!  \file syserr.h
+//!  \brief Logging via syslog.
+//!  
 
 #ifndef _SYSERR_H
 #define _SYSERR_H
@@ -75,29 +75,29 @@
 
 #define SYSERR_MSGSIZE 256 //!< Maximum error message size
 
-/**
- * \brief Log message in syslog.
- * \param pri Syslog priority
- * \param fn file name
- * \param ln line number
- * \param en error number
- * \param fmt format
- * \param ... arguments
- */
+//! 
+//!  \brief Log message in syslog.
+//!  \param pri Syslog priority
+//!  \param fn file name
+//!  \param ln line number
+//!  \param en error number
+//!  \param fmt format
+//!  \param ... arguments
+//!  
 void sys_err(int pri, char *fn, int ln, int en, char *fmt, ...);
 
-/**
- * \brief Log packet message.
- * \param pri Syslog priority
- * \param fn file name
- * \param ln line number
- * \param en error number
- * \param peer peer's address
- * \param pack packet
- * \param len packet length
- * \param fmt format
- * \param ... arguments
- */
+//! 
+//!  \brief Log packet message.
+//!  \param pri Syslog priority
+//!  \param fn file name
+//!  \param ln line number
+//!  \param en error number
+//!  \param peer peer's address
+//!  \param pack packet
+//!  \param len packet length
+//!  \param fmt format
+//!  \param ... arguments
+//!  
 void sys_errpack(int pri, char *fn, int ln, int en, struct sockaddr_in *peer,
                  void *pack, unsigned len, char *fmt, ...);
 
