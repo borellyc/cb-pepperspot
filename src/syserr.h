@@ -73,7 +73,7 @@
 
 #include <netinet/in.h>    /* in_addr */
 
-#define SYSERR_MSGSIZE 256 /**< Maximum error message size */
+#define SYSERR_MSGSIZE 256 //!< Maximum error message size
 
 /**
  * \brief Log message in syslog.

@@ -87,10 +87,10 @@
    in RFC2373.
  */
 
-#define IPPOOL_NONETWORK    0x01 /**< Flags for ippool_new() */
-#define IPPOOL_NOBROADCAST  0x02 /**< Flags for ippool_new() */
-#define IPPOOL_NOGATEWAY    0x04 /**< Flags for ippool_new() */
-#define IPPOOL_STATSIZE  0x10000 /**< default pool's static addresses size */
+#define IPPOOL_NONETWORK    0x01 //!< Flags for ippool_new()
+#define IPPOOL_NOBROADCAST  0x02 //!< Flags for ippool_new()
+#define IPPOOL_NOGATEWAY    0x04 //!< Flags for ippool_new()
+#define IPPOOL_STATSIZE  0x10000 //!< default pool's static addresses size
 
 struct ippoolm_t;                /* Forward declaration */
 
@@ -100,22 +100,22 @@ struct ippoolm_t;                /* Forward declaration */
  */
 struct ippool_t
 {
-  int listsize;                  /**< Total number of addresses */
-  int allowdyn;                  /**< Allow dynamic IP address allocation */
-  int allowstat;                 /**< Allow static IP address allocation */
-  struct in_addr stataddr;       /**< Static address range network address */
-  struct in_addr statmask;       /**< Static address range network mask */
-  struct ippoolm_t *member;      /**< Listsize array of members */
-  int hashsize;                  /**< Size of hash table */
-  int hashlog;                   /**< Log2 size of hash table */
-  int hashmask;                  /**< Bitmask for calculating hash */
-  struct ippoolm_t **hash;       /**< Hashsize array of pointer to member */
-  struct ippoolm_t *firstdyn;    /**< Pointer to first free dynamic member */
-  struct ippoolm_t *lastdyn;     /**< Pointer to last free dynamic member */
-  struct ippoolm_t *firststat;   /**< Pointer to first free static member */
-  struct ippoolm_t *laststat;    /**< Pointer to last free static member */
-  struct ippoolm_t *firstipv6;   /**< Pointer to the first IPv6 member */
-  struct ippoolm_t *lastipv6;    /**< Pointer to the first IPv6 member */
+  int listsize;                  //!< Total number of addresses
+  int allowdyn;                  //!< Allow dynamic IP address allocation
+  int allowstat;                 //!< Allow static IP address allocation
+  struct in_addr stataddr;       //!< Static address range network address
+  struct in_addr statmask;       //!< Static address range network mask
+  struct ippoolm_t *member;      //!< Listsize array of members
+  int hashsize;                  //!< Size of hash table
+  int hashlog;                   //!< Log2 size of hash table
+  int hashmask;                  //!< Bitmask for calculating hash
+  struct ippoolm_t **hash;       //!< Hashsize array of pointer to member
+  struct ippoolm_t *firstdyn;    //!< Pointer to first free dynamic member
+  struct ippoolm_t *lastdyn;     //!< Pointer to last free dynamic member
+  struct ippoolm_t *firststat;   //!< Pointer to first free static member
+  struct ippoolm_t *laststat;    //!< Pointer to last free static member
+  struct ippoolm_t *firstipv6;   //!< Pointer to the first IPv6 member
+  struct ippoolm_t *lastipv6;    //!< Pointer to the first IPv6 member
 };
 
 /**
@@ -124,13 +124,13 @@ struct ippool_t
  */
 struct ippoolm_t
 {
-  struct in_addr addr;           /**< IP address of this member */
-  struct in6_addr addr6;         /**< IPv6 address of this member */
-  int inuse;                     /**< 0=available; 1= dynamic; 2 = static */
-  struct ippoolm_t *nexthash;    /**< Linked list part of hash table */
-  struct ippoolm_t *prev;        /**< Previous member from linked list of free dynamic or static */
-  struct ippoolm_t *next;        /**< Next member from linked list of free dynamic or static */
-  void *peer;                    /**< Pointer to peer protocol handler */
+  struct in_addr addr;           //!< IP address of this member
+  struct in6_addr addr6;         //!< IPv6 address of this member
+  int inuse;                     //!< 0=available; 1= dynamic; 2 = static
+  struct ippoolm_t *nexthash;    //!< Linked list part of hash table
+  struct ippoolm_t *prev;        //!< Previous member from linked list of free dynamic or static
+  struct ippoolm_t *next;        //!< Next member from linked list of free dynamic or static
+  void *peer;                    //!< Pointer to peer protocol handler
 };
 
 /* The above structures require approximately 20 + 4 = 24 bytes for

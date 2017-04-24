@@ -85,9 +85,9 @@ const char os_driver[] = "Linux";
  */
 struct in6_ifreq
 {
-  struct in6_addr ifr6_addr;  /**< IPv6 address */
-  uint32_t ifr6_prefixlen;    /**< Prefix length */
-  int ifr6_ifindex;           /**< Interface index */
+  struct in6_addr ifr6_addr;  //!< IPv6 address
+  uint32_t ifr6_prefixlen;    //!< Prefix length
+  int ifr6_ifindex;           //!< Interface index
 };
 
 typedef struct
@@ -160,11 +160,11 @@ const char os_driver[] = "Generic";
  */
 struct tun6
 {
-  int id;                     /**< Interface index */
-  int fd;                     /**< File descriptor to tun interface */
-  int reqfd;                  /**< File descriptor for ioctl() */
+  int id;                     //!< Interface index
+  int fd;                     //!< File descriptor to tun interface
+  int reqfd;                  //!< File descriptor for ioctl()
 #if defined(USE_BSD)
-  char orig_name[IFNAMSIZ];   /**< Name of interface */
+  char orig_name[IFNAMSIZ];   //!< Name of interface
 #endif
 };
 

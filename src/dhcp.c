@@ -148,9 +148,9 @@
 #endif
 
 #ifdef NAIVE
-const static int paranoid = 0; /**< Trust that the program has no bugs */
+const static int paranoid = 0; //!< Trust that the program has no bugs
 #else
-static const int paranoid = 1; /**< Check for errors which cannot happen */
+static const int paranoid = 1; //!< Check for errors which cannot happen
 #endif
 
 /**

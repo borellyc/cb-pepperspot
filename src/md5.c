@@ -182,10 +182,10 @@ void MD5Final(unsigned char digest[16], struct MD5Context *ctx)
 /* The four core functions - F1 is optimized somewhat */
 
 /* #define F1(x, y, z) (x & y | ~x & z) */
-#define F1(x, y, z) (z ^ (x & (y ^ z))) /**< Transformation for first round */
-#define F2(x, y, z) F1(z, x, y)         /**< Transformation for second round */
-#define F3(x, y, z) (x ^ y ^ z)         /**< Transformation for third round */
-#define F4(x, y, z) (y ^ (x | ~z))      /**< Transformation for last round */
+#define F1(x, y, z) (z ^ (x & (y ^ z))) //!< Transformation for first round
+#define F2(x, y, z) F1(z, x, y)         //!< Transformation for second round
+#define F3(x, y, z) (x ^ y ^ z)         //!< Transformation for third round
+#define F4(x, y, z) (y ^ (x | ~z))      //!< Transformation for last round
 
 /**
  * \brief This is the central step in the MD5 algorithm.

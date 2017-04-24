@@ -65,7 +65,7 @@
 #include "icmp6.h"
 #include "util.h"
 
-static struct icmpv6_socket g_icmp6_sock;        /**< ICMPv6 socket descriptor */
+static struct icmpv6_socket g_icmp6_sock;        //!< ICMPv6 socket descriptor
 
 /* Join/leave multicast group on interface */
 int if_mc_group(int sock, int ifindex, const struct in6_addr *mc_addr, int cmd)

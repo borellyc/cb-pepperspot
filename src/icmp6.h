@@ -45,7 +45,7 @@
  */
 struct icmpv6_socket
 {
-  int fd;                    /**< Socket descriptor */
+  int fd;                    //!< Socket descriptor
 };
 
 /**

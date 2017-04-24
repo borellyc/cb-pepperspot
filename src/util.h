@@ -37,11 +37,11 @@
 
 /* For emission and reception distinction */
 #ifndef IPV6_RECVHOPLIMIT
-#define IPV6_RECVHOPLIMIT IPV6_HOPLIMIT /**< IPv6 socket option to get/set hop limit value */
+#define IPV6_RECVHOPLIMIT IPV6_HOPLIMIT //!< IPv6 socket option to get/set hop limit value
 #endif
 
 #ifndef IPV6_RECVPKTINFO
-#define IPV6_RECVPKTINFO  IPV6_PKTINFO  /**< IPv6 socket option to receive packet information */
+#define IPV6_RECVPKTINFO  IPV6_PKTINFO  //!< IPv6 socket option to receive packet information
 #endif
 
 /**

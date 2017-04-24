@@ -95,9 +95,9 @@
 #include "md5.h"
 #include "ippool.h"
 
-static int g_redir_optionsdebug = 1;            /**< Print debug information while running */
-static int g_redir_keep_going = 1;              /**< OK as global variable for child process */
-static int g_redir_termstate = REDIR_TERM_INIT; /**< When we were terminated */
+static int g_redir_optionsdebug = 1;            //!< Print debug information while running
+static int g_redir_keep_going = 1;              //!< OK as global variable for child process
+static int g_redir_termstate = REDIR_TERM_INIT; //!< When we were terminated
 
 /**
  * \brief Credits for PepperSpot.

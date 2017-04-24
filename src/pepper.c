@@ -143,25 +143,25 @@
 #define DEBUG_REDIR 1
 #endif
 
-struct options_t g_pepper_options;                              /**< Describes pepper options (see pepper.h) */
-static struct gengetopt_args_info g_pepper_args_info;           /**< Structure used by cmdline_parser() (see cmdline.c) */
-static struct tun_t *g_pepper_tun = NULL;                       /**< TUN instance */
-static struct tun6_t *g_pepper_tun6 = NULL;                     /**< TUN6 instance */
-static struct ippool_t *g_pepper_ippool = NULL;                 /**< Pool of IP addresses */
-static struct radius_t *g_pepper_radius = NULL;                 /**< Radius client instance */
-static struct dhcp_t *g_pepper_dhcp = NULL;                     /**< DHCP instance */
-static struct redir_t *g_pepper_redir = NULL;                   /**< Redir instance */
-static struct timeval g_pepper_checktime;                       /**< Last time of connection checks */
-static struct timeval g_pepper_rereadtime;                      /**< Time to reread configuration */
-static volatile sig_atomic_t g_pepper_keep_going = 1;           /**< When set to 0, program stops */
-static volatile sig_atomic_t g_pepper_do_timeouts = 1;          /**< When set to 1, it will check timeout for RADIUS, DHCP instance */
-static volatile sig_atomic_t g_pepper_do_sighup = 0;            /**< When SIGHUP signal is received */
+struct options_t g_pepper_options;                              //!< Describes pepper options (see pepper.h)
+static struct gengetopt_args_info g_pepper_args_info;           //!< Structure used by cmdline_parser() (see cmdline.c)
+static struct tun_t *g_pepper_tun = NULL;                       //!< TUN instance
+static struct tun6_t *g_pepper_tun6 = NULL;                     //!< TUN6 instance
+static struct ippool_t *g_pepper_ippool = NULL;                 //!< Pool of IP addresses
+static struct radius_t *g_pepper_radius = NULL;                 //!< Radius client instance
+static struct dhcp_t *g_pepper_dhcp = NULL;                     //!< DHCP instance
+static struct redir_t *g_pepper_redir = NULL;                   //!< Redir instance
+static struct timeval g_pepper_checktime;                       //!< Last time of connection checks
+static struct timeval g_pepper_rereadtime;                      //!< Time to reread configuration
+static volatile sig_atomic_t g_pepper_keep_going = 1;           //!< When set to 0, program stops
+static volatile sig_atomic_t g_pepper_do_timeouts = 1;          //!< When set to 1, it will check timeout for RADIUS, DHCP instance
+static volatile sig_atomic_t g_pepper_do_sighup = 0;            //!< When SIGHUP signal is received
 
-static struct app_conn_t g_pepper_connection[APP_NUM_CONN * 2]; /**< Array of "high level" connection */
-static struct app_conn_t *g_pepper_firstfreeconn = NULL;        /**< First free in linked list */
-static struct app_conn_t *g_pepper_lastfreeconn = NULL;         /**< Last free in linked list */
-static struct app_conn_t *g_pepper_firstusedconn = NULL;        /**< First used in linked list */
-static struct app_conn_t *g_pepper_lastusedconn = NULL;         /**< Last used in linked list */
+static struct app_conn_t g_pepper_connection[APP_NUM_CONN * 2]; //!< Array of "high level" connection
+static struct app_conn_t *g_pepper_firstfreeconn = NULL;        //!< First free in linked list
+static struct app_conn_t *g_pepper_lastfreeconn = NULL;         //!< Last free in linked list
+static struct app_conn_t *g_pepper_firstusedconn = NULL;        //!< First used in linked list
+static struct app_conn_t *g_pepper_lastusedconn = NULL;         //!< Last used in linked list
 
 /**
  * \brief Signal handler for sigaction.

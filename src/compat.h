@@ -49,9 +49,9 @@ extern "C"
   /* code from miredo */
   #if defined(__APPLE__)
   #include <crt_externs.h>
-  #define environ (*_NSGetEnviron())   /**< Extern variable environ replacement for Mac OS X */
+  #define environ (*_NSGetEnviron())   //!< Extern variable environ replacement for Mac OS X
   #else
-  extern char ** environ;              /**< environ variable which contains environment variable */
+  extern char ** environ;              //!< environ variable which contains environment variable
   #endif
 
   /**

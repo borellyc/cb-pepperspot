@@ -35,7 +35,7 @@
 #include <net/if_arp.h>      /* ARPHRD_ETHER, ARPHRD_IEEE802, ... */
 
 #ifndef ARPHRD_IEEE80211
-#define ARPHRD_IEEE80211 801 /**< 802.11 type */
+#define ARPHRD_IEEE80211 801 //!< 802.11 type
 #endif
 
 /**
