@@ -103,7 +103,7 @@
 #include <sys/socket.h>
 
 #if defined(__linux__)
-/* #include <linux/if.h> */
+// #include <linux/if.h>
 #include <linux/if_packet.h>
 #include <linux/if_ether.h>
 #elif defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__) || defined(__APPLE__)
@@ -192,29 +192,29 @@ static int dhcp_udp_check(struct dhcp_fullpacket_t *pack)
     sys_err(LOG_ERR, __FILE__, __LINE__, 0,
             "Length of dhcp packet larger then %d: %d",
             DHCP_UDP_HLEN + DHCP_LEN, udp_len);
-    return -1; /* Packet too long */
+    return -1; // Packet too long
   }
 
-  /* Sum UDP header and payload */
+  // Sum UDP header and payload
   for(i = 0; i < (udp_len / 2); i++)
   {
     sum += ((uint16_t *) &pack->udph)[i];
   }
 
-  /* Sum any uneven payload octet */
+  // Sum any uneven payload octet
   if(udp_len & 0x01)
   {
     sum += ((uint8_t *) &pack->udph)[udp_len - 1];
   }
 
-  /* Sum both source and destination address */
+  // Sum both source and destination address
   for(i = 0; i < 4; i++)
   {
     uint32_t *saddr = &pack->iph.saddr;
     sum += ((uint16_t *)saddr)[i];
   }
 
-  /* Sum both protocol and udp_len (again) */
+  // Sum both protocol and udp_len (again)
   sum = sum + pack->udph.len + ((pack->iph.protocol << 8) & 0xFF00);
 
   while(sum >> 16)
@@ -244,29 +244,29 @@ static int dhcp_udp_check6(struct dhcp_ipv6_packet_t *pack, int length)
   udph->check = 0;
 
   if(ntohs(pack->ip6h.payload_length) > (length - DHCP_ETH_HLEN))
-    return -1; /* Wrong length of packet */
+    return -1; // Wrong length of packet
 
   udp_len = ntohs(pack->ip6h.payload_length);
 
-  /* Sum UDP header and payload */
+  // Sum UDP header and payload
   for(i = 0; i < (udp_len / 2); i++)
   {
     sum += ((uint16_t *) pack->payload)[i];
   }
 
-  /* Sum any uneven payload octet */
+  // Sum any uneven payload octet
   if(udp_len & 0x01)
   {
     sum += ((uint8_t *) pack->payload)[udp_len - 1];
   }
 
-  /* Sum both source and destination address */
+  // Sum both source and destination address
   for(i = 0; i < 4; i++)
   {
     sum += ((uint16_t *) &pack->ip6h.src_addr)[i];
   }
 
-  /* Sum both protocol and udp_len (again) */
+  // Sum both protocol and udp_len (again)
   sum = sum + udph->len + ((pack->ip6h.next_header << 8) & 0xFF00);
 
   while(sum >> 16)
@@ -293,36 +293,36 @@ static int dhcp_tcp_check(struct dhcp_ip_packet_t *pack, int length)
   int tcp_len = 0;
 
   if(ntohs(pack->iph.tot_len) > (length - DHCP_ETH_HLEN))
-    return -1; /* Wrong length of packet */
+    return -1; // Wrong length of packet
 
   tcp_len = ntohs(pack->iph.tot_len) - pack->iph.ihl * 4;
 
-  if(tcp_len < 20) /* TODO */
-    return -1; /* Packet too short */
+  if(tcp_len < 20) // TODO
+    return -1; // Packet too short
 
   tcph = (struct dhcp_tcp_hdr_t *) pack->payload;
   tcph->check = 0;
 
-  /* Sum TCP header and payload */
+  // Sum TCP header and payload
   for(i = 0; i < (tcp_len / 2); i++)
   {
     sum += ((uint16_t *) pack->payload)[i];
   }
 
-  /* Sum any uneven payload octet */
+  // Sum any uneven payload octet
   if(tcp_len & 0x01)
   {
     sum += ((uint8_t *) pack->payload)[tcp_len - 1];
   }
 
-  /* Sum both source and destination address */
+  // Sum both source and destination address
   for(i = 0; i < 4; i++)
   {
     uint32_t *saddr=&pack->iph.saddr;
     sum += ((uint16_t *) saddr)[i];
   }
 
-  /* Sum both protocol and tcp_len */
+  // Sum both protocol and tcp_len
   sum = sum + htons(tcp_len) + ((pack->iph.protocol << 8) & 0xFF00);
 
   while(sum >> 16)
@@ -347,35 +347,35 @@ static int dhcp_tcp_check6(struct dhcp_ipv6_packet_t *pack, int length)
   int tcp_len = 0;
 
   if(ntohs(pack->ip6h.payload_length) > (length - DHCP_ETH_HLEN))
-    return -1; /* Wrong length of packet */
+    return -1; // Wrong length of packet
 
   tcp_len = ntohs(pack->ip6h.payload_length);
 
-  if(tcp_len < 20) /* TODO */
-    return -1; /* Packet too short */
+  if(tcp_len < 20) // TODO
+    return -1; // Packet too short
 
   tcph = (struct dhcp_tcp_hdr_t *) pack->payload;
   tcph->check = 0;
 
-  /* Sum TCP header and payload */
+  // Sum TCP header and payload
   for(i = 0 ; i < (tcp_len / 2) ; i++)
   {
     sum += ((uint16_t *) pack->payload)[i];
   }
 
-  /* Sum any uneven payload octet */
+  // Sum any uneven payload octet
   if(tcp_len & 0x01)
   {
     sum += ((uint8_t *) pack->payload)[tcp_len - 1];
   }
 
-  /* Sum both source and destination address */
+  // Sum both source and destination address
   for(i = 0 ; i < 16 ; i++)
   {
     sum += ((uint16_t *) &pack->ip6h.src_addr)[i];
   }
 
-  /* Sum both protocol and tcp_len */
+  // Sum both protocol and tcp_len
   sum = sum + htons(tcp_len) + ((pack->ip6h.next_header << 8) & 0xFF00);
 
   while(sum >> 16)
@@ -400,7 +400,7 @@ static int dhcp_set_interface_flags(char const *devname, int flags)
   memset(&ifr, 0, sizeof(ifr));
   ifr.ifr_flags = flags;
   strncpy(ifr.ifr_name, devname, IFNAMSIZ);
-  ifr.ifr_name[IFNAMSIZ - 1] = 0; /* Make sure to terminate */
+  ifr.ifr_name[IFNAMSIZ - 1] = 0; // Make sure to terminate
   if((fd = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
   {
     sys_err(LOG_ERR, __FILE__, __LINE__, errno,
@@ -430,7 +430,7 @@ static int dhcp_get_interface_flags(char const *devname, int *flags)
 
   memset(&ifr, 0, sizeof(ifr));
   strncpy(ifr.ifr_name, devname, IFNAMSIZ);
-  ifr.ifr_name[IFNAMSIZ - 1] = 0; /* Make sure to terminate */
+  ifr.ifr_name[IFNAMSIZ - 1] = 0; // Make sure to terminate
   if((fd = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
   {
     sys_err(LOG_ERR, __FILE__, __LINE__, errno,
@@ -480,9 +480,9 @@ static int dhcp_set_addr(char const *devname,
 #endif
 
   strncpy(ifr.ifr_name, devname, IFNAMSIZ);
-  ifr.ifr_name[IFNAMSIZ - 1] = 0; /* Make sure to terminate */
+  ifr.ifr_name[IFNAMSIZ - 1] = 0; // Make sure to terminate
 
-  /* Create a channel to the NET kernel. */
+  // Create a channel to the NET kernel.
   if((fd = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
   {
     sys_err(LOG_ERR, __FILE__, __LINE__, errno,
@@ -490,7 +490,7 @@ static int dhcp_set_addr(char const *devname,
     return -1;
   }
 
-  if(addr)   /* Set the interface address */
+  if(addr)   // Set the interface address
   {
     ((struct sockaddr_in *) &ifr.ifr_addr)->sin_addr.s_addr = addr->s_addr;
     if(ioctl(fd, SIOCSIFADDR, (void *) &ifr) < 0)
@@ -510,7 +510,7 @@ static int dhcp_set_addr(char const *devname,
     }
   }
 
-  if(dstaddr)   /* Set the destination address */
+  if(dstaddr)   // Set the destination address
   {
     ((struct sockaddr_in *) &ifr.ifr_dstaddr)->sin_addr.s_addr =
       dstaddr->s_addr;
@@ -523,7 +523,7 @@ static int dhcp_set_addr(char const *devname,
     }
   }
 
-  if(netmask)   /* Set the netmask */
+  if(netmask)   // Set the netmask
   {
 #if defined(__linux__)
     ((struct sockaddr_in *) &ifr.ifr_netmask)->sin_addr.s_addr =
@@ -554,11 +554,11 @@ static int dhcp_set_addr(char const *devname,
   /* On linux the route to the interface is set automatically
      on FreeBSD we have to do this manually */
 
-  /* TODO: How does it work on Solaris? */
+  // TODO: How does it work on Solaris?
 
 #if defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__) || defined(__APPLE__)
-  return dhcp_set_interface_flags(devname, IFF_UP | IFF_RUNNING);  /* TODO */
-  /*return tun_addroute(this, addr, addr, netmask);*/
+  return dhcp_set_interface_flags(devname, IFF_UP | IFF_RUNNING);  // TODO
+  //return tun_addroute(this, addr, addr, netmask);
 #else
   return dhcp_set_interface_flags(devname, IFF_UP | IFF_RUNNING);
 #endif
@@ -579,7 +579,7 @@ int dhcp_get_mac(const char *ifname, unsigned char *macaddr)
 
   memset(&ifr, 0, sizeof(ifr));
 
-  /* Create socket */
+  // Create socket
   if((fd = socket(PF_PACKET, SOCK_RAW, htons(DHCP_ETH_IP))) < 0)
   {
     if(errno == EPERM)
@@ -594,7 +594,7 @@ int dhcp_get_mac(const char *ifname, unsigned char *macaddr)
     return -1;
   }
 
-  /* Get the MAC address of our interface */
+  // Get the MAC address of our interface
   strncpy(ifr.ifr_name, ifname, sizeof(ifr.ifr_name));
   if(ioctl(fd, SIOCGIFHWADDR, &ifr) < 0)
   {
@@ -650,7 +650,7 @@ static int dhcp_open_eth(char const *ifname, uint16_t protocol, int promisc,
 
   printf("Open socket for protocol %x\n", protocol);
 
-  /* Create socket */
+  // Create socket
   if((fd = socket(PF_PACKET, SOCK_RAW, htons(protocol))) < 0)
   {
     if(errno == EPERM)
@@ -663,7 +663,7 @@ static int dhcp_open_eth(char const *ifname, uint16_t protocol, int promisc,
             PF_PACKET, SOCK_RAW, protocol);
   }
 
-  /* Enable reception and transmission of broadcast frames */
+  // Enable reception and transmission of broadcast frames
   if(setsockopt(fd, SOL_SOCKET, SO_BROADCAST, &option, sizeof(option)) < 0)
   {
     sys_err(LOG_ERR, __FILE__, __LINE__, errno,
@@ -671,7 +671,7 @@ static int dhcp_open_eth(char const *ifname, uint16_t protocol, int promisc,
             fd, SOL_SOCKET, SO_BROADCAST, sizeof(option));
   }
 
-  /* Get the MAC address of our interface */
+  // Get the MAC address of our interface
   if((!usemac) && (macaddr))
   {
     strncpy(ifr.ifr_name, ifname, sizeof(ifr.ifr_name));
@@ -695,7 +695,7 @@ static int dhcp_open_eth(char const *ifname, uint16_t protocol, int promisc,
     }
   }
 
-  /* Verify that MTU = ETH_DATA_LEN */
+  // Verify that MTU = ETH_DATA_LEN
   strncpy(ifr.ifr_name, ifname, sizeof(ifr.ifr_name));
   if(ioctl(fd, SIOCGIFMTU, &ifr) < 0)
   {
@@ -710,7 +710,7 @@ static int dhcp_open_eth(char const *ifname, uint16_t protocol, int promisc,
             ifr.ifr_mtu, ETH_DATA_LEN);
   }
 
-  /* Get ifindex */
+  // Get ifindex
   strncpy(ifr.ifr_name, ifname, sizeof(ifr.ifr_name));
   if(ioctl(fd, SIOCGIFINDEX, &ifr) < 0)
   {
@@ -720,7 +720,7 @@ static int dhcp_open_eth(char const *ifname, uint16_t protocol, int promisc,
   if(ifindex)
     *ifindex = ifr.ifr_ifindex;
 
-  /* Set interface in promisc mode */
+  // Set interface in promisc mode
   if(promisc)
   {
     memset(&mr, 0, sizeof(mr));
@@ -735,7 +735,7 @@ static int dhcp_open_eth(char const *ifname, uint16_t protocol, int promisc,
     }
   }
 
-  /* Bind to particular interface */
+  // Bind to particular interface
   memset(&sa, 0, sizeof(sa));
   sa.sll_family = AF_PACKET;
   sa.sll_protocol = htons(protocol);
@@ -834,19 +834,19 @@ int dhcp_get_mac(const char *ifname, unsigned char *macaddr)
 static int dhcp_open_eth(char const *ifname, uint16_t protocol, int promisc,
                          int usemac, unsigned char *macaddr, int *ifindex)
 {
-  char devname[IFNAMSIZ + 5]; /* "/dev/" + ifname */
+  char devname[IFNAMSIZ + 5]; // "/dev/" + ifname
   int devnum = 0;
   struct ifreq ifr;
   int fd = -1;
   struct bpf_version bv;
   unsigned int value = 0;
 
-  /* to avoid warning at compilation */
+  // to avoid warning at compilation
   protocol = protocol;
   ifindex = ifindex;
 
-  /* Find suitable device */
-  for(devnum = 0; devnum < 255; devnum++)   /* TODO 255 */
+  // Find suitable device
+  for(devnum = 0; devnum < 255; devnum++)   // TODO 255
   {
     snprintf(devname, sizeof(devname), "/dev/bpf%d", devnum);
     devname[sizeof(devname)] = 0;
@@ -859,7 +859,7 @@ static int dhcp_open_eth(char const *ifname, uint16_t protocol, int promisc,
     return -1;
   }
 
-  /* Set the interface */
+  // Set the interface
   memset(&ifr, 0, sizeof(ifr));
   strncpy(ifr.ifr_name, ifname, sizeof(ifr.ifr_name));
   if(ioctl(fd, BIOCSETIF, &ifr) < 0)
@@ -868,7 +868,7 @@ static int dhcp_open_eth(char const *ifname, uint16_t protocol, int promisc,
     return -1;
   }
 
-  /* Get and validate BPF version */
+  // Get and validate BPF version
   if(ioctl(fd, BIOCVERSION, &bv) < 0)
   {
     sys_err(LOG_ERR, __FILE__, __LINE__, errno,"ioctl() failed!");
@@ -881,7 +881,7 @@ static int dhcp_open_eth(char const *ifname, uint16_t protocol, int promisc,
     return -1;
   }
 
-  /* Get the MAC address of our interface */
+  // Get the MAC address of our interface
   if((!usemac) && (macaddr))
   {
     if(dhcp_get_mac(ifname, macaddr))
@@ -902,7 +902,7 @@ static int dhcp_open_eth(char const *ifname, uint16_t protocol, int promisc,
     }
   }
 
-  /* Set interface in promisc mode */
+  // Set interface in promisc mode
   if(promisc)
   {
     value = 1;
@@ -928,7 +928,7 @@ static int dhcp_open_eth(char const *ifname, uint16_t protocol, int promisc,
     }
   }
 
-  /* Make sure reads return as soon as packet has been received */
+  // Make sure reads return as soon as packet has been received
   value = 1;
   if(ioctl(fd, BIOCIMMEDIATE, &value) < 0)
   {
@@ -959,26 +959,26 @@ static unsigned long int dhcp_hash(uint8_t *hwaddr)
 //!
 static int dhcp_hash_init(struct dhcp_t *this, int listsize)
 {
-  /* Determine hashlog */
+  // Determine hashlog
   for((this)->hashlog = 0;
        ((1 << (this)->hashlog) < listsize);
        (this)->hashlog++);
 
-  /* Determine hashsize */
+  // Determine hashsize
   (this)->hashsize = 1 << (this)->hashlog;
   (this)->hashmask = (this)->hashsize -1;
 
-  /* Allocate hash table */
+  // Allocate hash table
   if(!((this)->hash = calloc(sizeof(struct dhcp_conn_t), (this)->hashsize)))
   {
-    /* Failed to allocate memory for hash members */
+    // Failed to allocate memory for hash members
     return -1;
   }
 
-  /* [SV] */
+  // [SV]
   if(!((this)->hash6 = calloc(sizeof(struct dhcp_conn_t), (this)->hashsize)))
   {
-    /* Failed to allocate memory for hash members */
+    // Failed to allocate memory for hash members
     free(this->hash);
     return -1;
   }
@@ -986,7 +986,7 @@ static int dhcp_hash_init(struct dhcp_t *this, int listsize)
   return 0;
 }
 
-/* [SV] */
+// [SV]
 //!
 //!  \brief Add a connection to the IPv4 hash table.
 //!  \param this dhcp_t instance
@@ -999,7 +999,7 @@ static int dhcp_hash_add(struct dhcp_t *this, struct dhcp_conn_t *conn)
   struct dhcp_conn_t *p = NULL;
   struct dhcp_conn_t *p_prev = NULL;
 
-  /* Insert into hash table */
+  // Insert into hash table
   hash = dhcp_hash(conn->hismac) & this->hashmask;
   for(p = this->hash[hash]; p; p = p->nexthash)
     p_prev = p;
@@ -1007,7 +1007,7 @@ static int dhcp_hash_add(struct dhcp_t *this, struct dhcp_conn_t *conn)
     this->hash[hash] = conn;
   else
     p_prev->nexthash = conn;
-  return 0; /* Always OK to insert */
+  return 0; // Always OK to insert
 }
 
 //!
@@ -1023,7 +1023,7 @@ static int dhcp_hash_add6(struct dhcp_t *this, struct dhcp_conn_t *conn)
   struct dhcp_conn_t *p = NULL;
   struct dhcp_conn_t *p_prev = NULL;
 
-  /* Insert into hash table */
+  // Insert into hash table
   hash = dhcp_hash(conn->hismac) & this->hashmask;
   for(p = this->hash6[hash]; p; p = p->nexthash)
     p_prev = p;
@@ -1031,7 +1031,7 @@ static int dhcp_hash_add6(struct dhcp_t *this, struct dhcp_conn_t *conn)
     this->hash6[hash] = conn;
   else
     p_prev->nexthash = conn;
-  return 0; /* Always OK to insert */
+  return 0; // Always OK to insert
 }
 
 //!
@@ -1046,7 +1046,7 @@ static int dhcp_hash_del(struct dhcp_t *this, struct dhcp_conn_t *conn)
   struct dhcp_conn_t *p = NULL;
   struct dhcp_conn_t *p_prev = NULL;
 
-  /* Find in hash table */
+  // Find in hash table
   hash = dhcp_hash(conn->hismac) & this->hashmask;
   for(p = this->hash[hash]; p; p = p->nexthash)
   {
@@ -1084,7 +1084,7 @@ static int dhcp_hash_del6(struct dhcp_t *this, struct dhcp_conn_t *conn)
   struct dhcp_conn_t *p = NULL;
   struct dhcp_conn_t *p_prev = NULL;
 
-  /* Find in hash table */
+  // Find in hash table
   hash = dhcp_hash(conn->hismac) & this->hashmask;
   for(p = this->hash6[hash]; p; p = p->nexthash)
   {
@@ -1121,7 +1121,7 @@ static int dhcp_validate(struct dhcp_t *this)
   struct dhcp_conn_t *conn = NULL;
   struct dhcp_conn_t *hash_conn = NULL;
 
-  /* Count the number of used connections */
+  // Count the number of used connections
   conn = this->first_used_conn;
   while(conn)
   {
@@ -1140,7 +1140,7 @@ static int dhcp_validate(struct dhcp_t *this)
     conn = conn->next;
   }
 
-  /* Count the number of unused connections */
+  // Count the number of unused connections
   conn = this->first_free_conn;
   while(conn)
   {
@@ -1186,7 +1186,7 @@ static int dhcp_validate6(struct dhcp_t *this)
   struct dhcp_conn_t *conn = NULL;
   struct dhcp_conn_t *hash_conn = NULL;
 
-  /* Count the number of used connections */
+  // Count the number of used connections
   conn = this->first_used_conn6;
   while(conn)
   {
@@ -1205,7 +1205,7 @@ static int dhcp_validate6(struct dhcp_t *this)
     conn = conn->next;
   }
 
-  /* Count the number of unused connections */
+  // Count the number of unused connections
   conn = this->first_free_conn6;
   while(conn)
   {
@@ -1247,15 +1247,15 @@ static int dhcp_validate6(struct dhcp_t *this)
 static int dhcp_init_conn(struct dhcp_t *this)
 {
   int n = 0;
-  this->first_used_conn = NULL; /* Redundant */
-  this->last_used_conn  = NULL; /* Redundant */
+  this->first_used_conn = NULL; // Redundant
+  this->last_used_conn  = NULL; // Redundant
 
   for(n = 0; n < this->nb_conn; n++)
   {
-    this->conn[n].inuse = 0; /* Redundant */
+    this->conn[n].inuse = 0; // Redundant
     if(n == 0)
     {
-      this->conn[n].prev = NULL; /* Redundant */
+      this->conn[n].prev = NULL; // Redundant
       this->first_free_conn = &this->conn[n];
     }
     else
@@ -1265,7 +1265,7 @@ static int dhcp_init_conn(struct dhcp_t *this)
     }
     if(n == (this->nb_conn - 1))
     {
-      this->conn[n].next = NULL; /* Redundant */
+      this->conn[n].next = NULL; // Redundant
       this->last_free_conn  = &this->conn[n];
     }
   }
@@ -1284,7 +1284,7 @@ static int dhcp_init_conn6(struct dhcp_t *this)
 {
   int n = 0;
 
-  /* [SV] */
+  // [SV]
   this->first_used_conn6= NULL;
   this->last_used_conn6 = NULL;
 
@@ -1293,19 +1293,19 @@ static int dhcp_init_conn6(struct dhcp_t *this)
     this->conn6[n].inuse = 0;
     if(n == 0)
     {
-      /* [SV] */
+      // [SV]
       this->conn6[n].prev = NULL;
       this->first_free_conn6=&this->conn6[n];
     }
     else
     {
-      /* [SV] */
+      // [SV]
       this->conn6[n].prev=&this->conn6[n - 1];
       this->conn6[n - 1].next=&this->conn6[n];
     }
     if(n == (this->nb_conn6 - 1))
     {
-      /* [SV] */
+      // [SV]
       this->conn6[n].next = NULL;
       this->last_free_conn6=&this->conn6[n];
     }
@@ -1335,7 +1335,7 @@ static int dhcp_check_conn(struct dhcp_t *this)
     {
       if(this->debug) printf("DHCP timeout: Removing connection\n");
       dhcp_free_conn(conn);
-      return 0; /* Returning after first deletion */
+      return 0; // Returning after first deletion
     }
     conn = conn->next;
   }
@@ -1362,7 +1362,7 @@ static int dhcp_check_conn6(struct dhcp_t *this)
     {
       if(this->debug) printf("IPv6 timeout: Removing connection\n");
       dhcp_free_conn6(conn);
-      return 0; /* Returning after first deletion */
+      return 0; // Returning after first deletion
     }
     conn = conn->next;
   }
@@ -1384,7 +1384,7 @@ static int dhcp_do_dnat(struct dhcp_conn_t *conn, struct dhcp_ip_packet_t *pack,
   struct dhcp_udp_hdr_t *udph = (struct dhcp_udp_hdr_t *) pack->payload;
   int i = 0;
 
-  /* Was it a DNS request? */
+  // Was it a DNS request?
   if(((this->anydns) ||
        (pack->iph.daddr == conn->dns1.s_addr) ||
        (pack->iph.daddr == conn->dns2.s_addr)) &&
@@ -1392,34 +1392,34 @@ static int dhcp_do_dnat(struct dhcp_conn_t *conn, struct dhcp_ip_packet_t *pack,
       (udph->dst == htons(DHCP_DNS)))
     return 0;
 
-  /* Was it an ICMP request for us? */
+  // Was it an ICMP request for us?
   if((pack->iph.daddr == conn->ourip.s_addr) &&
       (pack->iph.protocol == DHCP_IP_ICMP))
     return 0;
 
-  /* Was it a http or https request for authentication server? */
-  /* Was it a request for authentication server? */
+  // Was it a http or https request for authentication server?
+  // Was it a request for authentication server?
   for(i = 0; i < this->authiplen; i++)
   {
     if((pack->iph.daddr == this->authip[i].s_addr)  &&
         (pack->iph.protocol == DHCP_IP_TCP) &&
         ((tcph->dst == htons(DHCP_HTTP)) ||
          (tcph->dst == htons(DHCP_HTTPS))))
-      return 0; /* Destination was authentication server */
+      return 0; // Destination was authentication server
   }
 
-  /* Was it a request for local redirection server? */
+  // Was it a request for local redirection server?
   if((pack->iph.daddr == this->uamlisten.s_addr) &&
       (pack->iph.protocol == DHCP_IP_TCP) &&
       (tcph->dst == htons(this->uamport)))
-    return 0; /* Destination was local redir server */
+    return 0; // Destination was local redir server
 
-  /* Was it a request for an allowed domain? */
+  // Was it a request for an allowed domain?
   if(this->iphash &&
       (!ippool_get_ip(this->iphash, NULL, (struct in_addr *) &pack->iph.daddr)))
     return 0;
 
-  /* Was it a request for an allowed network? */
+  // Was it a request for an allowed network?
   for(i = 0; i < this->uamoknetlen; i++)
   {
     if(this->uamokaddr[i].s_addr ==
@@ -1427,8 +1427,8 @@ static int dhcp_do_dnat(struct dhcp_conn_t *conn, struct dhcp_ip_packet_t *pack,
       return 0;
   }
 
-  /* Was it a http request for another server? */
-  /* We are changing dest IP and dest port to local UAM server */
+  // Was it a http request for another server?
+  // We are changing dest IP and dest port to local UAM server
   if((pack->iph.protocol == DHCP_IP_TCP) &&
       (tcph->dst == htons(DHCP_HTTP)))
   {
@@ -1443,7 +1443,7 @@ static int dhcp_do_dnat(struct dhcp_conn_t *conn, struct dhcp_ip_packet_t *pack,
         break;
       }
     }
-    if(pos == -1)   /* Save for undoing */
+    if(pos == -1)   // Save for undoing
     {
       conn->dnatip[conn->nextdnat] = pack->iph.daddr;
       conn->dnatport[conn->nextdnat] = tcph->src;
@@ -1456,7 +1456,7 @@ static int dhcp_do_dnat(struct dhcp_conn_t *conn, struct dhcp_ip_packet_t *pack,
     return 0;
   }
 
-  return -1; /* Something else */
+  return -1; // Something else
 }
 
 //!
@@ -1474,7 +1474,7 @@ static int dhcp_do_dnat6(struct dhcp_conn_t *conn, struct dhcp_ipv6_packet_t *pa
   char buf[INET6_ADDRSTRLEN];
   char buf2[INET6_ADDRSTRLEN];
 
-  /* was it a DNS request */
+  // was it a DNS request
   if(this->anydns || ((pack->ip6h.next_header == DHCP_IP_UDP) &&
                        (udph->dst == htons(DHCP_DNS))))
     return 0;
@@ -1489,28 +1489,28 @@ static int dhcp_do_dnat6(struct dhcp_conn_t *conn, struct dhcp_ipv6_packet_t *pa
     return 0;
   }
 
-  /* was it a request for local redirection server */
+  // was it a request for local redirection server
   if(IN6_ARE_ADDR_EQUAL((struct in6_addr *)&pack->ip6h.dst_addr, &this->ouripv6) && pack->ip6h.next_header == DHCP_IPV6_TCP && tcph->dst == htons(this->uamport))
   {
     printf("IPv6 request for local redirection server!\n");
     return 0;
   }
 
-  /* was it a http / https request for authentification server */
-  /* default us! */
+  // was it a http / https request for authentification server
+  // default us!
   if(IN6_ARE_ADDR_EQUAL((struct in6_addr *)&pack->ip6h.dst_addr, &this->ouripv6))
   {
     printf("HTTP / HTTPS for us\n");
     return 0;
   }
 
-  /* Was it a request from an IPv6 allowed domain? */
+  // Was it a request from an IPv6 allowed domain?
   if(this->iphash6 &&
       (!ippool_get_ip6(this->iphash6, NULL, (struct in6_addr *) &pack->ip6h.dst_addr)))
     return 0;
 
-  /* was it a http request for another server */
-  /* DNAT the port! */
+  // was it a http request for another server
+  // DNAT the port!
   if(pack->ip6h.next_header == DHCP_IPV6_TCP && tcph->dst == htons(DHCP_HTTP))
   {
     int n = 0;
@@ -1525,7 +1525,7 @@ static int dhcp_do_dnat6(struct dhcp_conn_t *conn, struct dhcp_ipv6_packet_t *pa
       }
     }
 
-    if(pos == -1) /* save for undoing */
+    if(pos == -1) // save for undoing
     {
       printf("save dnat for dst: %s port: %d\n", inet_ntop(AF_INET6, &pack->ip6h.dst_addr, buf, sizeof(buf)), tcph->src);
       memcpy(&conn->dnatip6[conn->nextdnat6], pack->ip6h.dst_addr, sizeof(struct in6_addr));
@@ -1565,7 +1565,7 @@ static int dhcp_undo_dnat(struct dhcp_conn_t *conn, struct dhcp_ip_packet_t *pac
   printf("dest:%s\n", inet_ntop(AF_INET, &in2, buf, sizeof(buf)));
   printf("portsrc:%d\n", ntohs(tcph->src));
   printf("portdest:%d\n", ntohs(tcph->dst));
-  /* Was it a DNS reply? */
+  // Was it a DNS reply?
   if(((this->anydns) ||
        (pack->iph.saddr == conn->dns1.s_addr) ||
        (pack->iph.saddr == conn->dns2.s_addr)) &&
@@ -1573,12 +1573,12 @@ static int dhcp_undo_dnat(struct dhcp_conn_t *conn, struct dhcp_ip_packet_t *pac
       (udph->src == htons(DHCP_DNS)))
     return 0;
 
-  /* Was it an ICMP reply from us? */
+  // Was it an ICMP reply from us?
   if((pack->iph.saddr == conn->ourip.s_addr) &&
       (pack->iph.protocol == DHCP_IP_ICMP))
     return 0;
 
-  /* Was it a reply from redir server? */
+  // Was it a reply from redir server?
   if((pack->iph.saddr == this->uamlisten.s_addr) &&
       (pack->iph.protocol == DHCP_IP_TCP) &&
       (tcph->src == htons(this->uamport)))
@@ -1592,29 +1592,29 @@ static int dhcp_undo_dnat(struct dhcp_conn_t *conn, struct dhcp_ip_packet_t *pac
         tcph->src = htons(DHCP_HTTP);
         (void)dhcp_tcp_check(pack, len);
         (void)dhcp_ip_check((struct dhcp_ip_packet_t *) pack);
-        return 0; /* It was a DNAT reply */
+        return 0; // It was a DNAT reply
       }
     }
-    return 0; /* It was a normal reply from redir server */
+    return 0; // It was a normal reply from redir server
   }
 
-  /* Was it a normal http or https reply from authentication server? */
-  /* Was it a normal reply from authentication server? */
+  // Was it a normal http or https reply from authentication server?
+  // Was it a normal reply from authentication server?
   for(i = 0; i < this->authiplen; i++)
   {
     if((pack->iph.saddr == this->authip[i].s_addr)  &&
         (pack->iph.protocol == DHCP_IP_TCP) &&
         ((tcph->src == htons(DHCP_HTTP)) ||
          (tcph->src == htons(DHCP_HTTPS))))
-      return 0; /* Destination was authentication server */
+      return 0; // Destination was authentication server
   }
 
-  /* Was it a reply from an IPv4 allowed domain? */
+  // Was it a reply from an IPv4 allowed domain?
   if(this->iphash &&
       (!ippool_get_ip(this->iphash, NULL, (struct in_addr *) &pack->iph.saddr)))
     return 0;
 
-  /* Was it a reply from for an allowed network? */
+  // Was it a reply from for an allowed network?
   for(i = 0; i < this->uamoknetlen; i++)
   {
     if(this->uamokaddr[i].s_addr ==
@@ -1622,7 +1622,7 @@ static int dhcp_undo_dnat(struct dhcp_conn_t *conn, struct dhcp_ip_packet_t *pac
       return 0;
   }
 
-  return -1; /* Something else */
+  return -1; // Something else
 }
 
 //!
@@ -1644,13 +1644,13 @@ static int dhcp_undo_dnat6(struct dhcp_conn_t *conn, struct dhcp_ipv6_packet_t *
        (udph->src == htons(DHCP_DNS))))
     return 0;
 
-  /* icmpv6 */
+  // icmpv6
   if(IN6_ARE_ADDR_EQUAL((struct in6_addr *)&pack->ip6h.src_addr, &conn->ouripv6) && pack->ip6h.next_header == DHCP_IPV6_ICMPV6)
   {
     return 0;
   }
 
-  /* reply from redir server */
+  // reply from redir server
   if(IN6_ARE_ADDR_EQUAL((struct in6_addr *)&pack->ip6h.src_addr, &this->ouripv6) && pack->ip6h.next_header == DHCP_IPV6_TCP && tcph->src == htons(this->uamport))
   {
     int n = 0;
@@ -1670,20 +1670,20 @@ static int dhcp_undo_dnat6(struct dhcp_conn_t *conn, struct dhcp_ipv6_packet_t *
     return 0;
   }
 
-  /* Was it a reply from an IPv6 allowed domain? */
+  // Was it a reply from an IPv6 allowed domain?
   if(this->iphash6 &&
       (!ippool_get_ip6(this->iphash6, NULL, (struct in6_addr *) &pack->ip6h.src_addr)))
     return 0;
 
-  /* Was it a normal http or https reply from authentication server? */
-  /* Was it a normal reply from authentication server? */
+  // Was it a normal http or https reply from authentication server?
+  // Was it a normal reply from authentication server?
   for(i = 0; i < this->authiplen6; i++)
   {
     if((IN6_ARE_ADDR_EQUAL((struct in6_addr *)&pack->ip6h.src_addr, this->authip6[i].s6_addr)) &&
         (pack->ip6h.next_header == DHCP_IPV6_TCP) &&
         ((tcph->src == htons(DHCP_HTTP)) ||
          (tcph->src == htons(DHCP_HTTPS))))
-      return 0; /* Destination was authentication server */
+      return 0; // Destination was authentication server
   }
 
   return -1;
@@ -1736,7 +1736,7 @@ static int dhcp_check_dns(struct dhcp_conn_t *conn, struct dhcp_ip_packet_t *pac
       if(query_len < 256)
         query[query_len++] = *p2;
     }
-    while(*p2++ != 0); /* TODO */
+    while(*p2++ != 0); // TODO
     for(n = 0; n < 4; n++)
     {
       if(query_len < 256)
@@ -1763,9 +1763,9 @@ static int dhcp_check_dns(struct dhcp_conn_t *conn, struct dhcp_ip_packet_t *pac
                 sizeof("\3key\12pepperspot\3org")))
     {
       printf("It was a matching query %s: \n", dnsp->records);
-      memcpy(&answer, pack, len); /* TODO */
+      memcpy(&answer, pack, len); // TODO
 
-      /* DNS Header */
+      // DNS Header
       answer.dns.id      = dnsp->id;
       answer.dns.flags   = htons(0x8000);
       answer.dns.qdcount = htons(0x0001);
@@ -1774,13 +1774,13 @@ static int dhcp_check_dns(struct dhcp_conn_t *conn, struct dhcp_ip_packet_t *pac
       answer.dns.arcount = htons(0x0000);
       memcpy(answer.dns.records, query, query_len);
 
-      /* UDP header */
+      // UDP header
       udp_len = query_len + DHCP_DNS_HLEN + DHCP_UDP_HLEN;
       answer.udph.len = htons(udp_len);
       answer.udph.src = udph->dst;
       answer.udph.dst = udph->src;
 
-      /* IP header */
+      // IP header
       answer.iph.ihl = 5;
       answer.iph.version = 4;
       answer.iph.tos = 0;
@@ -1789,27 +1789,27 @@ static int dhcp_check_dns(struct dhcp_conn_t *conn, struct dhcp_ip_packet_t *pac
       answer.iph.frag_off = 0;
       answer.iph.ttl = 0x10;
       answer.iph.protocol = 0x11;
-      answer.iph.check = 0; /* Calculate at end of packet */
+      answer.iph.check = 0; // Calculate at end of packet
       memcpy(&answer.iph.daddr, &pack->iph.saddr, DHCP_IP_ALEN);
       memcpy(&answer.iph.saddr, &pack->iph.saddr, DHCP_IP_ALEN);
 
-      /* Ethernet header */
+      // Ethernet header
       memcpy(&answer.ethh.dst, &pack->ethh.src, DHCP_ETH_ALEN);
       memcpy(&answer.ethh.src, &pack->ethh.dst, DHCP_ETH_ALEN);
       answer.ethh.prot = htons(DHCP_ETH_IP);
 
-      /* Work out checksums */
+      // Work out checksums
       (void)dhcp_udp_check((struct dhcp_fullpacket_t *) &answer);
       (void)dhcp_ip_check((struct dhcp_ip_packet_t *) &answer);
 
-      /* Calculate total length */
+      // Calculate total length
       length = udp_len + DHCP_IP_HLEN + DHCP_ETH_HLEN;
 
       return dhcp_send(this, this->ipv6_fd, DHCP_ETH_IP, conn->hismac,
                        this->ifindex, &answer, length);
     }
   }
-  return -0; /* Something else */
+  return -0; // Something else
 }
 
 #endif
@@ -1821,30 +1821,30 @@ static int dhcp_check_dns(struct dhcp_conn_t *conn, struct dhcp_ip_packet_t *pac
 //!
 static int dhcp_get_packet_default(struct dhcp_fullpacket_t *pack)
 {
-  /* Initialise reply packet with request */
+  // Initialise reply packet with request
   memset(pack, 0, sizeof(struct dhcp_fullpacket_t));
 
-  /* DHCP Payload */
+  // DHCP Payload
   pack->dhcp.op     = DHCP_BOOTREPLY;
   pack->dhcp.htype  = DHCP_HTYPE_ETH;
   pack->dhcp.hlen   = DHCP_ETH_ALEN;
 
-  /* UDP header */
+  // UDP header
   pack->udph.src = htons(DHCP_BOOTPS);
   pack->udph.dst = htons(DHCP_BOOTPC);
 
-  /* IP header */
+  // IP header
   pack->iph.ihl = 5;
   pack->iph.version = 4;
   pack->iph.tos = 0;
-  pack->iph.tot_len = 0; /* Calculate at end of packet */
+  pack->iph.tot_len = 0; // Calculate at end of packet
   pack->iph.id = 0;
   pack->iph.frag_off = 0;
   pack->iph.ttl = 0x10;
   pack->iph.protocol = 0x11;
-  pack->iph.check = 0; /* Calculate at end of packet */
+  pack->iph.check = 0; // Calculate at end of packet
 
-  /* Ethernet header */
+  // Ethernet header
   pack->ethh.prot = htons(DHCP_ETH_IP);
 
   return 0;
@@ -1872,18 +1872,18 @@ static int dhcp_get_packet_tag(struct dhcp_packet_t *pack, int length,
 
   while((offset + 2) < length)
   {
-    t = (struct dhcp_tag_t *) (((char *) pack) + offset); /* cast with (char *) to avoid use of void * in arithmetic warning */
+    t = (struct dhcp_tag_t *) (((char *) pack) + offset); // cast with (char *) to avoid use of void * in arithmetic warning
     if(t->t == tagtype)
     {
       if((offset +  2 + t->l) > length)
-        return -1; /* Tag length too long */
+        return -1; // Tag length too long
       *tag = t;
       return 0;
     }
     offset +=  2 + t->l;
   }
 
-  return -1; /* Not found  */
+  return -1; // Not found 
 }
 
 //!
@@ -1920,7 +1920,7 @@ static int dhcp_send(struct dhcp_t *this,
     return -1;
   }
 #elif defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__) || defined(__APPLE__)
-  /* to avoid warning at compilation */
+  // to avoid warning at compilation
   protocol = protocol;
   ifindex = ifindex;
   hismac = hismac;
@@ -1965,42 +1965,42 @@ static int dhcp_send_arp(struct dhcp_conn_t *conn, struct dhcp_arp_fullpacket_t 
   uint16_t length = sizeof(packet);
   struct in_addr reqaddr;
 
-  /* To avoid unused parameter warning */
+  // To avoid unused parameter warning
   (void)len;
 
-  /* Get local copy */
+  // Get local copy
   memcpy(&reqaddr.s_addr, pack->arp.tpa, DHCP_IP_ALEN);
 
-  /* Check that request is within limits */
+  // Check that request is within limits
 
-  /* Is ARP request for clients own address: Ignore */
+  // Is ARP request for clients own address: Ignore
   if(conn->hisip.s_addr == reqaddr.s_addr)
     return 0;
 
-  /* If ARP request outside of mask: Ignore */
+  // If ARP request outside of mask: Ignore
   if((conn->hisip.s_addr & conn->hismask.s_addr) !=
       (reqaddr.s_addr & conn->hismask.s_addr))
     return 0;
 
-  /* Get packet default values */
+  // Get packet default values
   memset(&packet, 0, sizeof(packet));
 
-  /* ARP Payload */
+  // ARP Payload
   packet.arp.hrd = htons(DHCP_HTYPE_ETH);
   packet.arp.pro = htons(DHCP_ETH_IP);
   packet.arp.hln = DHCP_ETH_ALEN;
   packet.arp.pln = DHCP_IP_ALEN;
   packet.arp.op  = htons(DHCP_ARP_REPLY);
 
-  /* Source address */
+  // Source address
   memcpy(packet.arp.sha, this->arp_hwaddr, DHCP_ETH_ALEN);
   memcpy(packet.arp.spa, &reqaddr.s_addr, DHCP_IP_ALEN);
 
-  /* Target address */
+  // Target address
   memcpy(packet.arp.tha, &conn->hismac, DHCP_ETH_ALEN);
   memcpy(packet.arp.tpa, &conn->hisip.s_addr, DHCP_IP_ALEN);
 
-  /* Ethernet header */
+  // Ethernet header
   memcpy(packet.ethh.dst, conn->hismac, DHCP_ETH_ALEN);
   memcpy(packet.ethh.src, this->hwaddr, DHCP_ETH_ALEN);
   packet.ethh.prot = htons(DHCP_ETH_ARP);
@@ -2020,24 +2020,24 @@ static int dhcp_send_dhcp_offer(struct dhcp_conn_t *conn, struct dhcp_fullpacket
 {
   struct dhcp_t *this = conn->parent;
   struct dhcp_fullpacket_t packet;
-  uint16_t length = 576 + 4; /* Maximum length */
-  uint16_t udp_len = 576 - 20; /* Maximum length */
+  uint16_t length = 576 + 4; // Maximum length
+  uint16_t udp_len = 576 - 20; // Maximum length
   int pos = 0;
 
-  /* To avoid unused parameter warning */
+  // To avoid unused parameter warning
   (void)len;
 
-  /* Get packet default values */
+  // Get packet default values
   dhcp_get_packet_default(&packet);
 
-  /* DHCP Payload */
+  // DHCP Payload
   packet.dhcp.xid    = pack->dhcp.xid;
   packet.dhcp.yiaddr = conn->hisip.s_addr;
   packet.dhcp.flags  = pack->dhcp.flags;
   packet.dhcp.giaddr = pack->dhcp.giaddr;
   memcpy(&packet.dhcp.chaddr, &pack->dhcp.chaddr, DHCP_CHADDR_LEN);
 
-  /* Magic cookie */
+  // Magic cookie
   packet.dhcp.options[pos++] = 0x63;
   packet.dhcp.options[pos++] = 0x82;
   packet.dhcp.options[pos++] = 0x53;
@@ -2057,7 +2057,7 @@ static int dhcp_send_dhcp_offer(struct dhcp_conn_t *conn, struct dhcp_fullpacket
   memcpy(&packet.dhcp.options[pos], &conn->ourip.s_addr, 4);
   pos += 4;
 
-  /* Insert DNS Servers if given */
+  // Insert DNS Servers if given
   if(conn->dns1.s_addr && conn->dns2.s_addr)
   {
     packet.dhcp.options[pos++] = DHCP_OPTION_DNS;
@@ -2082,7 +2082,7 @@ static int dhcp_send_dhcp_offer(struct dhcp_conn_t *conn, struct dhcp_fullpacket
     pos += 4;
   }
 
-  /* Insert Domain Name if present */
+  // Insert Domain Name if present
   if(strlen(conn->domain))
   {
     packet.dhcp.options[pos++] = DHCP_OPTION_DOMAIN_NAME;
@@ -2098,7 +2098,7 @@ static int dhcp_send_dhcp_offer(struct dhcp_conn_t *conn, struct dhcp_fullpacket
   packet.dhcp.options[pos++] = (this->lease >>  8) & 0xFF;
   packet.dhcp.options[pos++] = (this->lease >>  0) & 0xFF;
 
-  /* Must be listening address */
+  // Must be listening address
   packet.dhcp.options[pos++] = DHCP_OPTION_SERVER_ID;
   packet.dhcp.options[pos++] = 4;
   memcpy(&packet.dhcp.options[pos], &conn->ourip.s_addr, 4);
@@ -2106,24 +2106,24 @@ static int dhcp_send_dhcp_offer(struct dhcp_conn_t *conn, struct dhcp_fullpacket
 
   packet.dhcp.options[pos++] = DHCP_OPTION_END;
 
-  /* UDP header */
+  // UDP header
   udp_len = pos + DHCP_MIN_LEN + DHCP_UDP_HLEN;
   packet.udph.len = htons(udp_len);
 
-  /* IP header */
+  // IP header
   packet.iph.tot_len = htons(udp_len + DHCP_IP_HLEN);
-  packet.iph.daddr = ~0; /* TODO: Always sending to broadcast address */
+  packet.iph.daddr = ~0; // TODO: Always sending to broadcast address
   packet.iph.saddr = conn->ourip.s_addr;
 
-  /* Work out checksums */
+  // Work out checksums
   (void)dhcp_udp_check(&packet);
   (void)dhcp_ip_check((struct dhcp_ip_packet_t *) &packet);
 
-  /* Ethernet header */
+  // Ethernet header
   memcpy(packet.ethh.dst, conn->hismac, DHCP_ETH_ALEN);
   memcpy(packet.ethh.src, this->hwaddr, DHCP_ETH_ALEN);
 
-  /* Calculate total length */
+  // Calculate total length
   length = udp_len + DHCP_IP_HLEN + DHCP_ETH_HLEN;
 
   return dhcp_send(this, this->fd, DHCP_ETH_IP, conn->hismac, this->ifindex,
@@ -2141,17 +2141,17 @@ static int dhcp_send_dhcp_ack(struct dhcp_conn_t *conn, struct dhcp_fullpacket_t
 {
   struct dhcp_t *this = conn->parent;
   struct dhcp_fullpacket_t packet;
-  uint16_t length = 576 + 4; /* Maximum length */
-  uint16_t udp_len = 576 - 20; /* Maximum length */
+  uint16_t length = 576 + 4; // Maximum length
+  uint16_t udp_len = 576 - 20; // Maximum length
   int pos = 0;
 
-  /* To avoid unused parameter warning */
+  // To avoid unused parameter warning
   (void)len;
 
-  /* Get packet default values */
+  // Get packet default values
   dhcp_get_packet_default(&packet);
 
-  /* DHCP Payload */
+  // DHCP Payload
   packet.dhcp.xid    = pack->dhcp.xid;
   packet.dhcp.ciaddr = pack->dhcp.ciaddr;
   packet.dhcp.yiaddr = conn->hisip.s_addr;
@@ -2159,7 +2159,7 @@ static int dhcp_send_dhcp_ack(struct dhcp_conn_t *conn, struct dhcp_fullpacket_t
   packet.dhcp.giaddr = pack->dhcp.giaddr;
   memcpy(&packet.dhcp.chaddr, &pack->dhcp.chaddr, DHCP_CHADDR_LEN);
 
-  /* Magic cookie */
+  // Magic cookie
   packet.dhcp.options[pos++] = 0x63;
   packet.dhcp.options[pos++] = 0x82;
   packet.dhcp.options[pos++] = 0x53;
@@ -2179,7 +2179,7 @@ static int dhcp_send_dhcp_ack(struct dhcp_conn_t *conn, struct dhcp_fullpacket_t
   memcpy(&packet.dhcp.options[pos], &conn->ourip.s_addr, 4);
   pos += 4;
 
-  /* Insert DNS Servers if given */
+  // Insert DNS Servers if given
   if(conn->dns1.s_addr && conn->dns2.s_addr)
   {
     packet.dhcp.options[pos++] = DHCP_OPTION_DNS;
@@ -2204,7 +2204,7 @@ static int dhcp_send_dhcp_ack(struct dhcp_conn_t *conn, struct dhcp_fullpacket_t
     pos += 4;
   }
 
-  /* Insert Domain Name if present */
+  // Insert Domain Name if present
   if(strlen(conn->domain))
   {
     packet.dhcp.options[pos++] = DHCP_OPTION_DOMAIN_NAME;
@@ -2227,7 +2227,7 @@ static int dhcp_send_dhcp_ack(struct dhcp_conn_t *conn, struct dhcp_fullpacket_t
      packet.dhcp.options[pos++] = (conn->mtu >> 0) & 0xFF;
      */
 
-  /* Must be listening address */
+  // Must be listening address
   packet.dhcp.options[pos++] = DHCP_OPTION_SERVER_ID;
   packet.dhcp.options[pos++] = 4;
   memcpy(&packet.dhcp.options[pos], &conn->ourip.s_addr, 4);
@@ -2235,24 +2235,24 @@ static int dhcp_send_dhcp_ack(struct dhcp_conn_t *conn, struct dhcp_fullpacket_t
 
   packet.dhcp.options[pos++] = DHCP_OPTION_END;
 
-  /* UDP header */
+  // UDP header
   udp_len = pos + DHCP_MIN_LEN + DHCP_UDP_HLEN;
   packet.udph.len = htons(udp_len);
 
-  /* IP header */
+  // IP header
   packet.iph.tot_len = htons(udp_len + DHCP_IP_HLEN);
-  packet.iph.daddr = ~0; /* TODO: Always sending to broadcast address */
+  packet.iph.daddr = ~0; // TODO: Always sending to broadcast address
   packet.iph.saddr = conn->ourip.s_addr;
 
-  /* Work out checksums */
+  // Work out checksums
   (void)dhcp_udp_check(&packet);
   (void)dhcp_ip_check((struct dhcp_ip_packet_t *) &packet);
 
-  /* Ethernet header */
+  // Ethernet header
   memcpy(packet.ethh.dst, conn->hismac, DHCP_ETH_ALEN);
   memcpy(packet.ethh.src, this->hwaddr, DHCP_ETH_ALEN);
 
-  /* Calculate total length */
+  // Calculate total length
   length = udp_len + DHCP_IP_HLEN + DHCP_ETH_HLEN;
 
   return dhcp_send(this, this->fd, DHCP_ETH_IP, conn->hismac, this->ifindex,
@@ -2273,23 +2273,23 @@ static int dhcp_send_dhcp_nak(struct dhcp_conn_t *conn, struct dhcp_fullpacket_t
 {
   struct dhcp_t *this = conn->parent;
   struct dhcp_fullpacket_t packet;
-  uint16_t length = 576 + 4; /* Maximum length */
-  uint16_t udp_len = 576 - 20; /* Maximum length */
+  uint16_t length = 576 + 4; // Maximum length
+  uint16_t udp_len = 576 - 20; // Maximum length
   int pos = 0;
 
-  /* To avoid unused parameter warning */
+  // To avoid unused parameter warning
   (void)len;
 
-  /* Get packet default values */
+  // Get packet default values
   dhcp_get_packet_default(&packet);
 
-  /* DHCP Payload */
+  // DHCP Payload
   packet.dhcp.xid    = pack->dhcp.xid;
   packet.dhcp.flags  = pack->dhcp.flags;
   packet.dhcp.giaddr = pack->dhcp.giaddr;
   memcpy(&packet.dhcp.chaddr, &pack->dhcp.chaddr, DHCP_CHADDR_LEN);
 
-  /* Magic cookie */
+  // Magic cookie
   packet.dhcp.options[pos++] = 0x63;
   packet.dhcp.options[pos++] = 0x82;
   packet.dhcp.options[pos++] = 0x53;
@@ -2299,7 +2299,7 @@ static int dhcp_send_dhcp_nak(struct dhcp_conn_t *conn, struct dhcp_fullpacket_t
   packet.dhcp.options[pos++] = 1;
   packet.dhcp.options[pos++] = DHCPNAK;
 
-  /* Must be listening address */
+  // Must be listening address
   packet.dhcp.options[pos++] = DHCP_OPTION_SERVER_ID;
   packet.dhcp.options[pos++] = 4;
   memcpy(&packet.dhcp.options[pos], &conn->ourip.s_addr, 4);
@@ -2307,24 +2307,24 @@ static int dhcp_send_dhcp_nak(struct dhcp_conn_t *conn, struct dhcp_fullpacket_t
 
   packet.dhcp.options[pos++] = DHCP_OPTION_END;
 
-  /* UDP header */
+  // UDP header
   udp_len = pos + DHCP_MIN_LEN + DHCP_UDP_HLEN;
   packet.udph.len = htons(udp_len);
 
-  /* IP header */
+  // IP header
   packet.iph.tot_len = htons(udp_len + DHCP_IP_HLEN);
-  packet.iph.daddr = ~0; /* TODO: Always sending to broadcast address */
+  packet.iph.daddr = ~0; // TODO: Always sending to broadcast address
   packet.iph.saddr = conn->ourip.s_addr;
 
-  /* Work out checksums */
+  // Work out checksums
   (void)dhcp_udp_check(&packet);
   (void)dhcp_ip_check((struct dhcp_ip_packet_t *) &packet);
 
-  /* Ethernet header */
+  // Ethernet header
   memcpy(packet.ethh.dst, conn->hismac, DHCP_ETH_ALEN);
   memcpy(packet.ethh.src, this->hwaddr, DHCP_ETH_ALEN);
 
-  /* Calculate total length */
+  // Calculate total length
   length = udp_len + DHCP_IP_HLEN + DHCP_ETH_HLEN;
 
   return dhcp_send(this, this->fd, DHCP_ETH_IP, conn->hismac, this->ifindex,
@@ -2361,11 +2361,11 @@ static int dhcp_receive_dhcp(struct dhcp_t *this, struct dhcp_fullpacket_t *pack
   struct dhcp_tag_t *requested_ip = 0;
   struct in_addr addr;
 
-  /* To avoid unused parameter warning */
+  // To avoid unused parameter warning
   (void)len;
 
   if(pack->udph.dst != htons(DHCP_BOOTPS))
-    return 0; /* Not a DHCP packet */
+    return 0; // Not a DHCP packet
 
   if(dhcp_get_packet_tag(&pack->dhcp, ntohs(pack->udph.len) - DHCP_UDP_HLEN,
                   &message_type, DHCP_OPTION_MESSAGE_TYPE))
@@ -2374,17 +2374,17 @@ static int dhcp_receive_dhcp(struct dhcp_t *this, struct dhcp_fullpacket_t *pack
   }
 
   if(message_type->l != 1)
-    return -1; /* Wrong length of message type */
+    return -1; // Wrong length of message type
 
   if((message_type->v[0] != DHCPDISCOVER) &&
       (message_type->v[0] != DHCPREQUEST) &&
       (message_type->v[0] != DHCPRELEASE))
   {
-    return 0; /* Unsupported message type */
+    return 0; // Unsupported message type
   }
 
-  /* Release message */
-  /* If connection exists: Release it. No Reply to client is sent */
+  // Release message
+  // If connection exists: Release it. No Reply to client is sent
   if(message_type->v[0] == DHCPRELEASE)
   {
     if(!dhcp_hash_get(this, &conn, pack->ethh.src))
@@ -2394,41 +2394,41 @@ static int dhcp_receive_dhcp(struct dhcp_t *this, struct dhcp_fullpacket_t *pack
     return 0;
   }
 
-  /* Check to see if we know MAC address. If not allocate new conn */
+  // Check to see if we know MAC address. If not allocate new conn
   if(dhcp_hash_get(this, &conn, pack->ethh.src))
   {
-    /* Do we allow dynamic allocation of IP addresses? */
-    if(!this->allowdyn) /* TODO: Should be deleted! */
+    // Do we allow dynamic allocation of IP addresses?
+    if(!this->allowdyn) // TODO: Should be deleted!
       return 0;
 
-    /* Allocate new connection */
-    if(dhcp_new_conn(this, &conn, pack->ethh.src)) /* TODO: Delete! */
-      return 0; /* Out of connections */
+    // Allocate new connection
+    if(dhcp_new_conn(this, &conn, pack->ethh.src)) // TODO: Delete!
+      return 0; // Out of connections
   }
 
-  /* Request an IP address */
+  // Request an IP address
   if(conn->authstate == DHCP_AUTH_NONE)
   {
     addr.s_addr = pack->dhcp.ciaddr;
     if(this->cb_request)
       if(this->cb_request(conn, &addr))
       {
-        return 0; /* Ignore request if IP address was not allocated */
+        return 0; // Ignore request if IP address was not allocated
       }
   }
 
   gettimeofday(&conn->lasttime, NULL);
 
-  /* Discover message */
-  /* If an IP address was assigned offer it to the client */
-  /* Otherwise ignore the request */
+  // Discover message
+  // If an IP address was assigned offer it to the client
+  // Otherwise ignore the request
   if(message_type->v[0] == DHCPDISCOVER)
   {
     if(conn->hisip.s_addr) (void)dhcp_send_dhcp_offer(conn, pack, len);
     return 0;
   }
 
-  /* Request message */
+  // Request message
   if(message_type->v[0] == DHCPREQUEST)
   {
     if(!conn->hisip.s_addr)
@@ -2454,7 +2454,7 @@ static int dhcp_receive_dhcp(struct dhcp_t *this, struct dhcp_fullpacket_t *pack
     return dhcp_send_dhcp_nak(conn, pack, len);
   }
 
-  /* Unsupported DHCP message: Ignore */
+  // Unsupported DHCP message: Ignore
   return 0;
 }
 
@@ -2476,11 +2476,11 @@ static int dhcp_receive_ip(struct dhcp_t *this, struct dhcp_ip_packet_t *pack, i
   if(this->debug) printf("DHCP packet received\n");
   printf("dhcp_receive_ip\n");
 
-  /* Check that MAC address is our MAC or Broadcast */
+  // Check that MAC address is our MAC or Broadcast
   if((memcmp(pack->ethh.dst, this->hwaddr, DHCP_ETH_ALEN)) && (memcmp(pack->ethh.dst, bmac, DHCP_ETH_ALEN)))
     return 0;
 
-  /* Check to see if we know MAC address. */
+  // Check to see if we know MAC address.
   if(!dhcp_hash_get(this, &conn, pack->ethh.src))
   {
     if(this->debug) printf("Address found\n");
@@ -2491,16 +2491,16 @@ static int dhcp_receive_ip(struct dhcp_t *this, struct dhcp_ip_packet_t *pack, i
     if(this->debug) printf("Address not found\n");
     ourip.s_addr = this->ourip.s_addr;
 
-    /* Do we allow dynamic allocation of IP addresses? */
+    // Do we allow dynamic allocation of IP addresses?
     if(!this->allowdyn)
       return 0;
 
-    /* Allocate new connection */
+    // Allocate new connection
     if(dhcp_new_conn(this, &conn, pack->ethh.src))
-      return 0; /* Out of connections */
+      return 0; // Out of connections
   }
 
-  /* Request an IP address */
+  // Request an IP address
   if((conn->authstate == DHCP_AUTH_NONE) &&
       (pack->iph.daddr != 0) && (pack->iph.daddr != 0xffffffff))
   {
@@ -2508,12 +2508,12 @@ static int dhcp_receive_ip(struct dhcp_t *this, struct dhcp_ip_packet_t *pack, i
     if(this->cb_request)
       if(this->cb_request(conn, &addr))
       {
-        return 0; /* Ignore request if IP address was not allocated */
+        return 0; // Ignore request if IP address was not allocated
       }
   }
 
-  /* Check to see if it is a packet for us */
-  /* TODO: Handle IP packets with options. Currently these are just ignored */
+  // Check to see if it is a packet for us
+  // TODO: Handle IP packets with options. Currently these are just ignored
   if(((pack->iph.daddr == 0) ||
        (pack->iph.daddr == 0xffffffff) ||
        (pack->iph.daddr == ourip.s_addr)) &&
@@ -2523,11 +2523,11 @@ static int dhcp_receive_ip(struct dhcp_t *this, struct dhcp_ip_packet_t *pack, i
     (void)dhcp_receive_dhcp(this, (struct dhcp_fullpacket_t *) pack, len);
   }
 
-  /* Return if we do not know peer */
+  // Return if we do not know peer
   if(!conn)
     return 0;
 
-  /* [SG] If user is alerady logged in IPv6, we log him in IPv4. */
+  // [SG] If user is alerady logged in IPv6, we log him in IPv4.
   if(conn->authstate == DHCP_AUTH_DNAT && this->cb_unauth_dnat)
   {
     this->cb_unauth_dnat(conn);
@@ -2535,7 +2535,7 @@ static int dhcp_receive_ip(struct dhcp_t *this, struct dhcp_ip_packet_t *pack, i
 
   gettimeofday(&conn->lasttime, NULL);
 
-  /* Was it a DNS request? */
+  // Was it a DNS request?
   /*if(((pack->iph.daddr == conn->dns1.s_addr) ||
     (pack->iph.daddr == conn->dns2.s_addr)) &&
     (pack->iph.protocol == DHCP_IP_UDP) &&
@@ -2546,22 +2546,22 @@ static int dhcp_receive_ip(struct dhcp_t *this, struct dhcp_ip_packet_t *pack, i
   switch(conn->authstate)
   {
     case DHCP_AUTH_PASS:
-      /* Pass packets unmodified */
+      // Pass packets unmodified
       break;
     case DHCP_AUTH_UNAUTH_TOS:
-      /* Set TOS to specified value (unauthenticated) */
+      // Set TOS to specified value (unauthenticated)
       pack->iph.tos = conn->unauth_cp;
       (void)dhcp_ip_check(pack);
       break;
     case DHCP_AUTH_AUTH_TOS:
-      /* Set TOS to specified value (authenticated) */
+      // Set TOS to specified value (authenticated)
       pack->iph.tos = conn->auth_cp;
       (void)dhcp_ip_check(pack);
       break;
     case DHCP_AUTH_DNAT:
-      /* Destination NAT if request to unknown web server */
+      // Destination NAT if request to unknown web server
       if(dhcp_do_dnat(conn, pack, len))
-        return 0; /* Drop is not http or dns */
+        return 0; // Drop is not http or dns
       break;
     case DHCP_AUTH_DROP:
     default:
@@ -2588,33 +2588,33 @@ static int dhcp_receive_arp(struct dhcp_t *this, struct dhcp_arp_fullpacket_t *p
   struct dhcp_conn_t *conn = NULL;
   unsigned char const bmac[DHCP_ETH_ALEN] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 
-  /* Check that this is ARP request */
+  // Check that this is ARP request
   if(pack->arp.op != htons(DHCP_ARP_REQUEST))
   {
-    /*if(this->debug)*/
+    //if(this->debug)
     printf("Received other ARP than request!\n");
     return 0;
   }
 
-  /* Check that MAC address is our MAC or Broadcast */
+  // Check that MAC address is our MAC or Broadcast
   if((memcmp(pack->ethh.dst, this->hwaddr, DHCP_ETH_ALEN)) && (memcmp(pack->ethh.dst, bmac, DHCP_ETH_ALEN)))
   {
     if(this->debug) printf("Received ARP request for other destination!\n");
     return 0;
   }
 
-  /* Check to see if we know MAC address. */
+  // Check to see if we know MAC address.
   if(dhcp_hash_get(this, &conn, pack->ethh.src))
   {
     if(this->debug) printf("Address not found\n");
 
-    /* Do we allow dynamic allocation of IP addresses? */
-    if(!this->allowdyn)  /* TODO: Experimental */
+    // Do we allow dynamic allocation of IP addresses?
+    if(!this->allowdyn)  // TODO: Experimental
       return 0;
 
-    /* Allocate new connection */
-    if(dhcp_new_conn(this, &conn, pack->ethh.src)) /* TODO: Experimental */
-      return 0; /* Out of connections */
+    // Allocate new connection
+    if(dhcp_new_conn(this, &conn, pack->ethh.src)) // TODO: Experimental
+      return 0; // Out of connections
   }
 
   gettimeofday(&conn->lasttime, NULL);
@@ -2622,7 +2622,7 @@ static int dhcp_receive_arp(struct dhcp_t *this, struct dhcp_arp_fullpacket_t *p
   if(!conn->hisip.s_addr)
   {
     if(this->debug) printf("ARP request did not come from known client!\n");
-    return 0; /* Only reply if he was allocated an address */
+    return 0; // Only reply if he was allocated an address
   }
 
   if(memcmp(&conn->ourip.s_addr, pack->arp.tpa, 4))
@@ -2632,7 +2632,7 @@ static int dhcp_receive_arp(struct dhcp_t *this, struct dhcp_arp_fullpacket_t *p
                               pack->arp.tpa[1],
                               pack->arp.tpa[2],
                               pack->arp.tpa[3]);
-    return 0; /* Only reply if he asked for his router address */
+    return 0; // Only reply if he asked for his router address
   }
 
   (void)dhcp_send_arp(conn, pack, len);
@@ -2653,14 +2653,14 @@ static int dhcp_receive_ipv6(struct dhcp_t *this, struct dhcp_ipv6_packet_t *pac
   struct dhcp_conn_t *conn = NULL;
   struct in6_addr ouripv6;
 
-  /* Check to see if we know MAC address. */
+  // Check to see if we know MAC address.
   if(!dhcp_hash_get6(this, &conn, pack->ethh.src))
   {
     if(this->debug) printf("IPv6 Address found\n");
 
     memcpy(&ouripv6, &conn->ouripv6, sizeof(struct in6_addr));
 
-    /* protect from spoofing */
+    // protect from spoofing
     if(!IN6_IS_ADDR_UNSPECIFIED(&conn->hisipv6) && !IN6_IS_ADDR_LINKLOCAL((struct in6_addr *)&pack->ip6h.src_addr) && !IN6_IS_ADDR_UNSPECIFIED((struct in6_addr *)&pack->ip6h.src_addr))
     {
       memcpy(&conn->hisipv6, pack->ip6h.src_addr, sizeof(struct in6_addr));
@@ -2668,28 +2668,28 @@ static int dhcp_receive_ipv6(struct dhcp_t *this, struct dhcp_ipv6_packet_t *pac
   }
   else
   {
-    /*if(this->debug)*/
+    //if(this->debug)
     printf("Address not found\n");
     memcpy(&ouripv6, &this->ouripv6, sizeof(struct in6_addr));
 
     if(IN6_IS_ADDR_LINKLOCAL((struct in6_addr *)&pack->ip6h.src_addr) || IN6_IS_ADDR_UNSPECIFIED((struct in6_addr *)&pack->ip6h.src_addr))
     {
-      /* we don't care about link-local address */
+      // we don't care about link-local address
       printf("dont'care about link-local\n");
       return 0;
     }
 
-    /* Allocate new connection */
+    // Allocate new connection
     if(dhcp_new_conn6(this, &conn, pack->ethh.src))
     {
-      return 0; /* Out of connections */
+      return 0; // Out of connections
     }
 
     memcpy(&conn->hisipv6, &pack->ip6h.src_addr, sizeof(struct in6_addr));
     memcpy(&conn->ouripv6, &this->ouripv6, sizeof(struct in6_addr));
   }
 
-  /* Return if we do not know peer */
+  // Return if we do not know peer
   if(!conn)
   {
     return 0;
@@ -2697,7 +2697,7 @@ static int dhcp_receive_ipv6(struct dhcp_t *this, struct dhcp_ipv6_packet_t *pac
 
   if(conn->authstate == DHCP_AUTH_NONE)
   {
-    /* [SV]: inform application about the IPv6 address */
+    // [SV]: inform application about the IPv6 address
     if(this->cb_request6(conn, &conn->hisipv6))
     {
       printf("cb_request6 error!\n");
@@ -2725,12 +2725,12 @@ static int dhcp_receive_ipv6(struct dhcp_t *this, struct dhcp_ipv6_packet_t *pac
       memcpy(&src, pack->ip6h.src_addr, 16);
 
       printf("icmpv6 for us!\n");
-      /* send a NA */
-      if(icmpv6->type == 135 /* NS */)
+      // send a NA
+      if(icmpv6->type == 135) // NS
       {
         char buf[INET6_ADDRSTRLEN];
         printf("NS received\nouripv6:%s\n", inet_ntop(AF_INET6, this->ouripv6.s6_addr, buf, sizeof(buf)));
-        if(ndisc_send_na(this->ipv6_ifindex, &this->ouripv6, &src, &this->ouripv6, 0x40000000 | 0x20000000) /* OVERRIDE +  SOLICITATION */ == -1)
+        if(ndisc_send_na(this->ipv6_ifindex, &this->ouripv6, &src, &this->ouripv6, 0x40000000 | 0x20000000)== -1) // OVERRIDE +  SOLICITATION
         {
           printf("NA failed\n");
         }
@@ -2738,7 +2738,7 @@ static int dhcp_receive_ipv6(struct dhcp_t *this, struct dhcp_ipv6_packet_t *pac
     }
   }
 
-  /* [SG] If user is alerady logged in IPv4, we log him in IPv6. */
+  // [SG] If user is alerady logged in IPv4, we log him in IPv6.
   if(conn->authstate == DHCP_AUTH_DNAT && this->cb_unauth_dnat)
   {
     this->cb_unauth_dnat(conn);
@@ -2747,7 +2747,7 @@ static int dhcp_receive_ipv6(struct dhcp_t *this, struct dhcp_ipv6_packet_t *pac
   switch(conn->authstate)
   {
     case DHCP_AUTH_PASS:
-      /* Pass packets unmodified */
+      // Pass packets unmodified
       break;
     case DHCP_AUTH_UNAUTH_TOS:
       /* Set TOS to specified value (unauthenticated)
@@ -2756,17 +2756,17 @@ static int dhcp_receive_ipv6(struct dhcp_t *this, struct dhcp_ipv6_packet_t *pac
          */
       break;
     case DHCP_AUTH_AUTH_TOS:
-      /* [SV] SEE IT */
+      // [SV] SEE IT
       /* Set TOS to specified value (authenticated)
          pack->iph.tos = conn->auth_cp;
          (void)dhcp_ip_check(pack);
          */
       break;
     case DHCP_AUTH_DNAT:
-      /* Destination NAT if request to unknown web server */
+      // Destination NAT if request to unknown web server
       printf("auth_dnat ipv6\n");
       if(dhcp_do_dnat6(conn, pack, len))
-        return 0; /* Drop is not http or dns */
+        return 0; // Drop is not http or dns
       break;
     case DHCP_AUTH_DROP:
     default:
@@ -2781,15 +2781,15 @@ static int dhcp_receive_ipv6(struct dhcp_t *this, struct dhcp_ipv6_packet_t *pac
   return 0;
 }
 
-/* API Functions */
+// API Functions
 
-/* Returns the current version of the program */
+// Returns the current version of the program
 const char * dhcp_version()
 {
   return VERSION;
 }
 
-/* Allocates a new instance of the library */
+// Allocates a new instance of the library
 int dhcp_new(struct dhcp_t **this, int nb_conn, char *interface,
              int usemac, uint8_t *mac, int promisc,
              struct in_addr *listen_addr, struct in6_addr *listen6, int lease, int allowdyn,
@@ -2817,7 +2817,7 @@ int dhcp_new(struct dhcp_t **this, int nb_conn, char *interface,
     }
   }
 
-  /* [SV] IPv6 table */
+  // [SV] IPv6 table
   if(strncmp(ipversion, "ipv4", 4))
   {
     (*this)->nb_conn6 = nb_conn;
@@ -2841,9 +2841,9 @@ int dhcp_new(struct dhcp_t **this, int nb_conn, char *interface,
   }
 
   strncpy((*this)->devname, interface, IFNAMSIZ - 1);
-  (*this)->devname[IFNAMSIZ - 1] = 0; /* make sure to terminate */
+  (*this)->devname[IFNAMSIZ - 1] = 0; // make sure to terminate
 
-  /* Bring network interface UP and RUNNING if currently down */
+  // Bring network interface UP and RUNNING if currently down
   (void)dhcp_get_interface_flags((*this)->devname, &(*this)->devflags);
   if(!((*this)->devflags & IFF_UP) || !((*this)->devflags & IFF_RUNNING))
   {
@@ -2864,7 +2864,7 @@ int dhcp_new(struct dhcp_t **this, int nb_conn, char *interface,
       if((*this)->conn6) free((*this)->conn6);
       free((*this)->conn);
       free(*this);
-      return -1; /* Error reporting done in dhcp_open_eth */
+      return -1; // Error reporting done in dhcp_open_eth
     }
 
 #if defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__APPLE__)
@@ -2877,7 +2877,7 @@ int dhcp_new(struct dhcp_t **this, int nb_conn, char *interface,
       (*this)->rbuf_max = (unsigned int)blen;
       if(!((*this)->rbuf = malloc((*this)->rbuf_max)))
       {
-        /* TODO: Free malloc */
+        // TODO: Free malloc
         sys_err(LOG_ERR, __FILE__, __LINE__, errno, "malloc() failed");
       }
       (*this)->rbuf_offset = 0;
@@ -2895,7 +2895,7 @@ int dhcp_new(struct dhcp_t **this, int nb_conn, char *interface,
       close((*this)->fd);
       free((*this)->conn);
       free(*this);
-      return -1; /* Error reporting done in dhcp_open_eth */
+      return -1; // Error reporting done in dhcp_open_eth
     }
   }
 
@@ -2915,13 +2915,13 @@ int dhcp_new(struct dhcp_t **this, int nb_conn, char *interface,
       if((*this)->conn6) free((*this)->conn6);
       free((*this)->conn);
       free(*this);
-      return -1; /* Error reporting done in eapol_open_eth */
+      return -1; // Error reporting done in eapol_open_eth
     }
   }
 
   if(strncmp(ipversion, "ipv4", 4))
   {
-    /* [SV] */
+    // [SV]
     if(usemac) memcpy(((*this)->ipv6_hwaddr), mac, DHCP_ETH_ALEN);
     if(((*this)->ipv6_fd = dhcp_open_eth(interface, DHCP_ETH_IPV6, promisc, usemac, ((*this)->ipv6_hwaddr), &((*this)->ipv6_ifindex))) < 0)
     {
@@ -2934,7 +2934,7 @@ int dhcp_new(struct dhcp_t **this, int nb_conn, char *interface,
       if((*this)->eapol_fd) close((*this)->eapol_fd);
       free((*this)->conn6);
       free(*this);
-      return -1; /* Error reporting done in ipv6_open_eth */
+      return -1; // Error reporting done in ipv6_open_eth
     }
   }
 
@@ -2951,7 +2951,7 @@ int dhcp_new(struct dhcp_t **this, int nb_conn, char *interface,
       if((*this)->eapol_fd) close((*this)->eapol_fd);
       free((*this)->conn6);
       free(*this);
-      return -1; /* Failed to allocate hash tables */
+      return -1; // Failed to allocate hash tables
     }
   }
   else if(dhcp_hash_init(*this, (*this)->nb_conn))
@@ -2960,10 +2960,10 @@ int dhcp_new(struct dhcp_t **this, int nb_conn, char *interface,
     close((*this)->arp_fd);
     free((*this)->conn);
     free((*this));
-    return -1; /* Failed to allocate hash tables */
+    return -1; // Failed to allocate hash tables
   }
 
-  /* Initialise various variables */
+  // Initialise various variables
   if(!strncmp(ipversion, "ipv4", 4) || !strncmp(ipversion, "dual", 4))
     (*this)->ourip.s_addr = listen_addr->s_addr;
   if(strncmp(ipversion, "ipv4", 4))
@@ -2978,7 +2978,7 @@ int dhcp_new(struct dhcp_t **this, int nb_conn, char *interface,
     (*this)->uamlisten.s_addr = uamlisten->s_addr;
   (*this)->uamport = uamport;
 
-  /* Initialise call back functions */
+  // Initialise call back functions
   if(!strncmp(ipversion, "ipv4", 4) || !strncmp(ipversion, "dual", 4))
   {
     (*this)->cb_ip_ind = 0;
@@ -2989,19 +2989,19 @@ int dhcp_new(struct dhcp_t **this, int nb_conn, char *interface,
   }
   if(strncmp(ipversion, "ipv4", 4))
   {
-    /* [SV] */
+    // [SV]
     (*this)->cb_ipv6_ind= 0;
     (*this)->cb_connect6 = 0;
     (*this)->cb_disconnect6 = 0;
     (*this)->cb_connect6 = 0;
   }
-  /* [SG] */
+  // [SG]
   (*this)->cb_unauth_dnat = 0;
 
   return 0;
 }
 
-/* Set dhcp parameters for IPv4 which can be altered at runtime */
+// Set dhcp parameters for IPv4 which can be altered at runtime
 int dhcp_set(struct dhcp_t *this, int debug,
              struct in_addr *authip, int authiplen, int anydns,
              struct in_addr *uamokip, int uamokiplen,
@@ -3013,7 +3013,7 @@ int dhcp_set(struct dhcp_t *this, int debug,
   this->debug = debug;
   this->anydns = anydns;
 
-  /* Copy list of uamserver IP addresses */
+  // Copy list of uamserver IP addresses
   if((this)->authip) free((this)->authip);
   this->authiplen = authiplen;
   if(!(this->authip = calloc(sizeof(struct in_addr), authiplen)))
@@ -3025,7 +3025,7 @@ int dhcp_set(struct dhcp_t *this, int debug,
   }
   memcpy(this->authip, authip, sizeof(struct in_addr) * authiplen);
 
-  /* Make hash table for allowed domains */
+  // Make hash table for allowed domains
   if(this->iphash) iphash_free(this->iphash);
   if((!uamokip) || (uamokiplen == 0))
   {
@@ -3047,7 +3047,7 @@ int dhcp_set(struct dhcp_t *this, int debug,
     (void)iphash_new(&this->iphash, this->iphashm, uamokiplen);
   }
 
-  /* Copy allowed networks */
+  // Copy allowed networks
   if(this->uamokaddr) free(this->uamokaddr);
   if(this->uamokmask) free(this->uamokmask);
   if((!uamokaddr) || (!uamokmask) || (uamoknetlen == 0))
@@ -3077,7 +3077,7 @@ int dhcp_set(struct dhcp_t *this, int debug,
   return 0;
 }
 
-/* Set dhcp parameters for IPv6 which can be altered at runtime */
+// Set dhcp parameters for IPv6 which can be altered at runtime
 int dhcp_set6(struct dhcp_t *this, int debug,
               struct in6_addr *authip, int authiplen, int anydns,
               struct in6_addr *uamokip, int uamokiplen,
@@ -3089,7 +3089,7 @@ int dhcp_set6(struct dhcp_t *this, int debug,
   this->debug = debug;
   this->anydns = anydns;
 
-  /* Copy list of uamserver IP addresses */
+  // Copy list of uamserver IP addresses
   if((this)->authip6) free((this)->authip6);
   this->authiplen6 = authiplen;
   if(!(this->authip6 = calloc(sizeof(struct in6_addr), authiplen)))
@@ -3101,7 +3101,7 @@ int dhcp_set6(struct dhcp_t *this, int debug,
   }
   memcpy(this->authip6, authip, sizeof(struct in6_addr) * authiplen);
 
-  /* Make hash table for allowed domains */
+  // Make hash table for allowed domains
   if(this->iphash6) iphash_free(this->iphash6);
   if((!uamokip) || (uamokiplen == 0))
   {
@@ -3123,7 +3123,7 @@ int dhcp_set6(struct dhcp_t *this, int debug,
     (void)iphash_new6(&this->iphash6, this->iphashm6, uamokiplen);
   }
 
-  /* Copy allowed networks */
+  // Copy allowed networks
   if(this->uamokaddr6) free(this->uamokaddr6);
   if(this->uamokmask6) free(this->uamokmask6);
   if((!uamokaddr) || (!uamokmask) || (uamoknetlen == 0))
@@ -3153,7 +3153,7 @@ int dhcp_set6(struct dhcp_t *this, int debug,
   return 0;
 }
 
-/* Set various IP addresses of a connection */
+// Set various IP addresses of a connection
 int dhcp_set_addrs(struct dhcp_conn_t *conn,
                    struct in_addr *hisip,
                    struct in_addr *hismask,
@@ -3182,7 +3182,7 @@ int dhcp_set_addrs(struct dhcp_conn_t *conn,
   return 0;
 }
 
-/* Set various IP addresses of a connection */
+// Set various IP addresses of a connection
 int dhcp_set_addrs6(struct dhcp_conn_t *conn,
                     struct in6_addr *hisip,
                     struct in6_addr *ourip,
@@ -3204,13 +3204,13 @@ int dhcp_set_addrs6(struct dhcp_conn_t *conn,
   return 0;
 }
 
-/* Call this function when a new IP packet has arrived */
-int dhcp_decaps(struct dhcp_t *this)  /* DHCP Indication */
+// Call this function when a new IP packet has arrived
+int dhcp_decaps(struct dhcp_t *this)  // DHCP Indication
 {
   struct dhcp_ip_packet_t packet;
   int length = 0;
 
-  /*if(this->debug)*/
+  //if(this->debug)
   printf("DHCP packet received\n");
 
   if((length = recv(this->fd, &packet, sizeof(packet), 0)) < 0)
@@ -3224,13 +3224,13 @@ int dhcp_decaps(struct dhcp_t *this)  /* DHCP Indication */
   return dhcp_receive_ip(this, &packet, length);
 }
 
-/* Use the hash table to find IPv4 connection based on the mac address */
+// Use the hash table to find IPv4 connection based on the mac address
 int dhcp_hash_get(struct dhcp_t *this, struct dhcp_conn_t **conn, uint8_t *hwaddr)
 {
   struct dhcp_conn_t *p = NULL;
   uint32_t hash = 0;
 
-  /* Find in hash table */
+  // Find in hash table
   hash = dhcp_hash(hwaddr) & this->hashmask;
   for(p = this->hash[hash]; p; p = p->nexthash)
   {
@@ -3241,16 +3241,16 @@ int dhcp_hash_get(struct dhcp_t *this, struct dhcp_conn_t **conn, uint8_t *hwadd
     }
   }
   *conn = NULL;
-  return -1; /* Address could not be found */
+  return -1; // Address could not be found
 }
 
-/* Use the hash table to find IPv6 connection based on the mac address */
+// Use the hash table to find IPv6 connection based on the mac address
 int dhcp_hash_get6(struct dhcp_t *this, struct dhcp_conn_t **conn, uint8_t *hwaddr)
 {
   struct dhcp_conn_t *p = NULL;
   uint32_t hash = 0;
 
-  /* Find in hash table */
+  // Find in hash table
   hash = dhcp_hash(hwaddr) & this->hashmask;
   for(p = this->hash6[hash]; p; p = p->nexthash)
   {
@@ -3261,10 +3261,10 @@ int dhcp_hash_get6(struct dhcp_t *this, struct dhcp_conn_t **conn, uint8_t *hwad
     }
   }
   *conn = NULL;
-  return -1; /* Address could not be found */
+  return -1; // Address could not be found
 }
 
-/* Allocate a new IPv4 client connection */
+// Allocate a new IPv4 client connection
 int dhcp_new_conn(struct dhcp_t *this, struct dhcp_conn_t **conn, uint8_t *hwaddr)
 {
   if(this->debug || 1)
@@ -3281,28 +3281,28 @@ int dhcp_new_conn(struct dhcp_t *this, struct dhcp_conn_t **conn, uint8_t *hwadd
 
   *conn = this->first_free_conn;
 
-  /* Remove from link of free */
+  // Remove from link of free
   if(this->first_free_conn->next)
   {
     this->first_free_conn->next->prev = NULL;
     this->first_free_conn = this->first_free_conn->next;
   }
-  else   /* Took the last one */
+  else   // Took the last one
   {
     this->first_free_conn = NULL;
     this->last_free_conn = NULL;
   }
 
-  /* Initialise structures */
+  // Initialise structures
   memset(*conn, 0, sizeof(**conn));
 
-  /* Insert into link of used */
+  // Insert into link of used
   if(this->first_used_conn)
   {
     this->first_used_conn->prev = *conn;
     (*conn)->next = this->first_used_conn;
   }
-  else   /* First insert */
+  else   // First insert
   {
     this->last_used_conn = *conn;
   }
@@ -3313,7 +3313,7 @@ int dhcp_new_conn(struct dhcp_t *this, struct dhcp_conn_t **conn, uint8_t *hwadd
   (*conn)->ipv6 = 0;
   (*conn)->parent = this;
 
-  /* Application specific initialisations */
+  // Application specific initialisations
   memcpy((*conn)->hismac, hwaddr, DHCP_ETH_ALEN);
   memcpy((*conn)->ourmac, this->hwaddr, DHCP_ETH_ALEN);
   gettimeofday(&(*conn)->lasttime, NULL);
@@ -3321,14 +3321,14 @@ int dhcp_new_conn(struct dhcp_t *this, struct dhcp_conn_t **conn, uint8_t *hwadd
 
   if(paranoid) dhcp_validate(this);
 
-  /* Inform application that connection was created */
+  // Inform application that connection was created
   if(this->cb_connect)
     this->cb_connect(*conn);
 
-  return 0; /* Success */
+  return 0; // Success
 }
 
-/* Allocate a new IPv6 connection */
+// Allocate a new IPv6 connection
 int dhcp_new_conn6(struct dhcp_t *this, struct dhcp_conn_t **conn, uint8_t *hwaddr)
 {
   if(this->debug || 1)
@@ -3345,28 +3345,28 @@ int dhcp_new_conn6(struct dhcp_t *this, struct dhcp_conn_t **conn, uint8_t *hwad
 
   *conn = this->first_free_conn6;
 
-  /* Remove from link of free */
+  // Remove from link of free
   if(this->first_free_conn6->next)
   {
     this->first_free_conn6->next->prev = NULL;
     this->first_free_conn6 = this->first_free_conn6->next;
   }
-  else   /* Took the last one */
+  else   // Took the last one
   {
     this->first_free_conn6 = NULL;
     this->last_free_conn6 = NULL;
   }
 
-  /* Initialise structures */
+  // Initialise structures
   memset(*conn, 0, sizeof(**conn));
 
-  /* Insert into link of used */
+  // Insert into link of used
   if(this->first_used_conn6)
   {
     this->first_used_conn6->prev = *conn;
     (*conn)->next = this->first_used_conn6;
   }
-  else   /* First insert */
+  else   // First insert
   {
     this->last_used_conn6 = *conn;
   }
@@ -3377,27 +3377,27 @@ int dhcp_new_conn6(struct dhcp_t *this, struct dhcp_conn_t **conn, uint8_t *hwad
   (*conn)->ipv6 = 1;
   (*conn)->parent = this;
 
-  /* Application specific initialisations */
+  // Application specific initialisations
   memcpy((*conn)->hismac, hwaddr, DHCP_ETH_ALEN);
   memcpy((*conn)->ourmac, this->hwaddr, DHCP_ETH_ALEN);
   gettimeofday(&(*conn)->lasttime, NULL);
 
   (void)dhcp_hash_add6(this, *conn);
 
-  /* Inform application that connection was created */
+  // Inform application that connection was created
   if(this->cb_connect6)
     this->cb_connect6(*conn);
-  return 0; /* Success */
+  return 0; // Success
 }
 
-/* Remove an IPv4 client connection */
+// Remove an IPv4 client connection
 int dhcp_free_conn(struct dhcp_conn_t *conn)
 {
-  /* TODO: Always returns success? */
+  // TODO: Always returns success?
 
   struct dhcp_t *this = conn->parent;
 
-  /* Tell application that we disconnected */
+  // Tell application that we disconnected
   if(this->cb_disconnect)
     this->cb_disconnect(conn);
 
@@ -3406,41 +3406,41 @@ int dhcp_free_conn(struct dhcp_conn_t *conn)
            conn->hismac[0], conn->hismac[1], conn->hismac[2],
            conn->hismac[3], conn->hismac[4], conn->hismac[5]);
 
-  /* Application specific code */
-  /* First remove from hash table */
+  // Application specific code
+  // First remove from hash table
   (void)dhcp_hash_del(this, conn);
 
-  /* Remove from link of used */
+  // Remove from link of used
   if((conn->next) && (conn->prev))
   {
     conn->next->prev = conn->prev;
     conn->prev->next = conn->next;
   }
-  else if(conn->next)   /* && prev == 0 */
+  else if(conn->next)   // && prev == 0
   {
     conn->next->prev = NULL;
     this->first_used_conn = conn->next;
   }
-  else if(conn->prev)   /* && next == 0 */
+  else if(conn->prev)   // && next == 0
   {
     conn->prev->next = NULL;
     this->last_used_conn = conn->prev;
   }
-  else   /* if((next == 0) && (prev == 0)) */
+  else   // if((next == 0) && (prev == 0))
   {
     this->first_used_conn = NULL;
     this->last_used_conn = NULL;
   }
 
-  /* Initialise structures */
+  // Initialise structures
   memset(conn, 0, sizeof(*conn));
 
-  /* Insert into link of free */
+  // Insert into link of free
   if(this->first_free_conn)
   {
     this->first_free_conn->prev = conn;
   }
-  else   /* First insert */
+  else   // First insert
   {
     this->last_free_conn = conn;
   }
@@ -3453,14 +3453,14 @@ int dhcp_free_conn(struct dhcp_conn_t *conn)
   return 0;
 }
 
-/* Remove an IPv6 client connection */
+// Remove an IPv6 client connection
 int dhcp_free_conn6(struct dhcp_conn_t *conn)
 {
-  /* TODO: Always returns success? */
+  // TODO: Always returns success?
 
   struct dhcp_t *this = conn->parent;
 
-  /* Tell application that we disconnected */
+  // Tell application that we disconnected
   if(this->cb_disconnect)
     this->cb_disconnect6(conn);
 
@@ -3469,41 +3469,41 @@ int dhcp_free_conn6(struct dhcp_conn_t *conn)
            conn->hismac[0], conn->hismac[1], conn->hismac[2],
            conn->hismac[3], conn->hismac[4], conn->hismac[5]);
 
-  /* Application specific code */
-  /* First remove from hash table */
+  // Application specific code
+  // First remove from hash table
   (void)dhcp_hash_del6(this, conn);
 
-  /* Remove from link of used */
+  // Remove from link of used
   if((conn->next) && (conn->prev))
   {
     conn->next->prev = conn->prev;
     conn->prev->next = conn->next;
   }
-  else if(conn->next)   /* && prev == 0 */
+  else if(conn->next)   // && prev == 0
   {
     conn->next->prev = NULL;
     this->first_used_conn6 = conn->next;
   }
-  else if(conn->prev)   /* && next == 0 */
+  else if(conn->prev)   // && next == 0
   {
     conn->prev->next = NULL;
     this->last_used_conn6 = conn->prev;
   }
-  else   /* if((next == 0) && (prev == 0)) */
+  else   // if((next == 0) && (prev == 0))
   {
     this->first_used_conn6 = NULL;
     this->last_used_conn6 = NULL;
   }
 
-  /* Initialise structures */
+  // Initialise structures
   memset(conn, 0, sizeof(*conn));
 
-  /* Insert into link of free */
+  // Insert into link of free
   if(this->first_free_conn6)
   {
     this->first_free_conn6->prev = conn;
   }
-  else   /* First insert */
+  else   // First insert
   {
     this->last_free_conn6 = conn;
   }
@@ -3516,7 +3516,7 @@ int dhcp_free_conn6(struct dhcp_conn_t *conn)
   return 0;
 }
 
-/* Call this function to send an IP packet to the peer */
+// Call this function to send an IP packet to the peer
 int dhcp_send_ip(struct dhcp_conn_t *conn, void *pack, unsigned len)
 {
   struct dhcp_t *this = conn->parent;
@@ -3526,12 +3526,12 @@ int dhcp_send_ip(struct dhcp_conn_t *conn, void *pack, unsigned len)
 
   if(this->debug) printf("dhcp_send_ip\n");
 
-  /* Ethernet header */
+  // Ethernet header
   memcpy(packet.ethh.dst, conn->hismac, DHCP_ETH_ALEN);
   memcpy(packet.ethh.src, this->hwaddr, DHCP_ETH_ALEN);
   packet.ethh.prot = htons(DHCP_ETH_IP);
 
-  /* IP Packet */
+  // IP Packet
   memcpy(&packet.iph, pack, len);
 
   switch(conn->authstate)
@@ -3539,10 +3539,10 @@ int dhcp_send_ip(struct dhcp_conn_t *conn, void *pack, unsigned len)
     case DHCP_AUTH_PASS:
     case DHCP_AUTH_UNAUTH_TOS:
     case DHCP_AUTH_AUTH_TOS:
-      /* Pass packets unmodified */
+      // Pass packets unmodified
       break;
     case DHCP_AUTH_DNAT:
-      /* Undo destination NAT */
+      // Undo destination NAT
       if(dhcp_undo_dnat(conn, &packet, length))
         return 0;
       break;
@@ -3554,7 +3554,7 @@ int dhcp_send_ip(struct dhcp_conn_t *conn, void *pack, unsigned len)
                    &packet, length);
 }
 
-/* Call this function to send an IPv6 packet to the peer */
+// Call this function to send an IPv6 packet to the peer
 int dhcp_send_ipv6(struct dhcp_conn_t *conn, void *pack, unsigned len)
 {
   struct dhcp_t *this = conn->parent;
@@ -3563,12 +3563,12 @@ int dhcp_send_ipv6(struct dhcp_conn_t *conn, void *pack, unsigned len)
 
   printf("Attempt to send IPv6 packet!!\n");
 
-  /* Ethernet header */
+  // Ethernet header
   memcpy(packet.ethh.dst, conn->hismac, DHCP_ETH_ALEN);
   memcpy(packet.ethh.src, this->hwaddr, DHCP_ETH_ALEN);
   packet.ethh.prot = htons(DHCP_ETH_IPV6);
 
-  /* IPv6 Packet */
+  // IPv6 Packet
   memcpy(&packet.ip6h, pack, len);
 
   switch(conn->authstate)
@@ -3576,10 +3576,10 @@ int dhcp_send_ipv6(struct dhcp_conn_t *conn, void *pack, unsigned len)
     case DHCP_AUTH_PASS:
     case DHCP_AUTH_UNAUTH_TOS:
     case DHCP_AUTH_AUTH_TOS:
-      /* Pass packets unmodified */
+      // Pass packets unmodified
       break;
     case DHCP_AUTH_DNAT:
-      /* Undo destination NAT */
+      // Undo destination NAT
       if(dhcp_undo_dnat6(conn, &packet, length))
         return 0;
       break;
@@ -3591,20 +3591,20 @@ int dhcp_send_ipv6(struct dhcp_conn_t *conn, void *pack, unsigned len)
   return dhcp_send(this, this->ipv6_fd, DHCP_ETH_IPV6, conn->hismac, this->ipv6_ifindex, &packet, length);
 }
 
-/* Send EAP frame */
+// Send EAP frame
 int dhcp_send_eap(struct dhcp_conn_t *conn, void *pack, int len)
 {
   struct dhcp_t *this = conn->parent;
   struct dhcp_dot1x_packet_t packet;
 
-  /* Ethernet header */
+  // Ethernet header
   memcpy(packet.ethh.dst, conn->hismac, DHCP_ETH_ALEN);
   memcpy(packet.ethh.src, this->hwaddr, DHCP_ETH_ALEN);
   packet.ethh.prot = htons(DHCP_ETH_EAPOL);
 
-  /* 802.1x header */
+  // 802.1x header
   packet.dot1x.ver  = 1;
-  packet.dot1x.type = 0; /* EAP */
+  packet.dot1x.type = 0; // EAP
   packet.dot1x.len =  ntohs(len);
 
   memcpy(&packet.eap, pack, len);
@@ -3613,10 +3613,10 @@ int dhcp_send_eap(struct dhcp_conn_t *conn, void *pack, int len)
                    &packet, (DHCP_ETH_HLEN + 4 + len));
 }
 
-/* Send EAP reject frame */
+// Send EAP reject frame
 int dhcp_send_eap_reject(struct dhcp_conn_t *conn, void *pack, int len)
 {
-  /*struct dhcp_t *this = conn->parent;*/
+  //struct dhcp_t *this = conn->parent;
 
   struct dhcp_eap_hdr_t packet;
 
@@ -3628,7 +3628,7 @@ int dhcp_send_eap_reject(struct dhcp_conn_t *conn, void *pack, int len)
   {
     memset(&packet, 0, sizeof(packet));
     packet.code      =  4;
-    packet.id        =  1; /* TODO ??? */
+    packet.id        =  1; // TODO ???
     packet.length    =  ntohs(4);
 
     dhcp_send_eap(conn, &packet, 4);
@@ -3639,7 +3639,7 @@ int dhcp_send_eap_reject(struct dhcp_conn_t *conn, void *pack, int len)
 
 #if defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__APPLE__)
 
-/* Receive packets from layer 2 socket */
+// Receive packets from layer 2 socket
 int dhcp_receive(struct dhcp_t *this)
 {
   /*
@@ -3693,7 +3693,7 @@ int dhcp_receive(struct dhcp_t *this)
         dhcp_receive_arp(this, (struct dhcp_arp_fullpacket_t *) ethhdr,
                          hdrp->bh_caplen);
         break;
-        /* [SV] */
+        // [SV]
       case DHCP_ETH_IPV6:
         dhcp_receive_ipv6(this, (struct dhcp_ipv6_packet_t *)ethhdr, hdrp->bh_caplen);
         break;
@@ -3707,8 +3707,8 @@ int dhcp_receive(struct dhcp_t *this)
 }
 #endif
 
-/* Call this function when a new ARP packet has arrived */
-int dhcp_arp_ind(struct dhcp_t *this)  /* ARP Indication */
+// Call this function when a new ARP packet has arrived
+int dhcp_arp_ind(struct dhcp_t *this)  // ARP Indication
 {
   struct dhcp_arp_fullpacket_t packet;
   int length = 0;
@@ -3728,8 +3728,8 @@ int dhcp_arp_ind(struct dhcp_t *this)  /* ARP Indication */
   return 0;
 }
 
-/* Call this function when a new EAPOL packet has arrived */
-int dhcp_eapol_ind(struct dhcp_t *this)  /* EAPOL Indication */
+// Call this function when a new EAPOL packet has arrived
+int dhcp_eapol_ind(struct dhcp_t *this)  // EAPOL Indication
 {
   struct dhcp_dot1x_packet_t packet;
   int length = 0;
@@ -3747,7 +3747,7 @@ int dhcp_eapol_ind(struct dhcp_t *this)  /* EAPOL Indication */
     return -1;
   }
 
-  /* Check to see if we know MAC address. */
+  // Check to see if we know MAC address.
   if(!dhcp_hash_get(this, &conn, packet.ethh.src))
   {
     if(this->debug) printf("Address found\n");
@@ -3757,7 +3757,7 @@ int dhcp_eapol_ind(struct dhcp_t *this)  /* EAPOL Indication */
     if(this->debug) printf("Address not found\n");
   }
 
-  /* Check that MAC address is our MAC, Broadcast or authentication MAC */
+  // Check that MAC address is our MAC, Broadcast or authentication MAC
   if((memcmp(packet.ethh.dst, this->hwaddr, DHCP_ETH_ALEN)) && (memcmp(packet.ethh.dst, bmac, DHCP_ETH_ALEN)) && (memcmp(packet.ethh.dst, amac, DHCP_ETH_ALEN)))
     return 0;
 
@@ -3765,37 +3765,37 @@ int dhcp_eapol_ind(struct dhcp_t *this)  /* EAPOL Indication */
                             packet.dot1x.ver, packet.dot1x.type,
                             ntohs(packet.dot1x.len));
 
-  if(packet.dot1x.type == 1)   /* Start */
+  if(packet.dot1x.type == 1)   // Start
   {
     struct dhcp_dot1x_packet_t pack;
     memset(&pack, 0, sizeof(pack));
 
-    /* Allocate new connection */
+    // Allocate new connection
     if(conn == NULL)
     {
       if(dhcp_new_conn(this, &conn, packet.ethh.src))
-        return 0; /* Out of connections */
+        return 0; // Out of connections
     }
 
-    /* Ethernet header */
+    // Ethernet header
     memcpy(pack.ethh.dst, packet.ethh.src, DHCP_ETH_ALEN);
     memcpy(pack.ethh.src, this->hwaddr, DHCP_ETH_ALEN);
     pack.ethh.prot = htons(DHCP_ETH_EAPOL);
 
-    /* 802.1x header */
+    // 802.1x header
     pack.dot1x.ver  = 1;
-    pack.dot1x.type = 0; /* EAP */
+    pack.dot1x.type = 0; // EAP
     pack.dot1x.len =  ntohs(5);
 
-    /* EAP Packet */
+    // EAP Packet
     pack.eap.code      =  1;
     pack.eap.id        =  1;
     pack.eap.length    =  ntohs(5);
-    pack.eap.type      =  1; /* Identity */
+    pack.eap.type      =  1; // Identity
     (void)dhcp_send_dot1x(conn, &pack, DHCP_ETH_HLEN + 4 + 5);
     return 0;
   }
-  else if(packet.dot1x.type == 0)   /* EAP */
+  else if(packet.dot1x.type == 0)   // EAP
   {
     /* TODO: Currently we only support authentications starting with a
        client sending a EAPOL start message. Need to also support
@@ -3809,13 +3809,13 @@ int dhcp_eapol_ind(struct dhcp_t *this)  /* EAPOL Indication */
       this->cb_eap_ind(conn, &packet.eap, ntohs(packet.eap.length));
     return 0;
   }
-  else   /* Check for logoff */
+  else   // Check for logoff
   {
     return 0;
   }
 }
 
-/* Call this function when a new IPv6 packet has arrived */
+// Call this function when a new IPv6 packet has arrived
 int dhcp_ipv6_ind(struct dhcp_t *this)
 {
   struct dhcp_ipv6_packet_t packet;
@@ -3833,7 +3833,7 @@ int dhcp_ipv6_ind(struct dhcp_t *this)
   return dhcp_receive_ipv6(this, &packet, length);
 }
 
-/* Need to call this function at regular intervals to clean up old connections */
+// Need to call this function at regular intervals to clean up old connections
 int dhcp_timeout(struct dhcp_t *this)
 {
   if(paranoid)
@@ -3848,15 +3848,15 @@ int dhcp_timeout(struct dhcp_t *this)
   return 0;
 }
 
-/* Get time when to call dhcp_timeout() */
+// Get time when to call dhcp_timeout()
 struct timeval * dhcp_timeleft(struct dhcp_t *this, struct timeval *tvp)
 {
-  /* To avoid unused parameter warning */
+  // To avoid unused parameter warning
   (void)this;
   return tvp;
 }
 
-/* Release ressources allocated to the instance of the library */
+// Release ressources allocated to the instance of the library
 int dhcp_free(struct dhcp_t *this)
 {
   if(this->hash) free(this->hash);
@@ -3878,7 +3878,7 @@ int dhcp_free(struct dhcp_t *this)
   return 0;
 }
 
-/* Set callback function which is called when a dhcp request is received */
+// Set callback function which is called when a dhcp request is received
 int dhcp_set_cb_request(struct dhcp_t *this,
                         int (*cb_request)(struct dhcp_conn_t *conn, struct in_addr *addr))
 {
@@ -3886,7 +3886,7 @@ int dhcp_set_cb_request(struct dhcp_t *this,
   return 0;
 }
 
-/* Set the callback which is called when a machine requests an IPv6 address */
+// Set the callback which is called when a machine requests an IPv6 address
 int dhcp_set_cb_request6(struct dhcp_t *this,
                          int (*cb_request)(struct dhcp_conn_t *conn, struct in6_addr *addr))
 {
@@ -3894,7 +3894,7 @@ int dhcp_set_cb_request6(struct dhcp_t *this,
   return 0;
 }
 
-/* Set callback function which is called when a connection is created */
+// Set callback function which is called when a connection is created
 int dhcp_set_cb_connect(struct dhcp_t *this,
                         int (*cb_connect)(struct dhcp_conn_t *conn))
 {
@@ -3902,7 +3902,7 @@ int dhcp_set_cb_connect(struct dhcp_t *this,
   return 0;
 }
 
-/* Set the callback which is called when an IPv6 connection is created */
+// Set the callback which is called when an IPv6 connection is created
 int dhcp_set_cb_connect6(struct dhcp_t *this,
                          int (*cb_connect)(struct dhcp_conn_t *conn))
 {
@@ -3910,7 +3910,7 @@ int dhcp_set_cb_connect6(struct dhcp_t *this,
   return 0;
 }
 
-/* Set callback function which is called when a connection is deleted */
+// Set callback function which is called when a connection is deleted
 int dhcp_set_cb_disconnect(struct dhcp_t *this,
                            int (*cb_disconnect)(struct dhcp_conn_t *conn))
 {
@@ -3918,7 +3918,7 @@ int dhcp_set_cb_disconnect(struct dhcp_t *this,
   return 0;
 }
 
-/* Set the callback which is called when a IPv6 connection is deleted */
+// Set the callback which is called when a IPv6 connection is deleted
 int dhcp_set_cb_disconnect6(struct dhcp_t *this,
                             int (*cb_disconnect)(struct dhcp_conn_t *conn))
 {
@@ -3926,7 +3926,7 @@ int dhcp_set_cb_disconnect6(struct dhcp_t *this,
   return 0;
 }
 
-/* [SG] Set callback function which is called to check if a client is already logged in another IP version */
+// [SG] Set callback function which is called to check if a client is already logged in another IP version
 int dhcp_set_cb_unauth_dnat(struct dhcp_t *this,
                             int (*cb_unauth_dnat)(struct dhcp_conn_t *conn))
 {
@@ -3934,7 +3934,7 @@ int dhcp_set_cb_unauth_dnat(struct dhcp_t *this,
   return 0;
 }
 
-/* Set callback function which is called when packet has arrived */
+// Set callback function which is called when packet has arrived
 int dhcp_set_cb_ip_ind(struct dhcp_t *this,
                        int (*cb_ip_ind)(struct dhcp_conn_t *conn, void *pack, unsigned len))
 {
@@ -3943,7 +3943,7 @@ int dhcp_set_cb_ip_ind(struct dhcp_t *this,
 }
 
 
-/* Set callback which is called when IPv6 data has arrived on tun6 interface */
+// Set callback which is called when IPv6 data has arrived on tun6 interface
 int dhcp_set_cb_ipv6_ind(struct dhcp_t *this,
                          int (*cb_ipv6_ind)(struct dhcp_conn_t *conn, void *pack, unsigned len))
 {
@@ -3951,7 +3951,7 @@ int dhcp_set_cb_ipv6_ind(struct dhcp_t *this,
   return 0;
 }
 
-/* Set callback function which is called when packet has arrived */
+// Set callback function which is called when packet has arrived
 int dhcp_set_cb_eap_ind(struct dhcp_t *this,
                         int (*cb_eap_ind)(struct dhcp_conn_t *conn, void *pack, unsigned len))
 {

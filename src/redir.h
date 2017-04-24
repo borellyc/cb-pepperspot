@@ -39,7 +39,7 @@
 #ifndef _REDIR_H
 #define _REDIR_H
 
-#include <time.h>                         /* time_t */
+#include <time.h>                         // time_t
 #include "radius.h"
 
 #define REDIR_MAXLISTEN                 3 //!< Backlog argument of listen()
@@ -104,7 +104,7 @@
 //!
 struct redir_conn_t
 {
-  /* Parameters from HTTP request */
+  // Parameters from HTTP request
   int type;                               //!< REDIR_LOGOUT, LOGIN, PRELOGIN, CHALLENGE, MSDOWNLOAD
   char username[REDIR_USERNAMESIZE];      //!< User name
   char userurl[REDIR_USERURLSIZE];        //!< Original client requested webpage
@@ -191,7 +191,7 @@ struct redir_t
 //!
   int (*cb_getstate)(struct redir_t *redir, struct in_addr *addr, struct redir_conn_t *conn);
 
-  /* [SV] */
+  // [SV]
 //!
 //!  \brief Callback to retrieve state of an IPv6 connection.
 //!
@@ -318,7 +318,7 @@ int redir_set_cb_getstate(struct redir_t *redir,
                           int (*cb_getstate)(struct redir_t *redir, struct in_addr *addr,
                                              struct redir_conn_t *conn));
 
-/* [SV] */
+// [SV]
 //!
 //!  \brief Set callback to determine state information for the IPv6 connection.
 //!  \param redir redir_t instance
@@ -329,5 +329,5 @@ int redir_set_cb_getstate6(struct redir_t *redir,
                            int (*cb_getstate6)(struct redir_t *redir, struct in6_addr *addr,
                                                struct redir_conn_t *conn));
 
-#endif /* !_REDIR_H */
+#endif // !_REDIR_H
 

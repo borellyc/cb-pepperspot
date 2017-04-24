@@ -38,7 +38,7 @@
 
 #if !defined(HAVE_CLEARENV) || !defined(_XOPEN_SOURCE)
 
-/* clearenv replacement function (non POSIX) */
+// clearenv replacement function (non POSIX)
 int clearenv(void)
 {
   environ = NULL;
@@ -49,17 +49,17 @@ int clearenv(void)
 
 #if !defined(HAVE_DAEMON) || defined(_POSIX_C_SOURCE)
 
-/* daemon replacement function (non POSIX) */
+// daemon replacement function (non POSIX)
 int daemon(int nochdir, int noclose)
 {
   pid_t pid = -1;
   pid = fork();
 
-  if(pid == -1) /* error */
+  if(pid == -1) // error
   {
     return -1;
   }
-  else if(pid == 0) /* child */
+  else if(pid == 0) // child
   {
     if(setsid() == -1)
     {
@@ -73,11 +73,11 @@ int daemon(int nochdir, int noclose)
 
     if(!noclose)
     {
-      /* open /dev/null */
+      // open /dev/null
       int fd = -1;
       if((fd = open("/dev/null", O_RDWR, 0)) != -1)
       {
-        /* redirect stdin, stdout and stderr to /dev/null */
+        // redirect stdin, stdout and stderr to /dev/null
         dup2(fd, STDIN_FILENO);
         dup2(fd, STDOUT_FILENO);
         dup2(fd, STDERR_FILENO);
@@ -91,7 +91,7 @@ int daemon(int nochdir, int noclose)
 
     return 0;
   }
-  else /* father */
+  else // father
   {
     _exit(EXIT_SUCCESS);
   }

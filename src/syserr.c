@@ -87,7 +87,7 @@ void sys_err(int pri, char *fn, int ln, int en, char *fmt, ...)
   va_start(args, fmt);
   vsnprintf(buf, SYSERR_MSGSIZE, fmt, args);
   va_end(args);
-  buf[SYSERR_MSGSIZE - 1] = 0; /* Make sure it is null terminated */
+  buf[SYSERR_MSGSIZE - 1] = 0; // Make sure it is null terminated
   if(en)
     syslog(pri, "%s: %d: %d (%s) %s", fn, ln, en, strerror(en), buf);
   else

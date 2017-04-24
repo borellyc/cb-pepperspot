@@ -71,11 +71,11 @@
 #ifndef _RADIUS_H
 #define _RADIUS_H
 
-#include <stdio.h>                                     /* FILE */
-#include <stdint.h>                                    /* ISO C99 types: uint8_t, uint16_t, ... */
-#include <netinet/in.h>                                /* in_addr */
-#include <sys/socket.h>                                /* sockaddr_storage */
-#include <sys/time.h>                                  /* timeval */
+#include <stdio.h>                                     // FILE
+#include <stdint.h>                                    // ISO C99 types: uint8_t, uint16_t, ...
+#include <netinet/in.h>                                // in_addr
+#include <sys/socket.h>                                // sockaddr_storage
+#include <sys/time.h>                                  // timeval
 
 #include "radius_wispr.h"
 #include "radius_pepperspot.h"
@@ -97,7 +97,7 @@
 #define RADIUS_PASSWORD_LEN                         16 //!< Length of password
 #define RADIUS_MPPEKEYSSIZE                         32 //!< Length of MS_CHAP_MPPE_KEYS attribute
 
-/* Radius packet types */
+// Radius packet types
 #define RADIUS_CODE_ACCESS_REQUEST                   1 //!< Code of an radius access request message
 #define RADIUS_CODE_ACCESS_ACCEPT                    2 //!< Code of an radius access-accept message
 #define RADIUS_CODE_ACCESS_REJECT                    3 //!< Code of an radius access-reject message
@@ -116,7 +116,7 @@
 #define RADIUS_CODE_STATUS_ACCEPT                   47 //!< Code of an radius status-accept message
 #define RADIUS_CODE_STATUS_REJECT                   48 //!< Code of an radius status-reject message
 
-/* Radius attributes */
+// Radius attributes
 #define RADIUS_ATTR_USER_NAME                        1 //!< string
 #define RADIUS_ATTR_USER_PASSWORD                    2 //!< string (encrypt)
 #define RADIUS_ATTR_CHAP_PASSWORD                    3 //!< octets
@@ -219,7 +219,7 @@
 #define RADIUS_NAS_PORT_TYPE_WIRELESS_802_11        19 //!< NAS port is a 802.11 wireless interface
 #define RADIUS_NAS_PORT_TYPE_WIRELESS_UMTS          23 //!< NAS port is a UMTS wireless interface
 
-/* various possible causes for a terminated session */
+// various possible causes for a terminated session
 #define RADIUS_TERMINATE_CAUSE_USER_REQUEST          1 //!< User request session to terminate
 #define RADIUS_TERMINATE_CAUSE_LOST_CARRIER          2 //!< Modem lost carrier
 #define RADIUS_TERMINATE_CAUSE_LOST_SERVICE          3 //!< Server has problem (interface down, network access, ...)
@@ -695,5 +695,5 @@ int radius_set_cb_coa_ind(struct radius_t *this,
                           int (*cb_coa_ind)(struct radius_t *radius, struct radius_packet_t *pack,
                                             struct sockaddr_storage *peer));
 
-#endif /* !_RADIUS_H */
+#endif // !_RADIUS_H
 

@@ -60,14 +60,14 @@
 #include <syslog.h>
 #include <assert.h>
 #include <sys/socket.h>
-#include <netinet/icmp6.h>                       /* icmp6_filter */
+#include <netinet/icmp6.h>                       // icmp6_filter
 
 #include "icmp6.h"
 #include "util.h"
 
 static struct icmpv6_socket g_icmp6_sock;        //!< ICMPv6 socket descriptor
 
-/* Join/leave multicast group on interface */
+// Join/leave multicast group on interface
 int if_mc_group(int sock, int ifindex, const struct in6_addr *mc_addr, int cmd)
 {
   unsigned int val = 0;
@@ -89,7 +89,7 @@ int if_mc_group(int sock, int ifindex, const struct in6_addr *mc_addr, int cmd)
   return setsockopt(sock, IPPROTO_IPV6, cmd, &mreq, sizeof(mreq));
 }
 
-/* Initialize ICMPv6 socket */
+// Initialize ICMPv6 socket
 int icmp6_init(void)
 {
   struct icmp6_filter filter;
@@ -124,7 +124,7 @@ int icmp6_init(void)
   return 0;
 }
 
-/* Create an ICMPv6 header */
+// Create an ICMPv6 header
 void *icmp6_create(struct iovec *iov, uint8_t type, uint8_t code)
 {
   struct icmp6_hdr *hdr = NULL;
@@ -169,7 +169,7 @@ void *icmp6_create(struct iovec *iov, uint8_t type, uint8_t code)
   return hdr;
 }
 
-/* Send an ICMPv6 packet */
+// Send an ICMPv6 packet
 int icmp6_send(int oif, uint8_t hoplimit,
                const struct in6_addr *src, const struct in6_addr *dst,
                struct iovec *datav, size_t iovlen)
@@ -196,7 +196,7 @@ int icmp6_send(int oif, uint8_t hoplimit,
   cmsg = malloc(cmsglen);
   if(cmsg == NULL)
   {
-    /* dbg("out of memory\n"); */
+    // dbg("out of memory\n");
     return -ENOMEM;
   }
   cmsg->cmsg_len = CMSG_LEN(sizeof(pinfo));
@@ -227,7 +227,7 @@ int icmp6_send(int oif, uint8_t hoplimit,
   return ret;
 }
 
-/* Cleanup ICMPv6 socket */
+// Cleanup ICMPv6 socket
 void icmp6_cleanup(void)
 {
   close(g_icmp6_sock.fd);

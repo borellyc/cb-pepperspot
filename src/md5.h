@@ -28,7 +28,7 @@
 #ifndef _MD5_H
 #define _MD5_H
 
-#include <stdint.h>     /* ISO C99 types: uint8_t, uint16_t, ... */
+#include <stdint.h>     // ISO C99 types: uint8_t, uint16_t, ...
 
 /*
 #if defined(__alpha)
@@ -38,7 +38,7 @@
 #endif
 */
 
-/* Documentation taken from RFC 1321 */
+// Documentation taken from RFC 1321
 
 //!
 //!  \struct MD5Context
@@ -97,5 +97,5 @@ void MD5Transform(uint32_t buf[4], uint32_t const in[16]);
 //!
 typedef struct MD5Context MD5_CTX;
 
-#endif /* !_MD5_H */
+#endif // !_MD5_H
 

@@ -85,5 +85,5 @@
 #define RADIUS_ATTR_WISPR_SESSION_TERMINATE_END_OF_DAY    10 //!< string
 #define RADIUS_ATTR_WISPR_BILLING_CLASS_OF_SERVICE        11 //!< string
 
-#endif /* !_RADIUS_WISPR_H */
+#endif // !_RADIUS_WISPR_H
 

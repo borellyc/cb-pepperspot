@@ -20,7 +20,7 @@
  *          sebastien.vincent@pepperspot.info
  */
 
-/* $Id: ndisc.h 1.13 04/09/20 12:47:39+03:00 vnuorval@tcs.hut.fi $ */
+// $Id: ndisc.h 1.13 04/09/20 12:47:39+03:00 vnuorval@tcs.hut.fi $
 
 //!
 //!  \file ndisc.h
@@ -30,9 +30,9 @@
 #ifndef _NDISC_H
 #define _NDISC_H
 
-#include <stdint.h>          /* ISO C99 types: uint8_t, uint16_t, ... */
-#include <netinet/in.h>      /* in_addr */
-#include <net/if_arp.h>      /* ARPHRD_ETHER, ARPHRD_IEEE802, ... */
+#include <stdint.h>          // ISO C99 types: uint8_t, uint16_t, ...
+#include <netinet/in.h>      // in_addr
+#include <net/if_arp.h>      // ARPHRD_ETHER, ARPHRD_IEEE802, ...
 
 #ifndef ARPHRD_IEEE80211
 #define ARPHRD_IEEE80211 801 //!< 802.11 type
@@ -51,5 +51,5 @@ int ndisc_send_na(int ifindex, const struct in6_addr *src,
                   const struct in6_addr *dst,
                   const struct in6_addr *target, uint32_t flags);
 
-#endif /* !_NDISC_H */
+#endif // !_NDISC_H
 

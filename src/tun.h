@@ -71,8 +71,8 @@
 #ifndef _TUN_H
 #define _TUN_H
 
-#include <net/if.h>               /* IF_NAMESIZE */
-#include <netinet/in.h>           /* in_addr */
+#include <net/if.h>               // IF_NAMESIZE
+#include <netinet/in.h>           // in_addr
 
 #ifndef IFNAMSIZ
 #define IFNAMSIZ      IF_NAMESIZE //!< Interface name size
@@ -209,5 +209,5 @@ int tun_set_cb_ind(struct tun_t *this,
 
 
 
-#endif /* !_TUN_H */
+#endif // !_TUN_H
 

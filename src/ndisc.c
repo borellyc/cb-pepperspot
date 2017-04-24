@@ -103,7 +103,7 @@ static struct nd_opt_hdr *ndisc_opt_create(struct iovec *iov, uint8_t type,
   struct nd_opt_hdr *opt = NULL;
   int hlen = sizeof(struct nd_opt_hdr);
 
-  /* len must be lenght(value) in bytes */
+  // len must be lenght(value) in bytes
   opt = malloc(len + hlen);
   if(opt == NULL)
     return NULL;
@@ -126,17 +126,17 @@ static inline short ndisc_get_l2addr_len(unsigned short iface_type)
 {
   switch(iface_type)
   {
-    /* supported physical devices */
+    // supported physical devices
     case ARPHRD_ETHER:
     case ARPHRD_IEEE802:
-    /* case ARPHRD_IEEE802_TR: */
+    // case ARPHRD_IEEE802_TR:
     case ARPHRD_IEEE80211:
-    /* case ARPHRD_FDDI: */
+    // case ARPHRD_FDDI:
       return 6;
 #if 0
     case ARPHRD_ARCNET:
       return 1;
-    /* supported virtual devices */
+    // supported virtual devices
     case ARPHRD_SIT:
     case ARPHRD_TUNNEL6:
     case ARPHRD_PPP:
@@ -144,7 +144,7 @@ static inline short ndisc_get_l2addr_len(unsigned short iface_type)
       return 0;
 #endif
     default:
-      /* unsupported */
+      // unsupported
       return -1;
   }
 }
@@ -219,7 +219,7 @@ static int ndisc_get_l2addr(int ifindex, uint8_t *addr)
   return res;
 }
 
-/* Send Neighbor Advertisement */
+// Send Neighbor Advertisement
 int ndisc_send_na(int ifindex, const struct in6_addr *src,
                   const struct in6_addr *dst,
                   const struct in6_addr *target, uint32_t flags)

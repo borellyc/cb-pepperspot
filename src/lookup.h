@@ -71,7 +71,7 @@
 #ifndef _LOOKUP_H
 #define _LOOKUP_H
 
-#include <stdint.h> /* ISO C99 types: uint8_t, uint16_t, ... */
+#include <stdint.h> // ISO C99 types: uint8_t, uint16_t, ...
 //!
 //!  \brief Generates a 32 bit hash.
 //!
@@ -86,5 +86,5 @@
 //!
 uint32_t lookup(register uint8_t *k, register uint32_t length, register uint32_t level);
 
-#endif /* !_LOOKUP_H */
+#endif // !_LOOKUP_H
 

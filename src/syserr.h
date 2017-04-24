@@ -71,7 +71,7 @@
 #ifndef _SYSERR_H
 #define _SYSERR_H
 
-#include <netinet/in.h>    /* in_addr */
+#include <netinet/in.h>    // in_addr
 
 #define SYSERR_MSGSIZE 256 //!< Maximum error message size
 
@@ -101,5 +101,5 @@ void sys_err(int pri, char *fn, int ln, int en, char *fmt, ...);
 void sys_errpack(int pri, char *fn, int ln, int en, struct sockaddr_in *peer,
                  void *pack, unsigned len, char *fmt, ...);
 
-#endif /* !_SYSERR_H */
+#endif // !_SYSERR_H
 

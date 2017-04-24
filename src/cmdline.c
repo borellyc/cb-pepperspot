@@ -13,7 +13,7 @@
 //!  \brief Parser.
 //!
 
-/* If we use autoconf. */
+// If we use autoconf.
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
@@ -225,7 +225,7 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->eapolenable_flag = 0;
   args_info->uamserver_arg = gengetopt_strdup ("https://login.hotradius.com");
   args_info->uamserver_orig = NULL;
-  args_info->uamserver6_arg = NULL; /* MUST be specified in configuration file with IPv6 address (with brackets) */
+  args_info->uamserver6_arg = NULL; // MUST be specified in configuration file with IPv6 address (with brackets)
   args_info->uamserver6_orig = NULL;
   args_info->uamhomepage_arg = NULL;
   args_info->uamhomepage_orig = NULL;
@@ -335,422 +335,422 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
   unsigned int i;
   if (args_info->debugfacility_orig)
     {
-      free (args_info->debugfacility_orig); /* free previous argument */
+      free (args_info->debugfacility_orig); // free previous argument
       args_info->debugfacility_orig = 0;
     }
   if (args_info->conf_arg)
     {
-      free (args_info->conf_arg); /* free previous argument */
+      free (args_info->conf_arg); // free previous argument
       args_info->conf_arg = 0;
     }
   if (args_info->conf_orig)
     {
-      free (args_info->conf_orig); /* free previous argument */
+      free (args_info->conf_orig); // free previous argument
       args_info->conf_orig = 0;
     }
   if (args_info->interval_orig)
     {
-      free (args_info->interval_orig); /* free previous argument */
+      free (args_info->interval_orig); // free previous argument
       args_info->interval_orig = 0;
     }
   if (args_info->pidfile_arg)
     {
-      free (args_info->pidfile_arg); /* free previous argument */
+      free (args_info->pidfile_arg); // free previous argument
       args_info->pidfile_arg = 0;
     }
   if (args_info->pidfile_orig)
     {
-      free (args_info->pidfile_orig); /* free previous argument */
+      free (args_info->pidfile_orig); // free previous argument
       args_info->pidfile_orig = 0;
     }
   if(args_info->ipversion_arg)
     {
-      free(args_info->ipversion_arg); /* free previous argument */
+      free(args_info->ipversion_arg); // free previous argument
       args_info->ipversion_arg = 0;
     }
   if(args_info->ipversion_orig)
     {
-      free(args_info->ipversion_orig); /* free previous argument */
+      free(args_info->ipversion_orig); // free previous argument
       args_info->ipversion_orig = 0;
     }
   if (args_info->statedir_arg)
     {
-      free (args_info->statedir_arg); /* free previous argument */
+      free (args_info->statedir_arg); // free previous argument
       args_info->statedir_arg = 0;
     }
   if (args_info->statedir_orig)
     {
-      free (args_info->statedir_orig); /* free previous argument */
+      free (args_info->statedir_orig); // free previous argument
       args_info->statedir_orig = 0;
     }
   if (args_info->net_arg)
     {
-      free (args_info->net_arg); /* free previous argument */
+      free (args_info->net_arg); // free previous argument
       args_info->net_arg = 0;
     }
   if (args_info->net_orig)
     {
-      free (args_info->net_orig); /* free previous argument */
+      free (args_info->net_orig); // free previous argument
       args_info->net_orig = 0;
     }
   if (args_info->dynip_arg)
     {
-      free (args_info->dynip_arg); /* free previous argument */
+      free (args_info->dynip_arg); // free previous argument
       args_info->dynip_arg = 0;
     }
   if (args_info->dynip_orig)
     {
-      free (args_info->dynip_orig); /* free previous argument */
+      free (args_info->dynip_orig); // free previous argument
       args_info->dynip_orig = 0;
     }
   if (args_info->statip_arg)
     {
-      free (args_info->statip_arg); /* free previous argument */
+      free (args_info->statip_arg); // free previous argument
       args_info->statip_arg = 0;
     }
   if (args_info->statip_orig)
     {
-      free (args_info->statip_orig); /* free previous argument */
+      free (args_info->statip_orig); // free previous argument
       args_info->statip_orig = 0;
     }
   if (args_info->dns1_arg)
     {
-      free (args_info->dns1_arg); /* free previous argument */
+      free (args_info->dns1_arg); // free previous argument
       args_info->dns1_arg = 0;
     }
   if (args_info->dns1_orig)
     {
-      free (args_info->dns1_orig); /* free previous argument */
+      free (args_info->dns1_orig); // free previous argument
       args_info->dns1_orig = 0;
     }
   if (args_info->dns2_arg)
     {
-      free (args_info->dns2_arg); /* free previous argument */
+      free (args_info->dns2_arg); // free previous argument
       args_info->dns2_arg = 0;
     }
   if (args_info->dns2_orig)
     {
-      free (args_info->dns2_orig); /* free previous argument */
+      free (args_info->dns2_orig); // free previous argument
       args_info->dns2_orig = 0;
     }
   if (args_info->staticipv6_arg)
     {
-      free (args_info->staticipv6_arg); /* free previous argument */
+      free (args_info->staticipv6_arg); // free previous argument
       args_info->staticipv6_arg = 0;
     }
   if (args_info->staticipv6_orig)
     {
-      free (args_info->staticipv6_orig); /* free previous argument */
+      free (args_info->staticipv6_orig); // free previous argument
       args_info->staticipv6_orig = 0;
     }
   if (args_info->ipv6prefix_arg)
     {
-      free (args_info->ipv6prefix_arg); /* free previous argument */
+      free (args_info->ipv6prefix_arg); // free previous argument
       args_info->ipv6prefix_arg = 0;
     }
   if (args_info->ipv6prefix_orig)
     {
-      free (args_info->ipv6prefix_orig); /* free previous argument */
+      free (args_info->ipv6prefix_orig); // free previous argument
       args_info->ipv6prefix_orig = 0;
     }
   if (args_info->domain_arg)
     {
-      free (args_info->domain_arg); /* free previous argument */
+      free (args_info->domain_arg); // free previous argument
       args_info->domain_arg = 0;
     }
   if (args_info->domain_orig)
     {
-      free (args_info->domain_orig); /* free previous argument */
+      free (args_info->domain_orig); // free previous argument
       args_info->domain_orig = 0;
     }
   if (args_info->ipup_arg)
     {
-      free (args_info->ipup_arg); /* free previous argument */
+      free (args_info->ipup_arg); // free previous argument
       args_info->ipup_arg = 0;
     }
   if (args_info->ipup_orig)
     {
-      free (args_info->ipup_orig); /* free previous argument */
+      free (args_info->ipup_orig); // free previous argument
       args_info->ipup_orig = 0;
     }
   if (args_info->ipdown_arg)
     {
-      free (args_info->ipdown_arg); /* free previous argument */
+      free (args_info->ipdown_arg); // free previous argument
       args_info->ipdown_arg = 0;
     }
   if (args_info->ipdown_orig)
     {
-      free (args_info->ipdown_orig); /* free previous argument */
+      free (args_info->ipdown_orig); // free previous argument
       args_info->ipdown_orig = 0;
     }
   if (args_info->conup_arg)
     {
-      free (args_info->conup_arg); /* free previous argument */
+      free (args_info->conup_arg); // free previous argument
       args_info->conup_arg = 0;
     }
   if (args_info->conup_orig)
     {
-      free (args_info->conup_orig); /* free previous argument */
+      free (args_info->conup_orig); // free previous argument
       args_info->conup_orig = 0;
     }
   if (args_info->condown_arg)
     {
-      free (args_info->condown_arg); /* free previous argument */
+      free (args_info->condown_arg); // free previous argument
       args_info->condown_arg = 0;
     }
   if (args_info->condown_orig)
     {
-      free (args_info->condown_orig); /* free previous argument */
+      free (args_info->condown_orig); // free previous argument
       args_info->condown_orig = 0;
     }
   if (args_info->radiuslisten_arg)
     {
-      free (args_info->radiuslisten_arg); /* free previous argument */
+      free (args_info->radiuslisten_arg); // free previous argument
       args_info->radiuslisten_arg = 0;
     }
   if (args_info->radiuslisten_orig)
     {
-      free (args_info->radiuslisten_orig); /* free previous argument */
+      free (args_info->radiuslisten_orig); // free previous argument
       args_info->radiuslisten_orig = 0;
     }
   if (args_info->radiusserver1_arg)
     {
-      free (args_info->radiusserver1_arg); /* free previous argument */
+      free (args_info->radiusserver1_arg); // free previous argument
       args_info->radiusserver1_arg = 0;
     }
   if (args_info->radiusserver1_orig)
     {
-      free (args_info->radiusserver1_orig); /* free previous argument */
+      free (args_info->radiusserver1_orig); // free previous argument
       args_info->radiusserver1_orig = 0;
     }
   if (args_info->radiusserver2_arg)
     {
-      free (args_info->radiusserver2_arg); /* free previous argument */
+      free (args_info->radiusserver2_arg); // free previous argument
       args_info->radiusserver2_arg = 0;
     }
   if (args_info->radiusserver2_orig)
     {
-      free (args_info->radiusserver2_orig); /* free previous argument */
+      free (args_info->radiusserver2_orig); // free previous argument
       args_info->radiusserver2_orig = 0;
     }
   if (args_info->radiusauthport_orig)
     {
-      free (args_info->radiusauthport_orig); /* free previous argument */
+      free (args_info->radiusauthport_orig); // free previous argument
       args_info->radiusauthport_orig = 0;
     }
   if (args_info->radiusacctport_orig)
     {
-      free (args_info->radiusacctport_orig); /* free previous argument */
+      free (args_info->radiusacctport_orig); // free previous argument
       args_info->radiusacctport_orig = 0;
     }
   if (args_info->radiussecret_arg)
     {
-      free (args_info->radiussecret_arg); /* free previous argument */
+      free (args_info->radiussecret_arg); // free previous argument
       args_info->radiussecret_arg = 0;
     }
   if (args_info->radiussecret_orig)
     {
-      free (args_info->radiussecret_orig); /* free previous argument */
+      free (args_info->radiussecret_orig); // free previous argument
       args_info->radiussecret_orig = 0;
     }
   if (args_info->radiusnasid_arg)
     {
-      free (args_info->radiusnasid_arg); /* free previous argument */
+      free (args_info->radiusnasid_arg); // free previous argument
       args_info->radiusnasid_arg = 0;
     }
   if (args_info->radiusnasid_orig)
     {
-      free (args_info->radiusnasid_orig); /* free previous argument */
+      free (args_info->radiusnasid_orig); // free previous argument
       args_info->radiusnasid_orig = 0;
     }
   if (args_info->radiusnasip_arg)
     {
-      free (args_info->radiusnasip_arg); /* free previous argument */
+      free (args_info->radiusnasip_arg); // free previous argument
       args_info->radiusnasip_arg = 0;
     }
   if (args_info->radiusnasip_orig)
     {
-      free (args_info->radiusnasip_orig); /* free previous argument */
+      free (args_info->radiusnasip_orig); // free previous argument
       args_info->radiusnasip_orig = 0;
     }
   if (args_info->radiuscalled_arg)
     {
-      free (args_info->radiuscalled_arg); /* free previous argument */
+      free (args_info->radiuscalled_arg); // free previous argument
       args_info->radiuscalled_arg = 0;
     }
   if (args_info->radiuscalled_orig)
     {
-      free (args_info->radiuscalled_orig); /* free previous argument */
+      free (args_info->radiuscalled_orig); // free previous argument
       args_info->radiuscalled_orig = 0;
     }
   if (args_info->radiuslocationid_arg)
     {
-      free (args_info->radiuslocationid_arg); /* free previous argument */
+      free (args_info->radiuslocationid_arg); // free previous argument
       args_info->radiuslocationid_arg = 0;
     }
   if (args_info->radiuslocationid_orig)
     {
-      free (args_info->radiuslocationid_orig); /* free previous argument */
+      free (args_info->radiuslocationid_orig); // free previous argument
       args_info->radiuslocationid_orig = 0;
     }
   if (args_info->radiuslocationname_arg)
     {
-      free (args_info->radiuslocationname_arg); /* free previous argument */
+      free (args_info->radiuslocationname_arg); // free previous argument
       args_info->radiuslocationname_arg = 0;
     }
   if (args_info->radiuslocationname_orig)
     {
-      free (args_info->radiuslocationname_orig); /* free previous argument */
+      free (args_info->radiuslocationname_orig); // free previous argument
       args_info->radiuslocationname_orig = 0;
     }
   if (args_info->radiusnasporttype_orig)
     {
-      free (args_info->radiusnasporttype_orig); /* free previous argument */
+      free (args_info->radiusnasporttype_orig); // free previous argument
       args_info->radiusnasporttype_orig = 0;
     }
   if (args_info->coaport_orig)
     {
-      free (args_info->coaport_orig); /* free previous argument */
+      free (args_info->coaport_orig); // free previous argument
       args_info->coaport_orig = 0;
     }
   if (args_info->proxylisten_arg)
     {
-      free (args_info->proxylisten_arg); /* free previous argument */
+      free (args_info->proxylisten_arg); // free previous argument
       args_info->proxylisten_arg = 0;
     }
   if (args_info->proxylisten_orig)
     {
-      free (args_info->proxylisten_orig); /* free previous argument */
+      free (args_info->proxylisten_orig); // free previous argument
       args_info->proxylisten_orig = 0;
     }
   if (args_info->proxyport_orig)
     {
-      free (args_info->proxyport_orig); /* free previous argument */
+      free (args_info->proxyport_orig); // free previous argument
       args_info->proxyport_orig = 0;
     }
   if (args_info->proxyclient_arg)
     {
-      free (args_info->proxyclient_arg); /* free previous argument */
+      free (args_info->proxyclient_arg); // free previous argument
       args_info->proxyclient_arg = 0;
     }
   if (args_info->proxyclient_orig)
     {
-      free (args_info->proxyclient_orig); /* free previous argument */
+      free (args_info->proxyclient_orig); // free previous argument
       args_info->proxyclient_orig = 0;
     }
   if (args_info->proxysecret_arg)
     {
-      free (args_info->proxysecret_arg); /* free previous argument */
+      free (args_info->proxysecret_arg); // free previous argument
       args_info->proxysecret_arg = 0;
     }
   if (args_info->proxysecret_orig)
     {
-      free (args_info->proxysecret_orig); /* free previous argument */
+      free (args_info->proxysecret_orig); // free previous argument
       args_info->proxysecret_orig = 0;
     }
   if (args_info->confusername_arg)
     {
-      free (args_info->confusername_arg); /* free previous argument */
+      free (args_info->confusername_arg); // free previous argument
       args_info->confusername_arg = 0;
     }
   if (args_info->confusername_orig)
     {
-      free (args_info->confusername_orig); /* free previous argument */
+      free (args_info->confusername_orig); // free previous argument
       args_info->confusername_orig = 0;
     }
   if (args_info->confpassword_arg)
     {
-      free (args_info->confpassword_arg); /* free previous argument */
+      free (args_info->confpassword_arg); // free previous argument
       args_info->confpassword_arg = 0;
     }
   if (args_info->confpassword_orig)
     {
-      free (args_info->confpassword_orig); /* free previous argument */
+      free (args_info->confpassword_orig); // free previous argument
       args_info->confpassword_orig = 0;
     }
   if (args_info->dhcpif_arg)
     {
-      free (args_info->dhcpif_arg); /* free previous argument */
+      free (args_info->dhcpif_arg); // free previous argument
       args_info->dhcpif_arg = 0;
     }
   if (args_info->dhcpif_orig)
     {
-      free (args_info->dhcpif_orig); /* free previous argument */
+      free (args_info->dhcpif_orig); // free previous argument
       args_info->dhcpif_orig = 0;
     }
   if (args_info->dhcpmac_arg)
     {
-      free (args_info->dhcpmac_arg); /* free previous argument */
+      free (args_info->dhcpmac_arg); // free previous argument
       args_info->dhcpmac_arg = 0;
     }
   if (args_info->dhcplisten_arg)
     {
-      free (args_info->dhcplisten_arg); /* free previous argument */
+      free (args_info->dhcplisten_arg); // free previous argument
       args_info->dhcplisten_arg = 0;
     }
   if (args_info->dhcpmac_orig)
     {
-      free (args_info->dhcpmac_orig); /* free previous argument */
+      free (args_info->dhcpmac_orig); // free previous argument
       args_info->dhcpmac_orig = 0;
     }
   if (args_info->lease_orig)
     {
-      free (args_info->lease_orig); /* free previous argument */
+      free (args_info->lease_orig); // free previous argument
       args_info->lease_orig = 0;
     }
   if (args_info->uamserver_arg)
     {
-      free (args_info->uamserver_arg); /* free previous argument */
+      free (args_info->uamserver_arg); // free previous argument
       args_info->uamserver_arg = 0;
     }
   if (args_info->uamserver_orig)
     {
-      free (args_info->uamserver_orig); /* free previous argument */
+      free (args_info->uamserver_orig); // free previous argument
       args_info->uamserver_orig = 0;
     }  
   if (args_info->uamserver6_arg)
     {
-      free (args_info->uamserver6_arg); /* free previous argument */
+      free (args_info->uamserver6_arg); // free previous argument
       args_info->uamserver6_arg = 0;
     }
   if (args_info->uamserver6_orig)
     {
-      free (args_info->uamserver6_orig); /* free previous argument */
+      free (args_info->uamserver6_orig); // free previous argument
       args_info->uamserver6_orig = 0;
     }
   if (args_info->uamhomepage_arg)
     {
-      free (args_info->uamhomepage_arg); /* free previous argument */
+      free (args_info->uamhomepage_arg); // free previous argument
       args_info->uamhomepage_arg = 0;
     }
   if (args_info->uamhomepage_orig)
     {
-      free (args_info->uamhomepage_orig); /* free previous argument */
+      free (args_info->uamhomepage_orig); // free previous argument
       args_info->uamhomepage_orig = 0;
     }
   if (args_info->uamsecret_arg)
     {
-      free (args_info->uamsecret_arg); /* free previous argument */
+      free (args_info->uamsecret_arg); // free previous argument
       args_info->uamsecret_arg = 0;
     }
   if (args_info->uamsecret_orig)
     {
-      free (args_info->uamsecret_orig); /* free previous argument */
+      free (args_info->uamsecret_orig); // free previous argument
       args_info->uamsecret_orig = 0;
     }
   if (args_info->uamlisten_arg)
     {
-      free (args_info->uamlisten_arg); /* free previous argument */
+      free (args_info->uamlisten_arg); // free previous argument
       args_info->uamlisten_arg = 0;
     }
   if (args_info->uamlisten_orig)
     {
-      free (args_info->uamlisten_orig); /* free previous argument */
+      free (args_info->uamlisten_orig); // free previous argument
       args_info->uamlisten_orig = 0;
     }
   if (args_info->uamport_orig)
     {
-      free (args_info->uamport_orig); /* free previous argument */
+      free (args_info->uamport_orig); // free previous argument
       args_info->uamport_orig = 0;
     }
   if (args_info->uamallowed_arg)
@@ -759,20 +759,20 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
         {
           if (args_info->uamallowed_arg [i])
             {
-              free (args_info->uamallowed_arg [i]); /* free previous argument */
+              free (args_info->uamallowed_arg [i]); // free previous argument
               args_info->uamallowed_arg [i] = 0;
             }
           if (args_info->uamallowed_orig [i])
             {
-              free (args_info->uamallowed_orig [i]); /* free previous argument */
+              free (args_info->uamallowed_orig [i]); // free previous argument
               args_info->uamallowed_orig [i] = 0;
             }
         }
       if (args_info->uamallowed_arg [0])
-        free (args_info->uamallowed_arg [0]); /* free default string */
-      free (args_info->uamallowed_arg); /* free previous argument */
+        free (args_info->uamallowed_arg [0]); // free default string
+      free (args_info->uamallowed_arg); // free previous argument
       args_info->uamallowed_arg = 0;
-      free (args_info->uamallowed_orig); /* free previous argument */
+      free (args_info->uamallowed_orig); // free previous argument
       args_info->uamallowed_orig = 0;
     }
   if (args_info->macallowed_arg)
@@ -781,40 +781,40 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
         {
           if (args_info->macallowed_arg [i])
             {
-              free (args_info->macallowed_arg [i]); /* free previous argument */
+              free (args_info->macallowed_arg [i]); // free previous argument
               args_info->macallowed_arg [i] = 0;
             }
           if (args_info->macallowed_orig [i])
             {
-              free (args_info->macallowed_orig [i]); /* free previous argument */
+              free (args_info->macallowed_orig [i]); // free previous argument
               args_info->macallowed_orig [i] = 0;
             }
         }
       if (args_info->macallowed_arg [0])
-        free (args_info->macallowed_arg [0]); /* free default string */
-      free (args_info->macallowed_arg); /* free previous argument */
+        free (args_info->macallowed_arg [0]); // free default string
+      free (args_info->macallowed_arg); // free previous argument
       args_info->macallowed_arg = 0;
-      free (args_info->macallowed_orig); /* free previous argument */
+      free (args_info->macallowed_orig); // free previous argument
       args_info->macallowed_orig = 0;
     }
   if (args_info->macsuffix_arg)
     {
-      free (args_info->macsuffix_arg); /* free previous argument */
+      free (args_info->macsuffix_arg); // free previous argument
       args_info->macsuffix_arg = 0;
     }
   if (args_info->macsuffix_orig)
     {
-      free (args_info->macsuffix_orig); /* free previous argument */
+      free (args_info->macsuffix_orig); // free previous argument
       args_info->macsuffix_orig = 0;
     }
   if (args_info->macpasswd_arg)
     {
-      free (args_info->macpasswd_arg); /* free previous argument */
+      free (args_info->macpasswd_arg); // free previous argument
       args_info->macpasswd_arg = 0;
     }
   if (args_info->macpasswd_orig)
     {
-      free (args_info->macpasswd_orig); /* free previous argument */
+      free (args_info->macpasswd_orig); // free previous argument
       args_info->macpasswd_orig = 0;
     }
 
@@ -1235,7 +1235,7 @@ cmdline_parser_free (struct gengetopt_args_info *args_info)
   cmdline_parser_release (args_info);
   if (cmd_line_list)
     {
-      /* free the list of a previous call */
+      // free the list of a previous call
       while (cmd_line_list) {
         cmd_line_list_tmp = cmd_line_list;
         cmd_line_list = cmd_line_list->next;
@@ -1246,8 +1246,8 @@ cmdline_parser_free (struct gengetopt_args_info *args_info)
 }
 
 
-/* gengetopt_strdup() */
-/* strdup.c replacement of strdup, which is not standard */
+// gengetopt_strdup()
+// strdup.c replacement of strdup, which is not standard
 char *
 gengetopt_strdup (const char *s)
 {
@@ -1327,7 +1327,7 @@ cmdline_parser2 (int argc, char * const *argv, struct gengetopt_args_info *args_
 int
 cmdline_parser_required (struct gengetopt_args_info *args_info, const char *prog_name)
 {
-  /* To avoid unused parameters warning */
+  // To avoid unused parameters warning
   args_info = NULL;
   prog_name = NULL;
   return EXIT_SUCCESS;
@@ -1337,15 +1337,15 @@ cmdline_parser_required (struct gengetopt_args_info *args_info, const char *prog
 int
 cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_info *args_info, int override, int initialize, int check_required, const char *additional_error)
 {
-  int c;  /* Character of the parsed option.  */
-  char *multi_token, *multi_next; /* for multiple options */
-  int i;        /* Counter */
+  int c;  // Character of the parsed option. 
+  char *multi_token, *multi_next; // for multiple options
+  int i;        // Counter
   struct uamallowed_list * uamallowed_list = NULL,* uamallowed_new = NULL;
   struct macallowed_list * macallowed_list = NULL,* macallowed_new = NULL;
   int error = 0;
   struct gengetopt_args_info local_args_info;
 
-  /* To avoid unused parameter warning */
+  // To avoid unused parameter warning
   (void)check_required;
  
   if (initialize)
@@ -1429,11 +1429,11 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
       stop_char = 0;
       c = getopt_long (argc, argv, "hVfdc:n:", long_options, &option_index);
 
-      if (c == -1) break;  /* Exit from `while (1)' loop.  */
+      if (c == -1) break;  // Exit from `while (1)' loop. 
 
       switch (c)
         {
-        case 'h':  /* Print help and exit.  */
+        case 'h':  // Print help and exit. 
           cmdline_parser_print_help ();
           cmdline_parser_free (&local_args_info);
           
@@ -1443,7 +1443,7 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
           }
           exit (EXIT_SUCCESS);
 
-        case 'V':  /* Print version and exit.  */
+        case 'V':  // Print version and exit. 
           cmdline_parser_print_version ();
           cmdline_parser_free (&local_args_info);
 
@@ -1453,7 +1453,7 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
           }
           exit (EXIT_SUCCESS);
 
-        case 'f':  /* Run in foreground.  */
+        case 'f':  // Run in foreground. 
           if (local_args_info.fg_given)
             {
               fprintf (stderr, "%s: `--fg' (`-f') option given more than once%s\n", argv[0], (additional_error ? additional_error : ""));
@@ -1466,7 +1466,7 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
           args_info->fg_flag = !(args_info->fg_flag);
           break;
 
-        case 'd':  /* Run in debug mode.  */
+        case 'd':  // Run in debug mode. 
           if (local_args_info.debug_given)
             {
               fprintf (stderr, "%s: `--debug' (`-d') option given more than once%s\n", argv[0], (additional_error ? additional_error : ""));
@@ -1479,7 +1479,7 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
           args_info->debug_flag = !(args_info->debug_flag);
           break;
 
-        case 'c':  /* Read configuration file.  */
+        case 'c':  // Read configuration file. 
           if (local_args_info.conf_given)
             {
               fprintf (stderr, "%s: `--conf' (`-c') option given more than once%s\n", argv[0], (additional_error ? additional_error : ""));
@@ -1490,14 +1490,14 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
           local_args_info.conf_given = 1;
           args_info->conf_given = 1;
           if (args_info->conf_arg)
-            free (args_info->conf_arg); /* free previous string */
+            free (args_info->conf_arg); // free previous string
           args_info->conf_arg = gengetopt_strdup (optarg);
           if (args_info->conf_orig)
-            free (args_info->conf_orig); /* free previous string */
+            free (args_info->conf_orig); // free previous string
           args_info->conf_orig = gengetopt_strdup (optarg);
           break;
 
-        case 'n':  /* Network.  */
+        case 'n':  // Network. 
           if (local_args_info.net_given)
             {
               fprintf (stderr, "%s: `--net' (`-n') option given more than once%s\n", argv[0], (additional_error ? additional_error : ""));
@@ -1508,16 +1508,16 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
           local_args_info.net_given = 1;
           args_info->net_given = 1;
           if (args_info->net_arg)
-            free (args_info->net_arg); /* free previous string */
+            free (args_info->net_arg); // free previous string
           args_info->net_arg = gengetopt_strdup (optarg);
           if (args_info->net_orig)
-            free (args_info->net_orig); /* free previous string */
+            free (args_info->net_orig); // free previous string
           args_info->net_orig = gengetopt_strdup (optarg);
           break;
 
 
-        case 0:  /* Long option with no short option */
-          /* Which modules to print debug messages for.  */
+        case 0:  // Long option with no short option
+          // Which modules to print debug messages for. 
           if (strcmp (long_options[option_index].name, "debugfacility") == 0)
           {
             if (local_args_info.debugfacility_given)
@@ -1531,10 +1531,10 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             args_info->debugfacility_given = 1;
             args_info->debugfacility_arg = strtol (optarg, &stop_char, 0);
             if (args_info->debugfacility_orig)
-              free (args_info->debugfacility_orig); /* free previous string */
+              free (args_info->debugfacility_orig); // free previous string
             args_info->debugfacility_orig = gengetopt_strdup (optarg);
           }
-          /* Re-read configuration file at this interval.  */
+          // Re-read configuration file at this interval. 
           else if (strcmp (long_options[option_index].name, "interval") == 0)
           {
             if (local_args_info.interval_given)
@@ -1548,10 +1548,10 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             args_info->interval_given = 1;
             args_info->interval_arg = strtol (optarg, &stop_char, 0);
             if (args_info->interval_orig)
-              free (args_info->interval_orig); /* free previous string */
+              free (args_info->interval_orig); // free previous string
             args_info->interval_orig = gengetopt_strdup (optarg);
           }
-          /* Filename of process id file.  */
+          // Filename of process id file. 
           else if (strcmp (long_options[option_index].name, "pidfile") == 0)
           {
             if (local_args_info.pidfile_given)
@@ -1564,13 +1564,13 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             local_args_info.pidfile_given = 1;
             args_info->pidfile_given = 1;
             if (args_info->pidfile_arg)
-              free (args_info->pidfile_arg); /* free previous string */
+              free (args_info->pidfile_arg); // free previous string
             args_info->pidfile_arg = gengetopt_strdup (optarg);
             if (args_info->pidfile_orig)
-              free (args_info->pidfile_orig); /* free previous string */
+              free (args_info->pidfile_orig); // free previous string
             args_info->pidfile_orig = gengetopt_strdup (optarg);
           }
-          /* Filename of process id file.  */
+          // Filename of process id file. 
           else if (strcmp (long_options[option_index].name, "ipversion") == 0)
           {
             if (local_args_info.ipversion_given)
@@ -1583,13 +1583,13 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             local_args_info.ipversion_given = 1;
             args_info->ipversion_given = 1;
             if (args_info->ipversion_arg)
-              free (args_info->ipversion_arg); /* free previous string */
+              free (args_info->ipversion_arg); // free previous string
             args_info->ipversion_arg = gengetopt_strdup (optarg);
             if (args_info->ipversion_orig)
-              free (args_info->ipversion_orig); /* free previous string */
+              free (args_info->ipversion_orig); // free previous string
             args_info->ipversion_orig = gengetopt_strdup (optarg);
           }
-          /* Directory of nonvolatile data.  */
+          // Directory of nonvolatile data. 
           else if (strcmp (long_options[option_index].name, "statedir") == 0)
           {
             if (local_args_info.statedir_given)
@@ -1602,13 +1602,13 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             local_args_info.statedir_given = 1;
             args_info->statedir_given = 1;
             if (args_info->statedir_arg)
-              free (args_info->statedir_arg); /* free previous string */
+              free (args_info->statedir_arg); // free previous string
             args_info->statedir_arg = gengetopt_strdup (optarg);
             if (args_info->statedir_orig)
-              free (args_info->statedir_orig); /* free previous string */
+              free (args_info->statedir_orig); // free previous string
             args_info->statedir_orig = gengetopt_strdup (optarg);
           }
-          /* Dynamic IP address pool.  */
+          // Dynamic IP address pool. 
           else if (strcmp (long_options[option_index].name, "dynip") == 0)
           {
             if (local_args_info.dynip_given)
@@ -1621,13 +1621,13 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             local_args_info.dynip_given = 1;
             args_info->dynip_given = 1;
             if (args_info->dynip_arg)
-              free (args_info->dynip_arg); /* free previous string */
+              free (args_info->dynip_arg); // free previous string
             args_info->dynip_arg = gengetopt_strdup (optarg);
             if (args_info->dynip_orig)
-              free (args_info->dynip_orig); /* free previous string */
+              free (args_info->dynip_orig); // free previous string
             args_info->dynip_orig = gengetopt_strdup (optarg);
           }
-          /* Static IP address pool.  */
+          // Static IP address pool. 
           else if (strcmp (long_options[option_index].name, "statip") == 0)
           {
             if (local_args_info.statip_given)
@@ -1640,13 +1640,13 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             local_args_info.statip_given = 1;
             args_info->statip_given = 1;
             if (args_info->statip_arg)
-              free (args_info->statip_arg); /* free previous string */
+              free (args_info->statip_arg); // free previous string
             args_info->statip_arg = gengetopt_strdup (optarg);
             if (args_info->statip_orig)
-              free (args_info->statip_orig); /* free previous string */
+              free (args_info->statip_orig); // free previous string
             args_info->statip_orig = gengetopt_strdup (optarg);
           }
-          /* Primary DNS server IP address.  */
+          // Primary DNS server IP address. 
           else if (strcmp (long_options[option_index].name, "dns1") == 0)
           {
             if (local_args_info.dns1_given)
@@ -1659,13 +1659,13 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             local_args_info.dns1_given = 1;
             args_info->dns1_given = 1;
             if (args_info->dns1_arg)
-              free (args_info->dns1_arg); /* free previous string */
+              free (args_info->dns1_arg); // free previous string
             args_info->dns1_arg = gengetopt_strdup (optarg);
             if (args_info->dns1_orig)
-              free (args_info->dns1_orig); /* free previous string */
+              free (args_info->dns1_orig); // free previous string
             args_info->dns1_orig = gengetopt_strdup (optarg);
           }
-          /* Secondary DNS server IP address.  */
+          // Secondary DNS server IP address. 
           else if (strcmp (long_options[option_index].name, "dns2") == 0)
           {
             if (local_args_info.dns2_given)
@@ -1678,13 +1678,13 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             local_args_info.dns2_given = 1;
             args_info->dns2_given = 1;
             if (args_info->dns2_arg)
-              free (args_info->dns2_arg); /* free previous string */
+              free (args_info->dns2_arg); // free previous string
             args_info->dns2_arg = gengetopt_strdup (optarg);
             if (args_info->dns2_orig)
-              free (args_info->dns2_orig); /* free previous string */
+              free (args_info->dns2_orig); // free previous string
             args_info->dns2_orig = gengetopt_strdup (optarg);
           }
-          /* Static ipv6 to listen to */
+          // Static ipv6 to listen to
           else if (strcmp (long_options[option_index].name, "staticipv6") == 0)
           {
             if (local_args_info.staticipv6_given)
@@ -1697,13 +1697,13 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             local_args_info.staticipv6_given = 1;
             args_info->staticipv6_given = 1;
             if (args_info->staticipv6_arg)
-              free (args_info->staticipv6_arg); /* free previous string */
+              free (args_info->staticipv6_arg); // free previous string
             args_info->staticipv6_arg = gengetopt_strdup (optarg);
             if (args_info->staticipv6_orig)
-              free (args_info->staticipv6_orig); /* free previous string */
+              free (args_info->staticipv6_orig); // free previous string
             args_info->staticipv6_orig = gengetopt_strdup (optarg);
           }
-         /* IPv6 prefix */
+         // IPv6 prefix
          else if (strcmp (long_options[option_index].name, "ipv6prefix") == 0)
           {
             if (local_args_info.ipv6prefix_given)
@@ -1716,13 +1716,13 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             local_args_info.ipv6prefix_given = 1;
             args_info->ipv6prefix_given = 1;
             if (args_info->ipv6prefix_arg)
-              free (args_info->ipv6prefix_arg); /* free previous string */
+              free (args_info->ipv6prefix_arg); // free previous string
             args_info->ipv6prefix_arg = gengetopt_strdup (optarg);
             if (args_info->ipv6prefix_orig)
-              free (args_info->ipv6prefix_orig); /* free previous string */
+              free (args_info->ipv6prefix_orig); // free previous string
             args_info->ipv6prefix_orig = gengetopt_strdup (optarg);
           }
-          /* Domain to use for DNS lookups.  */
+          // Domain to use for DNS lookups. 
           else if (strcmp (long_options[option_index].name, "domain") == 0)
           {
             if (local_args_info.domain_given)
@@ -1735,13 +1735,13 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             local_args_info.domain_given = 1;
             args_info->domain_given = 1;
             if (args_info->domain_arg)
-              free (args_info->domain_arg); /* free previous string */
+              free (args_info->domain_arg); // free previous string
             args_info->domain_arg = gengetopt_strdup (optarg);
             if (args_info->domain_orig)
-              free (args_info->domain_orig); /* free previous string */
+              free (args_info->domain_orig); // free previous string
             args_info->domain_orig = gengetopt_strdup (optarg);
           }
-          /* Script to run after link-up.  */
+          // Script to run after link-up. 
           else if (strcmp (long_options[option_index].name, "ipup") == 0)
           {
             if (local_args_info.ipup_given)
@@ -1754,13 +1754,13 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             local_args_info.ipup_given = 1;
             args_info->ipup_given = 1;
             if (args_info->ipup_arg)
-              free (args_info->ipup_arg); /* free previous string */
+              free (args_info->ipup_arg); // free previous string
             args_info->ipup_arg = gengetopt_strdup (optarg);
             if (args_info->ipup_orig)
-              free (args_info->ipup_orig); /* free previous string */
+              free (args_info->ipup_orig); // free previous string
             args_info->ipup_orig = gengetopt_strdup (optarg);
           }
-          /* Script to run after link-down.  */
+          // Script to run after link-down. 
           else if (strcmp (long_options[option_index].name, "ipdown") == 0)
           {
             if (local_args_info.ipdown_given)
@@ -1773,13 +1773,13 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             local_args_info.ipdown_given = 1;
             args_info->ipdown_given = 1;
             if (args_info->ipdown_arg)
-              free (args_info->ipdown_arg); /* free previous string */
+              free (args_info->ipdown_arg); // free previous string
             args_info->ipdown_arg = gengetopt_strdup (optarg);
             if (args_info->ipdown_orig)
-              free (args_info->ipdown_orig); /* free previous string */
+              free (args_info->ipdown_orig); // free previous string
             args_info->ipdown_orig = gengetopt_strdup (optarg);
           }
-          /* Script to run after user logon.  */
+          // Script to run after user logon. 
           else if (strcmp (long_options[option_index].name, "conup") == 0)
           {
             if (local_args_info.conup_given)
@@ -1792,13 +1792,13 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             local_args_info.conup_given = 1;
             args_info->conup_given = 1;
             if (args_info->conup_arg)
-              free (args_info->conup_arg); /* free previous string */
+              free (args_info->conup_arg); // free previous string
             args_info->conup_arg = gengetopt_strdup (optarg);
             if (args_info->conup_orig)
-              free (args_info->conup_orig); /* free previous string */
+              free (args_info->conup_orig); // free previous string
             args_info->conup_orig = gengetopt_strdup (optarg);
           }
-          /* Script to run after user logoff.  */
+          // Script to run after user logoff. 
           else if (strcmp (long_options[option_index].name, "condown") == 0)
           {
             if (local_args_info.condown_given)
@@ -1811,13 +1811,13 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             local_args_info.condown_given = 1;
             args_info->condown_given = 1;
             if (args_info->condown_arg)
-              free (args_info->condown_arg); /* free previous string */
+              free (args_info->condown_arg); // free previous string
             args_info->condown_arg = gengetopt_strdup (optarg);
             if (args_info->condown_orig)
-              free (args_info->condown_orig); /* free previous string */
+              free (args_info->condown_orig); // free previous string
             args_info->condown_orig = gengetopt_strdup (optarg);
           }
-          /* IP address to send from.  */
+          // IP address to send from. 
           else if (strcmp (long_options[option_index].name, "radiuslisten") == 0)
           {
             if (local_args_info.radiuslisten_given)
@@ -1830,13 +1830,13 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             local_args_info.radiuslisten_given = 1;
             args_info->radiuslisten_given = 1;
             if (args_info->radiuslisten_arg)
-              free (args_info->radiuslisten_arg); /* free previous string */
+              free (args_info->radiuslisten_arg); // free previous string
             args_info->radiuslisten_arg = gengetopt_strdup (optarg);
             if (args_info->radiuslisten_orig)
-              free (args_info->radiuslisten_orig); /* free previous string */
+              free (args_info->radiuslisten_orig); // free previous string
             args_info->radiuslisten_orig = gengetopt_strdup (optarg);
           }
-          /* IP address of radius server 1.  */
+          // IP address of radius server 1. 
           else if (strcmp (long_options[option_index].name, "radiusserver1") == 0)
           {
             if (local_args_info.radiusserver1_given)
@@ -1849,13 +1849,13 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             local_args_info.radiusserver1_given = 1;
             args_info->radiusserver1_given = 1;
             if (args_info->radiusserver1_arg)
-              free (args_info->radiusserver1_arg); /* free previous string */
+              free (args_info->radiusserver1_arg); // free previous string
             args_info->radiusserver1_arg = gengetopt_strdup (optarg);
             if (args_info->radiusserver1_orig)
-              free (args_info->radiusserver1_orig); /* free previous string */
+              free (args_info->radiusserver1_orig); // free previous string
             args_info->radiusserver1_orig = gengetopt_strdup (optarg);
           }
-          /* IP address of radius server 2.  */
+          // IP address of radius server 2. 
           else if (strcmp (long_options[option_index].name, "radiusserver2") == 0)
           {
             if (local_args_info.radiusserver2_given)
@@ -1868,13 +1868,13 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             local_args_info.radiusserver2_given = 1;
             args_info->radiusserver2_given = 1;
             if (args_info->radiusserver2_arg)
-              free (args_info->radiusserver2_arg); /* free previous string */
+              free (args_info->radiusserver2_arg); // free previous string
             args_info->radiusserver2_arg = gengetopt_strdup (optarg);
             if (args_info->radiusserver2_orig)
-              free (args_info->radiusserver2_orig); /* free previous string */
+              free (args_info->radiusserver2_orig); // free previous string
             args_info->radiusserver2_orig = gengetopt_strdup (optarg);
           }
-          /* Authentication UDP port of radius server.  */
+          // Authentication UDP port of radius server. 
           else if (strcmp (long_options[option_index].name, "radiusauthport") == 0)
           {
             if (local_args_info.radiusauthport_given)
@@ -1888,10 +1888,10 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             args_info->radiusauthport_given = 1;
             args_info->radiusauthport_arg = strtol (optarg, &stop_char, 0);
             if (args_info->radiusauthport_orig)
-              free (args_info->radiusauthport_orig); /* free previous string */
+              free (args_info->radiusauthport_orig); // free previous string
             args_info->radiusauthport_orig = gengetopt_strdup (optarg);
           }
-          /* Accounting UDP port of radius server.  */
+          // Accounting UDP port of radius server. 
           else if (strcmp (long_options[option_index].name, "radiusacctport") == 0)
           {
             if (local_args_info.radiusacctport_given)
@@ -1905,10 +1905,10 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             args_info->radiusacctport_given = 1;
             args_info->radiusacctport_arg = strtol (optarg, &stop_char, 0);
             if (args_info->radiusacctport_orig)
-              free (args_info->radiusacctport_orig); /* free previous string */
+              free (args_info->radiusacctport_orig); // free previous string
             args_info->radiusacctport_orig = gengetopt_strdup (optarg);
           }
-          /* Radius shared secret.  */
+          // Radius shared secret. 
           else if (strcmp (long_options[option_index].name, "radiussecret") == 0)
           {
             if (local_args_info.radiussecret_given)
@@ -1921,13 +1921,13 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             local_args_info.radiussecret_given = 1;
             args_info->radiussecret_given = 1;
             if (args_info->radiussecret_arg)
-              free (args_info->radiussecret_arg); /* free previous string */
+              free (args_info->radiussecret_arg); // free previous string
             args_info->radiussecret_arg = gengetopt_strdup (optarg);
             if (args_info->radiussecret_orig)
-              free (args_info->radiussecret_orig); /* free previous string */
+              free (args_info->radiussecret_orig); // free previous string
             args_info->radiussecret_orig = gengetopt_strdup (optarg);
           }
-          /* Radius NAS-Identifier.  */
+          // Radius NAS-Identifier. 
           else if (strcmp (long_options[option_index].name, "radiusnasid") == 0)
           {
             if (local_args_info.radiusnasid_given)
@@ -1940,13 +1940,13 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             local_args_info.radiusnasid_given = 1;
             args_info->radiusnasid_given = 1;
             if (args_info->radiusnasid_arg)
-              free (args_info->radiusnasid_arg); /* free previous string */
+              free (args_info->radiusnasid_arg); // free previous string
             args_info->radiusnasid_arg = gengetopt_strdup (optarg);
             if (args_info->radiusnasid_orig)
-              free (args_info->radiusnasid_orig); /* free previous string */
+              free (args_info->radiusnasid_orig); // free previous string
             args_info->radiusnasid_orig = gengetopt_strdup (optarg);
           }
-          /* Radius NAS-IP-Address.  */
+          // Radius NAS-IP-Address. 
           else if (strcmp (long_options[option_index].name, "radiusnasip") == 0)
           {
             if (local_args_info.radiusnasip_given)
@@ -1959,13 +1959,13 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             local_args_info.radiusnasip_given = 1;
             args_info->radiusnasip_given = 1;
             if (args_info->radiusnasip_arg)
-              free (args_info->radiusnasip_arg); /* free previous string */
+              free (args_info->radiusnasip_arg); // free previous string
             args_info->radiusnasip_arg = gengetopt_strdup (optarg);
             if (args_info->radiusnasip_orig)
-              free (args_info->radiusnasip_orig); /* free previous string */
+              free (args_info->radiusnasip_orig); // free previous string
             args_info->radiusnasip_orig = gengetopt_strdup (optarg);
           }
-          /* Radius Called-Station-ID.  */
+          // Radius Called-Station-ID. 
           else if (strcmp (long_options[option_index].name, "radiuscalled") == 0)
           {
             if (local_args_info.radiuscalled_given)
@@ -1978,13 +1978,13 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             local_args_info.radiuscalled_given = 1;
             args_info->radiuscalled_given = 1;
             if (args_info->radiuscalled_arg)
-              free (args_info->radiuscalled_arg); /* free previous string */
+              free (args_info->radiuscalled_arg); // free previous string
             args_info->radiuscalled_arg = gengetopt_strdup (optarg);
             if (args_info->radiuscalled_orig)
-              free (args_info->radiuscalled_orig); /* free previous string */
+              free (args_info->radiuscalled_orig); // free previous string
             args_info->radiuscalled_orig = gengetopt_strdup (optarg);
           }
-          /* WISPr Location ID.  */
+          // WISPr Location ID. 
           else if (strcmp (long_options[option_index].name, "radiuslocationid") == 0)
           {
             if (local_args_info.radiuslocationid_given)
@@ -1997,13 +1997,13 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             local_args_info.radiuslocationid_given = 1;
             args_info->radiuslocationid_given = 1;
             if (args_info->radiuslocationid_arg)
-              free (args_info->radiuslocationid_arg); /* free previous string */
+              free (args_info->radiuslocationid_arg); // free previous string
             args_info->radiuslocationid_arg = gengetopt_strdup (optarg);
             if (args_info->radiuslocationid_orig)
-              free (args_info->radiuslocationid_orig); /* free previous string */
+              free (args_info->radiuslocationid_orig); // free previous string
             args_info->radiuslocationid_orig = gengetopt_strdup (optarg);
           }
-          /* WISPr Location Name.  */
+          // WISPr Location Name. 
           else if (strcmp (long_options[option_index].name, "radiuslocationname") == 0)
           {
             if (local_args_info.radiuslocationname_given)
@@ -2016,13 +2016,13 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             local_args_info.radiuslocationname_given = 1;
             args_info->radiuslocationname_given = 1;
             if (args_info->radiuslocationname_arg)
-              free (args_info->radiuslocationname_arg); /* free previous string */
+              free (args_info->radiuslocationname_arg); // free previous string
             args_info->radiuslocationname_arg = gengetopt_strdup (optarg);
             if (args_info->radiuslocationname_orig)
-              free (args_info->radiuslocationname_orig); /* free previous string */
+              free (args_info->radiuslocationname_orig); // free previous string
             args_info->radiuslocationname_orig = gengetopt_strdup (optarg);
           }
-          /* Radius NAS-Port-Type.  */
+          // Radius NAS-Port-Type. 
           else if (strcmp (long_options[option_index].name, "radiusnasporttype") == 0)
           {
             if (local_args_info.radiusnasporttype_given)
@@ -2036,10 +2036,10 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             args_info->radiusnasporttype_given = 1;
             args_info->radiusnasporttype_arg = strtol (optarg, &stop_char, 0);
             if (args_info->radiusnasporttype_orig)
-              free (args_info->radiusnasporttype_orig); /* free previous string */
+              free (args_info->radiusnasporttype_orig); // free previous string
             args_info->radiusnasporttype_orig = gengetopt_strdup (optarg);
           }
-          /* Radius disconnect port to listen to.  */
+          // Radius disconnect port to listen to. 
           else if (strcmp (long_options[option_index].name, "coaport") == 0)
           {
             if (local_args_info.coaport_given)
@@ -2053,10 +2053,10 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             args_info->coaport_given = 1;
             args_info->coaport_arg = strtol (optarg, &stop_char, 0);
             if (args_info->coaport_orig)
-              free (args_info->coaport_orig); /* free previous string */
+              free (args_info->coaport_orig); // free previous string
             args_info->coaport_orig = gengetopt_strdup (optarg);
           }
-          /* Allow radius disconnect from any IP.  */
+          // Allow radius disconnect from any IP. 
           else if (strcmp (long_options[option_index].name, "coanoipcheck") == 0)
           {
             if (local_args_info.coanoipcheck_given)
@@ -2070,7 +2070,7 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             args_info->coanoipcheck_given = 1;
             args_info->coanoipcheck_flag = !(args_info->coanoipcheck_flag);
           }
-          /* IP address to listen to.  */
+          // IP address to listen to. 
           else if (strcmp (long_options[option_index].name, "proxylisten") == 0)
           {
             if (local_args_info.proxylisten_given)
@@ -2083,13 +2083,13 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             local_args_info.proxylisten_given = 1;
             args_info->proxylisten_given = 1;
             if (args_info->proxylisten_arg)
-              free (args_info->proxylisten_arg); /* free previous string */
+              free (args_info->proxylisten_arg); // free previous string
             args_info->proxylisten_arg = gengetopt_strdup (optarg);
             if (args_info->proxylisten_orig)
-              free (args_info->proxylisten_orig); /* free previous string */
+              free (args_info->proxylisten_orig); // free previous string
             args_info->proxylisten_orig = gengetopt_strdup (optarg);
           }
-          /* UDP port to listen to.  */
+          // UDP port to listen to. 
           else if (strcmp (long_options[option_index].name, "proxyport") == 0)
           {
             if (local_args_info.proxyport_given)
@@ -2103,10 +2103,10 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             args_info->proxyport_given = 1;
             args_info->proxyport_arg = strtol (optarg, &stop_char, 0);
             if (args_info->proxyport_orig)
-              free (args_info->proxyport_orig); /* free previous string */
+              free (args_info->proxyport_orig); // free previous string
             args_info->proxyport_orig = gengetopt_strdup (optarg);
           }
-          /* IP address of proxy client(s).  */
+          // IP address of proxy client(s). 
           else if (strcmp (long_options[option_index].name, "proxyclient") == 0)
           {
             if (local_args_info.proxyclient_given)
@@ -2119,13 +2119,13 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             local_args_info.proxyclient_given = 1;
             args_info->proxyclient_given = 1;
             if (args_info->proxyclient_arg)
-              free (args_info->proxyclient_arg); /* free previous string */
+              free (args_info->proxyclient_arg); // free previous string
             args_info->proxyclient_arg = gengetopt_strdup (optarg);
             if (args_info->proxyclient_orig)
-              free (args_info->proxyclient_orig); /* free previous string */
+              free (args_info->proxyclient_orig); // free previous string
             args_info->proxyclient_orig = gengetopt_strdup (optarg);
           }
-          /* Radius proxy shared secret.  */
+          // Radius proxy shared secret. 
           else if (strcmp (long_options[option_index].name, "proxysecret") == 0)
           {
             if (local_args_info.proxysecret_given)
@@ -2138,13 +2138,13 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             local_args_info.proxysecret_given = 1;
             args_info->proxysecret_given = 1;
             if (args_info->proxysecret_arg)
-              free (args_info->proxysecret_arg); /* free previous string */
+              free (args_info->proxysecret_arg); // free previous string
             args_info->proxysecret_arg = gengetopt_strdup (optarg);
             if (args_info->proxysecret_orig)
-              free (args_info->proxysecret_orig); /* free previous string */
+              free (args_info->proxysecret_orig); // free previous string
             args_info->proxysecret_orig = gengetopt_strdup (optarg);
           }
-          /* Username for remote config.  */
+          // Username for remote config. 
           else if (strcmp (long_options[option_index].name, "confusername") == 0)
           {
             if (local_args_info.confusername_given)
@@ -2157,13 +2157,13 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             local_args_info.confusername_given = 1;
             args_info->confusername_given = 1;
             if (args_info->confusername_arg)
-              free (args_info->confusername_arg); /* free previous string */
+              free (args_info->confusername_arg); // free previous string
             args_info->confusername_arg = gengetopt_strdup (optarg);
             if (args_info->confusername_orig)
-              free (args_info->confusername_orig); /* free previous string */
+              free (args_info->confusername_orig); // free previous string
             args_info->confusername_orig = gengetopt_strdup (optarg);
           }
-          /* Password for remote config.  */
+          // Password for remote config. 
           else if (strcmp (long_options[option_index].name, "confpassword") == 0)
           {
             if (local_args_info.confpassword_given)
@@ -2176,13 +2176,13 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             local_args_info.confpassword_given = 1;
             args_info->confpassword_given = 1;
             if (args_info->confpassword_arg)
-              free (args_info->confpassword_arg); /* free previous string */
+              free (args_info->confpassword_arg); // free previous string
             args_info->confpassword_arg = gengetopt_strdup (optarg);
             if (args_info->confpassword_orig)
-              free (args_info->confpassword_orig); /* free previous string */
+              free (args_info->confpassword_orig); // free previous string
             args_info->confpassword_orig = gengetopt_strdup (optarg);
           }
-          /* Local Ethernet interface.  */
+          // Local Ethernet interface. 
           else if (strcmp (long_options[option_index].name, "dhcpif") == 0)
           {
             if (local_args_info.dhcpif_given)
@@ -2195,13 +2195,13 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             local_args_info.dhcpif_given = 1;
             args_info->dhcpif_given = 1;
             if (args_info->dhcpif_arg)
-              free (args_info->dhcpif_arg); /* free previous string */
+              free (args_info->dhcpif_arg); // free previous string
             args_info->dhcpif_arg = gengetopt_strdup (optarg);
             if (args_info->dhcpif_orig)
-              free (args_info->dhcpif_orig); /* free previous string */
+              free (args_info->dhcpif_orig); // free previous string
             args_info->dhcpif_orig = gengetopt_strdup (optarg);
           }
-          /* Interface MAC address.  */
+          // Interface MAC address. 
           else if (strcmp (long_options[option_index].name, "dhcpmac") == 0)
           {
             if (local_args_info.dhcpmac_given)
@@ -2214,13 +2214,13 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             local_args_info.dhcpmac_given = 1;
             args_info->dhcpmac_given = 1;
             if (args_info->dhcpmac_arg)
-              free (args_info->dhcpmac_arg); /* free previous string */
+              free (args_info->dhcpmac_arg); // free previous string
             args_info->dhcpmac_arg = gengetopt_strdup (optarg);
             if (args_info->dhcpmac_orig)
-              free (args_info->dhcpmac_orig); /* free previous string */
+              free (args_info->dhcpmac_orig); // free previous string
             args_info->dhcpmac_orig = gengetopt_strdup (optarg);
           }
-          /* dhcplisten */
+          // dhcplisten
           else if (strcmp (long_options[option_index].name, "dhcplisten") == 0)
           {
             if (local_args_info.dhcplisten_given)
@@ -2233,13 +2233,13 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             local_args_info.dhcplisten_given = 1;
             args_info->dhcplisten_given = 1;
             if (args_info->dhcplisten_arg)
-              free (args_info->dhcplisten_arg); /* free previous string */
+              free (args_info->dhcplisten_arg); // free previous string
             args_info->dhcplisten_arg = gengetopt_strdup (optarg);
             if (args_info->dhcplisten_orig)
-              free (args_info->dhcplisten_orig); /* free previous string */
+              free (args_info->dhcplisten_orig); // free previous string
             args_info->dhcplisten_orig = gengetopt_strdup (optarg);
           }
-          /* Lease time to allocate to clients.  */
+          // Lease time to allocate to clients. 
           else if (strcmp (long_options[option_index].name, "lease") == 0)
           {
             if (local_args_info.lease_given)
@@ -2253,10 +2253,10 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             args_info->lease_given = 1;
             args_info->lease_arg = strtol (optarg, &stop_char, 0);
             if (args_info->lease_orig)
-              free (args_info->lease_orig); /* free previous string */
+              free (args_info->lease_orig); // free previous string
             args_info->lease_orig = gengetopt_strdup (optarg);
           }
-          /* Enable IEEE 802.1x authentication.  */
+          // Enable IEEE 802.1x authentication. 
           else if (strcmp (long_options[option_index].name, "eapolenable") == 0)
           {
             if (local_args_info.eapolenable_given)
@@ -2270,7 +2270,7 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             args_info->eapolenable_given = 1;
             args_info->eapolenable_flag = !(args_info->eapolenable_flag);
           }
-          /* URL of authentication web server.  */
+          // URL of authentication web server. 
           else if (strcmp (long_options[option_index].name, "uamserver") == 0)
           {
             if (local_args_info.uamserver_given)
@@ -2283,13 +2283,13 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             local_args_info.uamserver_given = 1;
             args_info->uamserver_given = 1;
             if (args_info->uamserver_arg)
-              free (args_info->uamserver_arg); /* free previous string */
+              free (args_info->uamserver_arg); // free previous string
             args_info->uamserver_arg = gengetopt_strdup (optarg);
             if (args_info->uamserver_orig)
-              free (args_info->uamserver_orig); /* free previous string */
+              free (args_info->uamserver_orig); // free previous string
             args_info->uamserver_orig = gengetopt_strdup (optarg);
           }
-          /* IPv6 URL of authentication web server.  */
+          // IPv6 URL of authentication web server. 
           else if (strcmp (long_options[option_index].name, "uamserver6") == 0)
           {
             if (local_args_info.uamserver6_given)
@@ -2302,13 +2302,13 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             local_args_info.uamserver6_given = 1;
             args_info->uamserver6_given = 1;
             if (args_info->uamserver6_arg)
-              free (args_info->uamserver6_arg); /* free previous string */
+              free (args_info->uamserver6_arg); // free previous string
             args_info->uamserver6_arg = gengetopt_strdup (optarg);
             if (args_info->uamserver6_orig)
-              free (args_info->uamserver6_orig); /* free previous string */
+              free (args_info->uamserver6_orig); // free previous string
             args_info->uamserver6_orig = gengetopt_strdup (optarg);
           }
-          /* URL of homepage to redirect unauthenticated users to.  */
+          // URL of homepage to redirect unauthenticated users to. 
           else if (strcmp (long_options[option_index].name, "uamhomepage") == 0)
           {
             if (local_args_info.uamhomepage_given)
@@ -2321,13 +2321,13 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             local_args_info.uamhomepage_given = 1;
             args_info->uamhomepage_given = 1;
             if (args_info->uamhomepage_arg)
-              free (args_info->uamhomepage_arg); /* free previous string */
+              free (args_info->uamhomepage_arg); // free previous string
             args_info->uamhomepage_arg = gengetopt_strdup (optarg);
             if (args_info->uamhomepage_orig)
-              free (args_info->uamhomepage_orig); /* free previous string */
+              free (args_info->uamhomepage_orig); // free previous string
             args_info->uamhomepage_orig = gengetopt_strdup (optarg);
           }
-          /* Shared secret between uamserver and pepper.  */
+          // Shared secret between uamserver and pepper. 
           else if (strcmp (long_options[option_index].name, "uamsecret") == 0)
           {
             if (local_args_info.uamsecret_given)
@@ -2340,13 +2340,13 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             local_args_info.uamsecret_given = 1;
             args_info->uamsecret_given = 1;
             if (args_info->uamsecret_arg)
-              free (args_info->uamsecret_arg); /* free previous string */
+              free (args_info->uamsecret_arg); // free previous string
             args_info->uamsecret_arg = gengetopt_strdup (optarg);
             if (args_info->uamsecret_orig)
-              free (args_info->uamsecret_orig); /* free previous string */
+              free (args_info->uamsecret_orig); // free previous string
             args_info->uamsecret_orig = gengetopt_strdup (optarg);
           }
-          /* IP address to listen to for authentication requests.  */
+          // IP address to listen to for authentication requests. 
           else if (strcmp (long_options[option_index].name, "uamlisten") == 0)
           {
             if (local_args_info.uamlisten_given)
@@ -2359,13 +2359,13 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             local_args_info.uamlisten_given = 1;
             args_info->uamlisten_given = 1;
             if (args_info->uamlisten_arg)
-              free (args_info->uamlisten_arg); /* free previous string */
+              free (args_info->uamlisten_arg); // free previous string
             args_info->uamlisten_arg = gengetopt_strdup (optarg);
             if (args_info->uamlisten_orig)
-              free (args_info->uamlisten_orig); /* free previous string */
+              free (args_info->uamlisten_orig); // free previous string
             args_info->uamlisten_orig = gengetopt_strdup (optarg);
           }
-          /* TCP port to bind to for authentication requests.  */
+          // TCP port to bind to for authentication requests. 
           else if (strcmp (long_options[option_index].name, "uamport") == 0)
           {
             if (local_args_info.uamport_given)
@@ -2379,10 +2379,10 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             args_info->uamport_given = 1;
             args_info->uamport_arg = strtol (optarg, &stop_char, 0);
             if (args_info->uamport_orig)
-              free (args_info->uamport_orig); /* free previous string */
+              free (args_info->uamport_orig); // free previous string
             args_info->uamport_orig = gengetopt_strdup (optarg);
           }
-          /* Domain names exempt from access check .  */
+          // Domain names exempt from access check . 
           else if (strcmp (long_options[option_index].name, "uamallowed") == 0)
           {
             local_args_info.uamallowed_given++;
@@ -2409,7 +2409,7 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
               }
             break;
           }
-          /* Allow client to use any DNS server.  */
+          // Allow client to use any DNS server. 
           else if (strcmp (long_options[option_index].name, "uamanydns") == 0)
           {
             if (local_args_info.uamanydns_given)
@@ -2423,7 +2423,7 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             args_info->uamanydns_given = 1;
             args_info->uamanydns_flag = !(args_info->uamanydns_flag);
           }
-          /* Authenticate based on MAC address.  */
+          // Authenticate based on MAC address. 
           else if (strcmp (long_options[option_index].name, "macauth") == 0)
           {
             if (local_args_info.macauth_given)
@@ -2437,7 +2437,7 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             args_info->macauth_given = 1;
             args_info->macauth_flag = !(args_info->macauth_flag);
           }
-          /* List of allowed MAC addresses.  */
+          // List of allowed MAC addresses. 
           else if (strcmp (long_options[option_index].name, "macallowed") == 0)
           {
             local_args_info.macallowed_given++;
@@ -2464,7 +2464,7 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
               }
             break;
           }
-          /* Suffix to add to the MAC address.  */
+          // Suffix to add to the MAC address. 
           else if (strcmp (long_options[option_index].name, "macsuffix") == 0)
           {
             if (local_args_info.macsuffix_given)
@@ -2477,13 +2477,13 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             local_args_info.macsuffix_given = 1;
             args_info->macsuffix_given = 1;
             if (args_info->macsuffix_arg)
-              free (args_info->macsuffix_arg); /* free previous string */
+              free (args_info->macsuffix_arg); // free previous string
             args_info->macsuffix_arg = gengetopt_strdup (optarg);
             if (args_info->macsuffix_orig)
-              free (args_info->macsuffix_orig); /* free previous string */
+              free (args_info->macsuffix_orig); // free previous string
             args_info->macsuffix_orig = gengetopt_strdup (optarg);
           }
-          /* Password used when performing MAC authentication.  */
+          // Password used when performing MAC authentication. 
           else if (strcmp (long_options[option_index].name, "macpasswd") == 0)
           {
             if (local_args_info.macpasswd_given)
@@ -2496,23 +2496,23 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             local_args_info.macpasswd_given = 1;
             args_info->macpasswd_given = 1;
             if (args_info->macpasswd_arg)
-              free (args_info->macpasswd_arg); /* free previous string */
+              free (args_info->macpasswd_arg); // free previous string
             args_info->macpasswd_arg = gengetopt_strdup (optarg);
             if (args_info->macpasswd_orig)
-              free (args_info->macpasswd_orig); /* free previous string */
+              free (args_info->macpasswd_orig); // free previous string
             args_info->macpasswd_orig = gengetopt_strdup (optarg);
           }
           
           break;
-        case '?':  /* Invalid option.  */
-          /* `getopt_long' already printed an error message.  */
+        case '?':  // Invalid option. 
+          // `getopt_long' already printed an error message. 
           goto failure;
 
-        default:  /* bug: option not considered.  */
+        default:  // bug: option not considered. 
           fprintf (stderr, "%s: option unknown: %c%s\n", CMDLINE_PARSER_PACKAGE, c, (additional_error ? additional_error : ""));
           abort ();
-        } /* switch */
-    } /* while */
+        } // switch
+    } // while
 
 
   if (local_args_info.uamallowed_given && uamallowed_list)
@@ -2595,7 +2595,7 @@ failure:
 #define ADDITIONAL_ERROR " in configuration file "
 
 #define CONFIG_FILE_LINE_BUFFER_SIZE (CONFIG_FILE_LINE_SIZE+3)
-/* 3 is for "--" and "=" */
+// 3 is for "--" and "="
 
 char my_argv[CONFIG_FILE_LINE_BUFFER_SIZE+1];
 
@@ -2614,7 +2614,7 @@ cmdline_parser_configfile (char * const filename, struct gengetopt_args_info *ar
   char **my_argv_arg;
   char *additional_error;
 
-  /* store the program name */
+  // store the program name
   cmd_line_list_tmp = (struct line_list *) malloc (sizeof (struct line_list));
   cmd_line_list_tmp->next = cmd_line_list;
   cmd_line_list = cmd_line_list_tmp;
@@ -2641,32 +2641,32 @@ cmdline_parser_configfile (char * const filename, struct gengetopt_args_info *ar
           goto conf_failure;
         }
 
-      /* find first non-whitespace character in the line */
+      // find first non-whitespace character in the line
       next_token = strspn ( linebuf, " \t\r\n");
       str_index  = linebuf + next_token;
 
       if ( str_index[0] == '\0' || str_index[0] == '#')
-        continue; /* empty line or comment line is skipped */
+        continue; // empty line or comment line is skipped
 
       fopt = str_index;
 
-      /* truncate fopt at the end of the first non-valid character */
+      // truncate fopt at the end of the first non-valid character
       next_token = strcspn (fopt, " \t\r\n=");
 
-      if (fopt[next_token] == '\0') /* the line is over */
+      if (fopt[next_token] == '\0') // the line is over
         {
           farg  = NULL;
           equal = 0;
           goto noarg;
         }
 
-      /* remember if equal sign is present */
+      // remember if equal sign is present
       equal = (fopt[next_token] == '=');
       fopt[next_token++] = '\0';
 
-      /* advance pointers to the next token after the end of fopt */
+      // advance pointers to the next token after the end of fopt
       next_token += strspn (fopt + next_token, " \t\r\n");
-      /* check for the presence of equal sign, and if so, skip it */
+      // check for the presence of equal sign, and if so, skip it
       if ( !equal )
         if ((equal = (fopt[next_token] == '=')))
           {
@@ -2675,11 +2675,11 @@ cmdline_parser_configfile (char * const filename, struct gengetopt_args_info *ar
           }
       str_index  += next_token;
 
-      /* find argument */
+      // find argument
       farg = str_index;
       if ( farg[0] == '\"' || farg[0] == '\'' )
-        { /* quoted argument */
-          str_index = strchr (++farg, str_index[0] ); /* skip opening quote */
+        { // quoted argument
+          str_index = strchr (++farg, str_index[0] ); // skip opening quote
           if (! str_index)
             {
               fprintf
@@ -2691,15 +2691,15 @@ cmdline_parser_configfile (char * const filename, struct gengetopt_args_info *ar
             }
         }
       else
-        { /* read up the remaining part up to a delimiter */
+        { // read up the remaining part up to a delimiter
           next_token = strcspn (farg, " \t\r\n#\'\"");
           str_index += next_token;
         }
 
-      /* truncate farg at the delimiter and store it for further check */
+      // truncate farg at the delimiter and store it for further check
       delimiter = *str_index, *str_index++ = '\0';
 
-      /* everything but comment is illegal at the end of line */
+      // everything but comment is illegal at the end of line
       if (delimiter != '\0' && delimiter != '#')
         {
           str_index += strspn(str_index, " \t\r\n");
@@ -2729,9 +2729,9 @@ cmdline_parser_configfile (char * const filename, struct gengetopt_args_info *ar
       cmd_line_list_tmp->next = cmd_line_list;
       cmd_line_list = cmd_line_list_tmp;
       cmd_line_list->string_arg = gengetopt_strdup(my_argv);
-    } /* while */
+    } // while
 
-  ++my_argc; /* for program name */
+  ++my_argc; // for program name
   my_argv_arg = (char **) malloc((my_argc+1) * sizeof(char *));
   cmd_line_list_tmp = cmd_line_list;
   for (i = my_argc - 1; i >= 0; --i) {
@@ -2754,7 +2754,7 @@ conf_failure:
   if (result == EXIT_FAILURE)
     {
       cmdline_parser_free (args_info);
-      /* free(cmd_line_list_tmp); */
+      // free(cmd_line_list_tmp);
       exit (EXIT_FAILURE);
     }
   

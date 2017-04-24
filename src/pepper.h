@@ -74,8 +74,8 @@
 #ifndef _PEPPER_H
 #define _PEPPER_H
 
-#include <stdint.h>                              /* ISO C99 types: uint8_t, uint16_t, ... */
-#include <netinet/in.h>                          /* in_addr */
+#include <stdint.h>                              // ISO C99 types: uint8_t, uint16_t, ...
+#include <netinet/in.h>                          // in_addr
 
 #include "dhcp.h"
 #include "radius.h"
@@ -84,8 +84,8 @@
 /* If the constants below are defined packets which have been dropped
    by the traffic shaper will be counted towards accounting and
    volume limitation */
-/* #define COUNT_DOWNLINK_DROP 1 */
-/* #define COUNT_UPLINK_DROP 1 */
+// #define COUNT_DOWNLINK_DROP 1
+// #define COUNT_UPLINK_DROP 1
 
 #define APP_NUM_CONN                        1024 //!< Maximum number of hight-level connections
 #define EAP_LEN                             2048 //!< EAP challenge length (rather large)
@@ -102,21 +102,21 @@
 #define USERURLSIZE                          256 //!< Max length of URL requested by user
 
 #define BUCKET_SIZE                       300000 //!< Size of leaky bucket (~200 packets)
-/* Bucket size = BUCKET_TIME * Bandwidth-Max radius attribute */
-/* Not used if BUCKET_SIZE is defined */
+// Bucket size = BUCKET_TIME * Bandwidth-Max radius attribute
+// Not used if BUCKET_SIZE is defined
 #define BUCKET_TIME                         5000 //!< Time length of leak bucket in milliseconds
 #define BUCKET_SIZE_MIN                    15000 //!< Minimum size of leaky bucket (~10 packets)
 
 #define CHECK_INTERVAL                         3 //!< Time between checking connections
 #define IDLETIME                              10 //!< Idletime between each select
 
-/* #define IPADDRLEN 256 */
+// #define IPADDRLEN 256
 
 #define UAMOKIP_MAX                          256 //!< Max number of allowed UAM IP addresses
 #define UAMOKNET_MAX                          10 //!< Max number of allowed UAM networks
 #define UAMSERVER_MAX                          8 //!< Maximum UAM servers
 
-/* Authtype defs */
+// Authtype defs
 #define CHAP_DIGEST_MD5                     0x05 //!< Code for using CHAP-MD5
 #define CHAP_MICROSOFT                      0x80 //!< Code for using MS-CHAP 
 #define CHAP_MICROSOFT_V2                   0x81 //!< Code for using MS-CHAPv2
@@ -132,7 +132,7 @@
 #define DNPROT_EAPOL                           5 //!< Use EAPOL for downlink authentication
 #define DNPROT_MAC                             6 //!< Use MAC address for downlink authentication
 
-/* Debug facility */
+// Debug facility
 #define DEBUG_DHCP                             2 //!< Allow debug print for DHCP module
 #define DEBUG_RADIUS                           4 //!< Allow debug print for RADIUS module
 #define DEBUG_REDIR                            8 //!< Allow debug print for redir module
@@ -144,20 +144,20 @@
 //!
 struct app_conn_t
 {
-  /* Management of connections */
+  // Management of connections
   int inuse;                                     //!< If the connection is in use
   int unit;                                      //!< Used for NAS port
   int ipv6;                                      //!< If IPv6 is used
   struct app_conn_t *next;                       //!< Next in linked list, 0: Last
   struct app_conn_t *prev;                       //!< Previous in linked list, 0: First
 
-  /* Pointers to protocol handlers */
+  // Pointers to protocol handlers
   void *uplink;                                  //!< Uplink network interface (Internet)
   void *dnlink;                                  //!< Downlink network interface (Wireless)
   int dnprot;                                    //!< Downlink protocol
 
-  /* Radius authentication stuff */
-  /* Parameters are initialised whenever a reply to an access request is received. */
+  // Radius authentication stuff
+  // Parameters are initialised whenever a reply to an access request is received.
   uint8_t chal[EAP_LEN];                         //!< EAP challenge
   int challen;                                   //!< Length of EAP challenge
   uint8_t sendkey[RADIUS_ATTR_VLEN];             //!< Key used to encode message to send
@@ -169,7 +169,7 @@ struct app_conn_t
   uint32_t policy;                               //!< Encryption policy
   uint32_t types;                                //!< Encryption types
   uint8_t ms2succ[MS2SUCCSIZE];                  //!< MS-CHAPv2 SUCCESS attribute
-  /* int ms2succlen; */
+  // int ms2succlen;
   char sessionid[REDIR_SESSIONID_LEN];           //!< Accounting session ID
   long int sessiontimeout;                       //!< RADIUS session timeout
   long int idletimeout;                          //!< RADIUS idle timeout
@@ -186,9 +186,9 @@ struct app_conn_t
   char filteridbuf[RADIUS_ATTR_VLEN + 1];        //!< Filter ID
   int filteridlen;                               //!< Length of filter ID
 
-  /* Radius proxy stuff */
-  /* Parameters are initialised whenever a radius proxy request is received */
-  /* Only one outstanding request allowed at a time */
+  // Radius proxy stuff
+  // Parameters are initialised whenever a radius proxy request is received
+  // Only one outstanding request allowed at a time
   int radiuswait;                                //!< Radius request in progres
   struct sockaddr_storage radiuspeer;            //!< Where to send reply
   uint8_t radiusid;                              //!< ID to reply with
@@ -201,8 +201,8 @@ struct app_conn_t
   uint8_t proxyhismac[DHCP_ETH_ALEN];            //!< His MAC address
   uint8_t proxyourmac[DHCP_ETH_ALEN];            //!< Our MAC address
 
-  /* Parameters for radius accounting */
-  /* These parameters are set when an access accept is sent back to the NAS */
+  // Parameters for radius accounting
+  // These parameters are set when an access accept is sent back to the NAS
   int authenticated;                             //!< 1 if user was authenticated
   char user[USERNAMESIZE];                       //!< User:
   uint8_t userlen;                               //!< Length of user
@@ -217,7 +217,7 @@ struct app_conn_t
   struct in_addr reqip;                          //!< IP requested by client
   uint16_t mtu;                                  //!< MTU of the link
 
-  /* Accounting */
+  // Accounting
   struct timeval start_time;                     //!< Start time of connection
   struct timeval interim_time;                   //!< interim accounting time
   long int interim_interval;                     //!< Seconds, 0 => No interim accounting
@@ -228,20 +228,20 @@ struct app_conn_t
   uint32_t terminate_cause;                      //!< RADIUS cause of termination
   uint32_t session_id;                           //!< Accounting session ID
 
-  /* Information for each connection */
+  // Information for each connection
   struct in_addr net;                            //!< IPv4 network address
   struct in_addr mask;                           //!< IPv4 mask
   struct in_addr dns1;                           //!< Primary DNS address
   struct in_addr dns2;                           //!< Secondary DNS address
   struct timeval last_time;                      //!< Last time a packet was received or sent
 
-  /* Leaky bucket */
+  // Leaky bucket
   uint32_t bucketup;                             //!< Current leaky bucket upload size
   uint32_t bucketdown;                           //!< Current leaky bucket download size
   uint32_t bucketupsize;                         //!< Leaky bucket maximum upload size
   uint32_t bucketdownsize;                       //!< Leaky bucket maximum download size
 
-  /* UAM information */
+  // UAM information
   uint8_t uamchal[REDIR_MD5LEN];                 //!< UAM challenge number
   int uamtime;                                   //!< UAM time
   char userurl[USERURLSIZE];                     //!< Requested user URL
@@ -254,16 +254,16 @@ struct app_conn_t
 //!
 struct options_t
 {
-  /* fg */
+  // fg
   int debug;                                     //!< If debug message is enabled
 
-  /* conf */
+  // conf
   int interval;                                  //!< Time between checking connections
   char *pidfile;                                 //!< Process ID file
-  /* statedir */
+  // statedir
   char *ipversion;                               //!< IP version used ("ipv4", "ipv6" or "dual")
 
-  /* TUN parameters */
+  // TUN parameters
   /*
     char netc[IPADDRLEN];
     char maskc[IPADDRLEN];
@@ -286,7 +286,7 @@ struct options_t
   char *conup;                                   //!< Script to run after user logon
   char *condown;                                 //!< Script to run after user logoff
 
-  /* Radius parameters */
+  // Radius parameters
   struct sockaddr_storage radiuslisten;          //!< IP address to listen to
   struct sockaddr_storage radiusserver1;         //!< IP address of radius server 1
   struct sockaddr_storage radiusserver2;         //!< IP address of radius server 2
@@ -302,18 +302,18 @@ struct options_t
   uint16_t coaport;                              //!< UDP port to listen to
   int coanoipcheck;                              //!< Allow disconnect from any IP
 
-  /* Radius proxy parameters */
+  // Radius proxy parameters
   struct sockaddr_storage proxylisten;           //!< IP address to listen to
   int proxyport;                                 //!< UDP port to listen to
   struct sockaddr_storage proxyaddr;             //!< IP address of proxy client(s)
   struct sockaddr_storage proxymask;             //!< IP mask of proxy client(s)
   char *proxysecret;                             //!< Proxy shared secret
 
-  /* Radius configuration management parameters */
+  // Radius configuration management parameters
   char *confusername;                            //!< Username for remote config
   char *confpassword;                            //!< Password for remote config
 
-  /* DHCP parameters */
+  // DHCP parameters
   int nodhcp;                                    //!< Do not use DHCP
   char *dhcpif;                                  //!< Interface: eth0
   unsigned char dhcpmac[DHCP_ETH_ALEN];          //!< Interface MAC address
@@ -321,14 +321,14 @@ struct options_t
   struct in_addr dhcplisten;                     //!< IP address to listen to
   int lease;                                     //!< DHCP lease time
 
-  /* IPv6 parameters */
+  // IPv6 parameters
   struct in6_addr ip6listen;                     //!< IPv6 address to listen to
   struct in6_addr prefix;                        //!< IPv6 prefix
 
-  /* EAPOL parameters */
+  // EAPOL parameters
   int eapolenable;                               //!< Use eapol
 
-  /* UAM parameters */
+  // UAM parameters
   struct in_addr uamserver[UAMSERVER_MAX];       //!< IP address of UAM server
   struct in6_addr uamserver6[UAMSERVER_MAX];     //!< IPv6 address of UAM server
   int uamserverlen;                              //!< Number of IPv4 UAM servers
@@ -356,7 +356,7 @@ struct options_t
   int uamoknetlen6;                              //!< Number of networks
   int uamanydns;                                 //!< Allow client to use any DNS server
 
-  /* MAC Authentication */
+  // MAC Authentication
   int macauth;                                   //!< Use MAC authentication
   unsigned char macok[MACOK_MAX][DHCP_ETH_ALEN]; //!< Allowed MACs
   int macoklen;                                  //!< Number of MAC addresses
@@ -364,5 +364,5 @@ struct options_t
   char *macpasswd;                               //!< Password to use for MAC authentication
 };
 
-#endif /* !_PEPPER_H */
+#endif // !_PEPPER_H
 

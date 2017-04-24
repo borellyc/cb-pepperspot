@@ -71,7 +71,7 @@
 #ifndef _IPPOOL_H
 #define _IPPOOL_H
 
-#include <netinet/in.h>          /* in_addr */
+#include <netinet/in.h>          // in_addr
 
 /* Assuming that the address space is fragmented we need a hash table
    in order to return the addresses.
@@ -92,7 +92,7 @@
 #define IPPOOL_NOGATEWAY    0x04 //!< Flags for ippool_new()
 #define IPPOOL_STATSIZE  0x10000 //!< default pool's static addresses size
 
-struct ippoolm_t;                /* Forward declaration */
+struct ippoolm_t;                // Forward declaration
 
 //!
 //!  \struct ippool_t
@@ -276,5 +276,5 @@ int ippool_hash_del(struct ippool_t *this, struct ippoolm_t *member);
 //!
 int ippool_hash_del6(struct ippool_t *this, struct ippoolm_t *member);
 
-#endif /* !_IPPOOL_H */
+#endif // !_IPPOOL_H
 

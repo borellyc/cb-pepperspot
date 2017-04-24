@@ -49,11 +49,11 @@
 #ifndef _TUN6_H
 #define _TUN6_H
 
-// #include <stddef.h>                      /* NULL */
+// #include <stddef.h>                      // NULL
 // #include <sys/types.h>
 // #include <sys/select.h>
-#include <net/if.h>                      /* IF_NAMESIZE */
-#include <netinet/in.h>                  /* in_addr */
+#include <net/if.h>                      // IF_NAMESIZE
+#include <netinet/in.h>                  // in_addr
 
 #ifndef IFNAMSIZ
 #define IFNAMSIZ             IF_NAMESIZE //!< Maximum interface name size
@@ -188,5 +188,5 @@ int tun6_free(struct tun6_t *this);
 int tun6_set_cb_ind(struct tun6_t *this,
                     int (*cb_ind)(struct tun6_t *this, void *pack, unsigned len));
 
-#endif /* !_TUN6_H */
+#endif // !_TUN6_H
 

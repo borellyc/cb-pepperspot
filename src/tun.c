@@ -114,7 +114,7 @@
 #include <sys/sockio.h>
 #include <net/if.h>
 #include <net/if_tun.h>
-/*#include "sun_if_tun.h"*/
+//#include "sun_if_tun.h"
 
 #else
 #error  "Unknown platform!"
@@ -139,7 +139,7 @@ static int tun_netlink_attr(struct nlmsghdr *n, int nsize, int type, void *d, in
 {
   int len = RTA_LENGTH(dlen);
   int alen = NLMSG_ALIGN(n->nlmsg_len);
-  struct rtattr *rta = (struct rtattr *) (((char *)n) + alen); /* Cast with (char *) to avoid use of void * in arithmetic warning */
+  struct rtattr *rta = (struct rtattr *) (((char *)n) + alen); // Cast with (char *) to avoid use of void * in arithmetic warning
   if(alen + len > nsize)
     return -1;
   rta->rta_len = len;
@@ -165,7 +165,7 @@ static int tun_get_interface_index(struct tun_t *this, unsigned int *ifindex)
   ifr.ifr_dstaddr.sa_family = AF_INET;
   ifr.ifr_netmask.sa_family = AF_INET;
   strncpy(ifr.ifr_name, this->devname, IFNAMSIZ - 1);
-  ifr.ifr_name[IFNAMSIZ - 1] = 0; /* Make sure to terminate */
+  ifr.ifr_name[IFNAMSIZ - 1] = 0; // Make sure to terminate
   if((fd = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
   {
     sys_err(LOG_ERR, __FILE__, __LINE__, errno,
@@ -199,7 +199,7 @@ static int tun_set_interface_flags(struct tun_t *this, int flags)
   memset(&ifr, 0, sizeof(ifr));
   ifr.ifr_flags = flags;
   strncpy(ifr.ifr_name, this->devname, IFNAMSIZ - 1);
-  ifr.ifr_name[IFNAMSIZ - 1] = 0; /* Make sure to terminate */
+  ifr.ifr_name[IFNAMSIZ - 1] = 0; // Make sure to terminate
   if((fd = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
   {
     sys_err(LOG_ERR, __FILE__, __LINE__, errno,
@@ -216,7 +216,7 @@ static int tun_set_interface_flags(struct tun_t *this, int flags)
   return 0;
 }
 
-/* Create an instance of tun */
+// Create an instance of tun
 int tun_new(struct tun_t **this)
 {
 #if defined(__linux__)
@@ -224,7 +224,7 @@ int tun_new(struct tun_t **this)
   int on = 1;
 
 #elif defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__) || defined(__APPLE__)
-  char devname[IFNAMSIZ + 5]; /* "/dev/" + ifname */
+  char devname[IFNAMSIZ + 5]; // "/dev/" + ifname
   int devnum = 0;
   struct ifaliasreq areq;
   int fd = -1;
@@ -250,7 +250,7 @@ int tun_new(struct tun_t **this)
   (*this)->routes = 0;
 
 #if defined(__linux__)
-  /* Open the actual tun device */
+  // Open the actual tun device
   if(((*this)->fd  = open("/dev/net/tun", O_RDWR)) < 0)
   {
     sys_err(LOG_ERR, __FILE__, __LINE__, errno, "open() failed");
@@ -261,13 +261,13 @@ int tun_new(struct tun_t **this)
   /* Set device flags. For some weird reason this is also the method
      used to obtain the network interface name */
   memset(&ifr, 0x00, sizeof(struct ifreq));
-  ifr.ifr_flags = IFF_TUN | IFF_NO_PI; /* Tun device, no packet info */
+  ifr.ifr_flags = IFF_TUN | IFF_NO_PI; // Tun device, no packet info
 
 #if defined(IFF_ONE_QUEUE) && defined(SIOCSIFTXQLEN)
   ifr.ifr_flags |= IFF_ONE_QUEUE;
 #endif
 
-  /* if(ioctl((*this)->fd, TUNSETIFF, (void *) &ifr) < 0) */
+  // if(ioctl((*this)->fd, TUNSETIFF, (void *) &ifr) < 0)
   if(ioctl((*this)->fd, TUNSETIFF, (void *) &ifr) < 0)
   {
     sys_err(LOG_ERR, __FILE__, __LINE__, errno, "ioctl() failed");
@@ -277,15 +277,15 @@ int tun_new(struct tun_t **this)
   }
 
   strncpy((*this)->devname, ifr.ifr_name, IFNAMSIZ - 1);
-  (*this)->devname[IFNAMSIZ - 1] = 0; /* make sure to terminate */
+  (*this)->devname[IFNAMSIZ - 1] = 0; // make sure to terminate
 
-  ioctl((*this)->fd, TUNSETNOCSUM, &on); /* Disable checksums */
+  ioctl((*this)->fd, TUNSETNOCSUM, &on); // Disable checksums
   return 0;
 
 #elif defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__) || defined(__APPLE__)
 
-  /* Find suitable device */
-  for(devnum = 0; devnum < 255; devnum++)   /* TODO 255 */
+  // Find suitable device
+  for(devnum = 0; devnum < 255; devnum++)   // TODO 255
   {
     snprintf(devname, sizeof(devname), "/dev/tun%d", devnum);
     devname[sizeof(devname)] = 0;
@@ -301,16 +301,16 @@ int tun_new(struct tun_t **this)
   snprintf((*this)->devname, sizeof((*this)->devname), "tun%d", devnum);
   (*this)->devname[sizeof((*this)->devname)] = 0;
 
-  /* The tun device we found might have "old" IP addresses allocated */
-  /* We need to delete those. This problem is not present on Linux */
+  // The tun device we found might have "old" IP addresses allocated
+  // We need to delete those. This problem is not present on Linux
 
   memset(&areq, 0, sizeof(areq));
 
-  /* Set up interface name */
+  // Set up interface name
   strncpy(areq.ifra_name, (*this)->devname, IFNAMSIZ - 1);
-  areq.ifra_name[IFNAMSIZ - 1] = 0; /* Make sure to terminate */
+  areq.ifra_name[IFNAMSIZ - 1] = 0; // Make sure to terminate
 
-  /* Create a channel to the NET kernel. */
+  // Create a channel to the NET kernel.
   if((fd = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
   {
     sys_err(LOG_ERR, __FILE__, __LINE__, errno,
@@ -318,7 +318,7 @@ int tun_new(struct tun_t **this)
     return -1;
   }
 
-  /* Delete any IP addresses until SIOCDIFADDR fails */
+  // Delete any IP addresses until SIOCDIFADDR fails
   while(ioctl(fd, SIOCDIFADDR, (void *) &areq) != -1);
 
   close(fd);
@@ -338,7 +338,7 @@ int tun_new(struct tun_t **this)
     return -1;
   }
 
-  /* Assign a new PPA and get its unit number. */
+  // Assign a new PPA and get its unit number.
   if( (ppa = ioctl((*this)->fd, TUNNEWPPA, -1)) < 0)
   {
     sys_err(LOG_ERR, __FILE__, __LINE__, errno, "Can't assign new interface");
@@ -356,14 +356,14 @@ int tun_new(struct tun_t **this)
     return -1;
   }
 
-  /* Assign ppa according to the unit number returned by tun device */
+  // Assign ppa according to the unit number returned by tun device
   if(ioctl(if_fd, IF_UNITSEL, (char *)&ppa) < 0)
   {
     sys_err(LOG_ERR, __FILE__, __LINE__, errno, "Can't set PPA %d", ppa);
     return -1;
   }
 
-  /* Link the two streams */
+  // Link the two streams
   if((muxid = ioctl(ip_fd, I_LINK, if_fd)) < 0)
   {
     sys_err(LOG_ERR, __FILE__, __LINE__, errno, "Can't link TUN device to IP");
@@ -396,7 +396,7 @@ int tun_new(struct tun_t **this)
 #endif
 }
 
-/* Decapsulate packet coming from tun interface */
+// Decapsulate packet coming from tun interface
 int tun_decaps(struct tun_t *this)
 {
 #if defined(__linux__) || defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__) || defined(__APPLE__)
@@ -429,7 +429,7 @@ int tun_decaps(struct tun_t *this)
     return -1;
   }
 
-  /* tun interface adds 4 bytes to front of packet under OpenBSD */
+  // tun interface adds 4 bytes to front of packet under OpenBSD
   if(this->cb_ind)
 #if defined(__OpenBSD__)
     return this->cb_ind(this, buffer + 4, sbuf.len);
@@ -442,14 +442,14 @@ int tun_decaps(struct tun_t *this)
 #endif
 }
 
-/* Encapsulate packet coming from tun interface */
+// Encapsulate packet coming from tun interface
 int tun_encaps(struct tun_t *this, void *pack, unsigned len)
 {
 #if defined(__OpenBSD__)
 
   unsigned char buffer[TUN_PACKET_MAX_SIZE + 4];
 
-  /* TODO: Can we user writev here to be more efficient??? */
+  // TODO: Can we user writev here to be more efficient???
   *((long *)(&buffer)) = htonl(AF_INET);
   memcpy(&buffer[4], pack, TUN_PACKET_MAX_SIZE);
 
@@ -469,7 +469,7 @@ int tun_encaps(struct tun_t *this, void *pack, unsigned len)
 #endif
 }
 
-/* Add an address on tun interface */
+// Add an address on tun interface
 int tun_addaddr(struct tun_t *this, struct in_addr *addr,
                 struct in_addr *dstaddr, struct in_addr *netmask)
 {
@@ -492,7 +492,7 @@ int tun_addaddr(struct tun_t *this, struct in_addr *addr,
 
   (void)status;
 
-  if(!this->addrs) /* Use ioctl for first addr to make ping work */
+  if(!this->addrs) // Use ioctl for first addr to make ping work
     return tun_setaddr(this, addr, dstaddr, netmask);
 
   memset(&req, 0, sizeof(req));
@@ -500,9 +500,9 @@ int tun_addaddr(struct tun_t *this, struct in_addr *addr,
   req.n.nlmsg_flags = NLM_F_REQUEST | NLM_F_CREATE;
   req.n.nlmsg_type = RTM_NEWADDR;
   req.i.ifa_family = AF_INET;
-  req.i.ifa_prefixlen = 32; /* 32 FOR IPv4 */
+  req.i.ifa_prefixlen = 32; // 32 FOR IPv4
   req.i.ifa_flags = 0;
-  req.i.ifa_scope = RT_SCOPE_HOST; /* TODO or 0 */
+  req.i.ifa_scope = RT_SCOPE_HOST; // TODO or 0
   if(tun_get_interface_index(this, (unsigned int *)&req.i.ifa_index))
   {
     return -1;
@@ -574,9 +574,9 @@ int tun_addaddr(struct tun_t *this, struct in_addr *addr,
   req.n.nlmsg_seq = 0;
   req.n.nlmsg_flags |= NLM_F_ACK;
 
-  status = sendmsg(fd, &msg, 0); /* TODO Error check */
+  status = sendmsg(fd, &msg, 0); // TODO Error check
 
-  tun_set_interface_flags(this, IFF_UP | IFF_RUNNING); /* TODO */
+  tun_set_interface_flags(this, IFF_UP | IFF_RUNNING); // TODO
   close(fd);
   this->addrs++;
   return 0;
@@ -586,15 +586,15 @@ int tun_addaddr(struct tun_t *this, struct in_addr *addr,
   int fd = -1;
   struct ifaliasreq areq;
 
-  /* TODO: Is this needed on FreeBSD? */
-  if(!this->addrs) /* Use ioctl for first addr to make ping work */
-    return tun_setaddr(this, addr, dstaddr, netmask); /* TODO dstaddr */
+  // TODO: Is this needed on FreeBSD?
+  if(!this->addrs) // Use ioctl for first addr to make ping work
+    return tun_setaddr(this, addr, dstaddr, netmask); // TODO dstaddr
 
   memset(&areq, 0, sizeof(areq));
 
-  /* Set up interface name */
+  // Set up interface name
   strncpy(areq.ifra_name, this->devname, IFNAMSIZ - 1);
-  areq.ifra_name[IFNAMSIZ - 1] = 0; /* Make sure to terminate */
+  areq.ifra_name[IFNAMSIZ - 1] = 0; // Make sure to terminate
 
   ((struct sockaddr_in *) &areq.ifra_addr)->sin_family = AF_INET;
   ((struct sockaddr_in *) &areq.ifra_addr)->sin_len = sizeof(areq.ifra_addr);
@@ -604,14 +604,14 @@ int tun_addaddr(struct tun_t *this, struct in_addr *addr,
   ((struct sockaddr_in *) &areq.ifra_mask)->sin_len    = sizeof(areq.ifra_mask);
   ((struct sockaddr_in *) &areq.ifra_mask)->sin_addr.s_addr = netmask->s_addr;
 
-  /* For some reason FreeBSD uses ifra_broadcast for specifying dstaddr */
+  // For some reason FreeBSD uses ifra_broadcast for specifying dstaddr
   ((struct sockaddr_in *) &areq.ifra_broadaddr)->sin_family = AF_INET;
   ((struct sockaddr_in *) &areq.ifra_broadaddr)->sin_len =
     sizeof(areq.ifra_broadaddr);
   ((struct sockaddr_in *) &areq.ifra_broadaddr)->sin_addr.s_addr =
     dstaddr->s_addr;
 
-  /* Create a channel to the NET kernel. */
+  // Create a channel to the NET kernel.
   if((fd = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
   {
     sys_err(LOG_ERR, __FILE__, __LINE__, errno,
@@ -633,7 +633,7 @@ int tun_addaddr(struct tun_t *this, struct in_addr *addr,
 
 #elif defined(__sun__)
 
-  if(!this->addrs) /* Use ioctl for first addr to make ping work */
+  if(!this->addrs) // Use ioctl for first addr to make ping work
     return tun_setaddr(this, addr, dstaddr, netmask);
 
   sys_err(LOG_ERR, __FILE__, __LINE__, errno,
@@ -645,7 +645,7 @@ int tun_addaddr(struct tun_t *this, struct in_addr *addr,
 #endif
 }
 
-/* Set address on tun interface */
+// Set address on tun interface
 int tun_setaddr(struct tun_t *this, struct in_addr *addr,
                 struct in_addr *dstaddr, struct in_addr *netmask)
 {
@@ -667,9 +667,9 @@ int tun_setaddr(struct tun_t *this, struct in_addr *addr,
 #endif
 
   strncpy(ifr.ifr_name, this->devname, IFNAMSIZ - 1);
-  ifr.ifr_name[IFNAMSIZ - 1] = 0; /* Make sure to terminate */
+  ifr.ifr_name[IFNAMSIZ - 1] = 0; // Make sure to terminate
 
-  /* Create a channel to the NET kernel. */
+  // Create a channel to the NET kernel.
   if((fd = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
   {
     sys_err(LOG_ERR, __FILE__, __LINE__, errno,
@@ -677,7 +677,7 @@ int tun_setaddr(struct tun_t *this, struct in_addr *addr,
     return -1;
   }
 
-  if(addr)   /* Set the interface address */
+  if(addr)   // Set the interface address
   {
     this->addr.s_addr = addr->s_addr;
     ((struct sockaddr_in *) &ifr.ifr_addr)->sin_addr.s_addr = addr->s_addr;
@@ -698,7 +698,7 @@ int tun_setaddr(struct tun_t *this, struct in_addr *addr,
     }
   }
 
-  if(dstaddr)   /* Set the destination address */
+  if(dstaddr)   // Set the destination address
   {
     this->dstaddr.s_addr = dstaddr->s_addr;
     ((struct sockaddr_in *) &ifr.ifr_dstaddr)->sin_addr.s_addr =
@@ -712,7 +712,7 @@ int tun_setaddr(struct tun_t *this, struct in_addr *addr,
     }
   }
 
-  if(netmask)   /* Set the netmask */
+  if(netmask)   // Set the netmask
   {
     this->netmask.s_addr = netmask->s_addr;
 #if defined(__linux__)
@@ -745,7 +745,7 @@ int tun_setaddr(struct tun_t *this, struct in_addr *addr,
   /* On linux the route to the interface is set automatically
      on FreeBSD we have to do this manually */
 
-  /* TODO: How does it work on Solaris? */
+  // TODO: How does it work on Solaris?
 
   tun_set_interface_flags(this, IFF_UP | IFF_RUNNING);
 
@@ -769,10 +769,10 @@ int tun_setaddr(struct tun_t *this, struct in_addr *addr,
 static int tun_route(struct tun_t *this, struct in_addr *dst,
                      struct in_addr *gateway, struct in_addr *mask, int delete)
 {
-  /* To avoid unused parameter warning */
+  // To avoid unused parameter warning
   (void)this;
 
-  /* TODO: Learn how to set routing table on sun  */
+  // TODO: Learn how to set routing table on sun 
 
 #if defined(__linux__)
 
@@ -780,9 +780,9 @@ static int tun_route(struct tun_t *this, struct in_addr *dst,
   int fd = -1;
 
   memset(&r, 0, sizeof(r));
-  r.rt_flags = RTF_UP | RTF_GATEWAY; /* RTF_HOST not set */
+  r.rt_flags = RTF_UP | RTF_GATEWAY; // RTF_HOST not set
 
-  /* Create a channel to the NET kernel. */
+  // Create a channel to the NET kernel.
   if((fd = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
   {
     sys_err(LOG_ERR, __FILE__, __LINE__, errno,
@@ -854,10 +854,10 @@ static int tun_route(struct tun_t *this, struct in_addr *dst,
   {
     rtm->rtm_type = RTM_ADD;
   }
-  rtm->rtm_flags = RTF_UP | RTF_GATEWAY | RTF_STATIC;  /* TODO */
+  rtm->rtm_flags = RTF_UP | RTF_GATEWAY | RTF_STATIC;  // TODO
   rtm->rtm_addrs = RTA_DST | RTA_GATEWAY | RTA_NETMASK;
   rtm->rtm_pid = getpid();
-  rtm->rtm_seq = 0044;                                 /* TODO */
+  rtm->rtm_seq = 0044;                                 // TODO
 
   req.dst.sin_family       = AF_INET;
   req.dst.sin_len          = sizeof(req.dst);
@@ -890,7 +890,7 @@ static int tun_route(struct tun_t *this, struct in_addr *dst,
 #endif
 }
 
-/* Add a route for tun interface */
+// Add a route for tun interface
 int tun_addroute(struct tun_t *this, struct in_addr *dst,
                  struct in_addr *gateway, struct in_addr *mask)
 {
@@ -911,7 +911,7 @@ static int tun_delroute(struct tun_t *this, struct in_addr *dst,
   return tun_route(this, dst, gateway, mask, 1);
 }
 
-/* Run script */
+// Run script
 int tun_runscript(struct tun_t *this, char *script)
 {
   char saddr[TUN_ADDR_MAX_SIZE];
@@ -937,7 +937,7 @@ int tun_runscript(struct tun_t *this, char *script)
     return 0;
   }
 
-  if(status > 0)   /* Parent */
+  if(status > 0)   // Parent
   {
     return 0;
   }
@@ -984,7 +984,7 @@ int tun_runscript(struct tun_t *this, char *script)
   exit(0);
 }
 
-/* Release a tun interface */
+// Release a tun interface
 int tun_free(struct tun_t *this)
 {
   if(this->routes)
@@ -997,13 +997,13 @@ int tun_free(struct tun_t *this)
     sys_err(LOG_ERR, __FILE__, __LINE__, errno, "close() failed");
   }
 
-  /* TODO: For solaris we need to unlink streams */
+  // TODO: For solaris we need to unlink streams
 
   free(this);
   return 0;
 }
 
-/* Set callback for receiving a packet from tun interface */
+// Set callback for receiving a packet from tun interface
 int tun_set_cb_ind(struct tun_t *this,
                    int (*cb_ind)(struct tun_t *this, void *pack, unsigned len))
 {

@@ -120,8 +120,8 @@
 #include <sys/wait.h>
 
 #if 0
-/* for the moment disable it, try to find a POSIX replacement */
-#include <resolv.h> /* _res */
+// for the moment disable it, try to find a POSIX replacement
+#include <resolv.h> // _res
 #endif
 
 #include "tun.h"
@@ -171,22 +171,22 @@ static void sig_handler(int signum)
 {
   switch(signum)
   {
-    case SIGCHLD:  /* Fireman catches falling childs and eliminates zombies */
+    case SIGCHLD:  // Fireman catches falling childs and eliminates zombies
       while(waitpid(-1, NULL, WNOHANG) > 0);
       break;
-    case SIGTERM:  /* Termination handler for clean shutdown */
+    case SIGTERM:  // Termination handler for clean shutdown
       if(g_pepper_options.debug) printf("SIGTERM received!\n");
       g_pepper_keep_going = 0;
       break;
-    case SIGINT:   /* Termination handler for clean shutdown */
+    case SIGINT:   // Termination handler for clean shutdown
       if(g_pepper_options.debug) printf("SIGTERM received!\n");
       g_pepper_keep_going = 0;
       break;
-    case SIGALRM:  /* Alarm handler for general house keeping */
-      /* if(g_pepper_options.debug) printf("SIGALRM received!\n"); */
+    case SIGALRM:  // Alarm handler for general house keeping
+      // if(g_pepper_options.debug) printf("SIGALRM received!\n");
       g_pepper_do_timeouts = 1;
       break;
-    case SIGHUP:   /* Sighup handler for rereading configuration file */
+    case SIGHUP:   // Sighup handler for rereading configuration file
       if(g_pepper_options.debug) printf("SIGHUP received!\n");
       g_pepper_do_sighup = 1;
       break;
@@ -234,7 +234,7 @@ static void log_pid(char *pidfile)
 static int leaky_bucket(struct app_conn_t *conn, int octetsup, int octetsdown)
 {
   struct timeval timenow;
-  uint64_t timediff = 0; /* In microseconds */
+  uint64_t timediff = 0; // In microseconds
   int result = 0;
 
   gettimeofday(&timenow, NULL);
@@ -248,7 +248,7 @@ static int leaky_bucket(struct app_conn_t *conn, int octetsup, int octetsdown)
 
   if(conn->bandwidthmaxup)
   {
-    /* Subtract what the leak since last time we visited */
+    // Subtract what the leak since last time we visited
     if(conn->bucketup > ((timediff * conn->bandwidthmaxup) / 8000000))
     {
       conn->bucketup -= (timediff * conn->bandwidthmaxup) / 8000000;
@@ -260,7 +260,7 @@ static int leaky_bucket(struct app_conn_t *conn, int octetsup, int octetsdown)
 
     if((conn->bucketup + octetsup) > conn->bucketupsize)
     {
-      /*if(g_pepper_options.debug) printf("Leaky bucket deleting uplink packet\n");*/
+      //if(g_pepper_options.debug) printf("Leaky bucket deleting uplink packet\n");
       result = -1;
     }
     else
@@ -281,7 +281,7 @@ static int leaky_bucket(struct app_conn_t *conn, int octetsup, int octetsdown)
 
     if((conn->bucketdown + octetsdown) > conn->bucketdownsize)
     {
-      /*if(g_pepper_options.debug) printf("Leaky bucket deleting downlink packet\n");*/
+      //if(g_pepper_options.debug) printf("Leaky bucket deleting downlink packet\n");
       result = -1;
     }
     else
@@ -294,7 +294,7 @@ static int leaky_bucket(struct app_conn_t *conn, int octetsup, int octetsdown)
 
   return result;
 }
-#endif /* ifndef NO_LEAKY_BUCKET */
+#endif // ifndef NO_LEAKY_BUCKET
 
 //!
 //!  \brief Set some environment variables in order to run external script.
@@ -431,7 +431,7 @@ static int runscript(struct app_conn_t *conn, char *script)
     return 0;
   }
 
-  if(status > 0)   /* Parent */
+  if(status > 0)   // Parent
   {
     return 0;
   }
@@ -557,7 +557,7 @@ static int get_namepart(char *src, char *host, int hostsize, int *port)
     return -1;
   }
 
-  /* The host name must be initiated by "//" and terminated by /, :  or \0 */
+  // The host name must be initiated by "//" and terminated by /, :  or \0
   if(!(slashslash = strstr(src, "//")))
   {
     sys_err(LOG_ERR, __FILE__, __LINE__, 0,
@@ -799,7 +799,7 @@ static int set_uamallowed(char *uamallowed, int len)
               g_pepper_options.uamokiplen++;
             }
           }
-          else   /* AF_INET6 */
+          else   // AF_INET6
           {
             addr6 = (struct sockaddr_in6 *)rp->ai_addr;
             if(g_pepper_options.debug & DEBUG_CONF)
@@ -887,7 +887,7 @@ static int set_macallowed(char *macallowed, int len)
       free(p3);
       return -1;
     }
-    /* Replace anything but hex and comma with space */
+    // Replace anything but hex and comma with space
     for(i = 0; i < strlen(p1); i++)
       if(!isxdigit(p1[i])) p1[i] = 0x20;
 
@@ -989,7 +989,7 @@ static int get_remote_config_from_radius(void)
   (void)radius_addattr(g_pepper_radius, &radius_pack, RADIUS_ATTR_SERVICE_TYPE, 0, 0,
                         RADIUS_SERVICE_TYPE_PEPPERSPOT_AUTHORIZE_ONLY, NULL, 0);
 
-  /* Include NAS-Identifier if given in configuration g_pepper_options */
+  // Include NAS-Identifier if given in configuration g_pepper_options
   if(g_pepper_options.radiusnasid)
     (void)radius_addattr(g_pepper_radius, &radius_pack, RADIUS_ATTR_NAS_IDENTIFIER, 0, 0, 0,
                           (uint8_t *) g_pepper_options.radiusnasid, strlen(g_pepper_options.radiusnasid));
@@ -1051,7 +1051,7 @@ static int process_options(int argc, char **argv, int firsttime)
   }
 
 #if 0
-  /* Get the system default DNS entries */
+  // Get the system default DNS entries
   if(res_init())
   {
     sys_err(LOG_ERR, __FILE__, __LINE__, 0,
@@ -1060,9 +1060,9 @@ static int process_options(int argc, char **argv, int firsttime)
   }
 #endif
 
-  /* Handle each option */
+  // Handle each option
 
-  /* debug                                                        */
+  // debug                                                       
   if(g_pepper_args_info.debug_flag)
   {
     g_pepper_options.debug = g_pepper_args_info.debugfacility_arg;
@@ -1081,12 +1081,12 @@ static int process_options(int argc, char **argv, int firsttime)
     g_pepper_options.ipversion = "ipv6";
   }
 
-  /* interval */
+  // interval
   g_pepper_options.interval = g_pepper_args_info.interval_arg;
 
-  /* Currently we do not need statedir for pepper                   */
+  // Currently we do not need statedir for pepper                  
 
-  /* dhcpif */
+  // dhcpif
   if(!g_pepper_args_info.dhcpif_arg)
   {
     g_pepper_options.nodhcp = 1;
@@ -1097,7 +1097,7 @@ static int process_options(int argc, char **argv, int firsttime)
     g_pepper_options.dhcpif = g_pepper_args_info.dhcpif_arg;
   }
 
-  /* dhcpmac */
+  // dhcpmac
   if(!g_pepper_args_info.dhcpmac_arg)
   {
     memset(g_pepper_options.dhcpmac, 0, DHCP_ETH_ALEN);
@@ -1119,7 +1119,7 @@ static int process_options(int argc, char **argv, int firsttime)
     memcpy(macstr, g_pepper_args_info.dhcpmac_arg, macstrlen);
     macstr[macstrlen] = 0;
 
-    /* Replace anything but hex with space */
+    // Replace anything but hex with space
     for(i = 0; i < macstrlen; i++)
       if(!isxdigit(macstr[i])) macstr[i] = 0x20;
 
@@ -1136,14 +1136,14 @@ static int process_options(int argc, char **argv, int firsttime)
     g_pepper_options.dhcpusemac = 1;
   }
 
-  /* lease                                                           */
+  // lease                                                          
   g_pepper_options.lease = g_pepper_args_info.lease_arg;
 
-  /* eapolenable                                                     */
+  // eapolenable                                                    
   g_pepper_options.eapolenable = g_pepper_args_info.eapolenable_flag;
 
-  /* net                                                          */
-  /* Store net as in_addr net and mask                            */
+  // net                                                         
+  // Store net as in_addr net and mask                           
   if(g_pepper_args_info.net_arg)
   {
     if(ippool_aton(&g_pepper_options.net, &g_pepper_options.mask, g_pepper_args_info.net_arg, 0))
@@ -1153,7 +1153,7 @@ static int process_options(int argc, char **argv, int firsttime)
       return -1;
     }
 
-    /* Set DHCP server IP address to network address plus 1 */
+    // Set DHCP server IP address to network address plus 1
     g_pepper_options.dhcplisten.s_addr = htonl(ntohl(g_pepper_options.net.s_addr) + 1);
   }
   else
@@ -1163,7 +1163,7 @@ static int process_options(int argc, char **argv, int firsttime)
     return -1;
   }
 
-  /* IPv6 address of the TUN interface */
+  // IPv6 address of the TUN interface
   if(g_pepper_args_info.staticipv6_arg)
   {
     if(inet_pton(AF_INET6, g_pepper_args_info.staticipv6_arg, &g_pepper_options.ip6listen) == -1)
@@ -1173,14 +1173,14 @@ static int process_options(int argc, char **argv, int firsttime)
       return -1;
     }
   }
-  /* Set DHCP server IP address */
+  // Set DHCP server IP address
   /* if(g_pepper_args_info.dhcplisten_arg)
      memcpy(&g_pepper_options.dhcplisten.s_addr, g_pepper_args_info.dhcplisten_arg, sizeof(struct in_addr));
      else
      memcpy(&g_pepper_options.dhcplisten.s_addr, g_pepper_args_info.dhcplisten_arg, sizeof(struct in_addr));
      */
-  /* IPv6 Prefix                                                         */
-  /* Store prefix as in_addr6 prefix and mask                            */
+  // IPv6 Prefix                                                        
+  // Store prefix as in_addr6 prefix and mask                           
   if(g_pepper_args_info.ipv6prefix_arg)
   {
     if(ippool_aton6(&g_pepper_options.prefix, &g_pepper_options.prefixlen, &g_pepper_options.ipv6mask, g_pepper_args_info.ipv6prefix_arg))
@@ -1190,7 +1190,7 @@ static int process_options(int argc, char **argv, int firsttime)
       return -1;
     }
 
-    /* Set DHCP server IP address to network address plus 1 */
+    // Set DHCP server IP address to network address plus 1
     g_pepper_options.dhcplisten.s_addr = htonl(ntohl(g_pepper_options.net.s_addr) + 1);
   }
   else
@@ -1200,7 +1200,7 @@ static int process_options(int argc, char **argv, int firsttime)
     return -1;
   }
 
-  /* uamserver                                                   */
+  // uamserver                                                  
   if(g_pepper_options.debug & DEBUG_CONF)
   {
     printf("Uamurl: %s\n", g_pepper_args_info.uamserver_arg);
@@ -1215,7 +1215,7 @@ static int process_options(int argc, char **argv, int firsttime)
     return -1;
   }
 
-  /* TODO: parsing ip url */
+  // TODO: parsing ip url
   if(g_pepper_options.debug & DEBUG_CONF) printf("UAM server:%s\n", hostname);
 
   memset(&hints, 0, sizeof(struct addrinfo));
@@ -1263,7 +1263,7 @@ static int process_options(int argc, char **argv, int firsttime)
 
   g_pepper_options.uamurl = g_pepper_args_info.uamserver_arg;
 
-  /* uamserver6                                                   */
+  // uamserver6                                                  
   if(g_pepper_options.debug & DEBUG_CONF)
   {
     printf("Uamurl6: %s\n", g_pepper_args_info.uamserver6_arg);
@@ -1288,7 +1288,7 @@ static int process_options(int argc, char **argv, int firsttime)
       return -1;
     }
 
-    /* TODO: parsing ipv6 url */
+    // TODO: parsing ipv6 url
     if(g_pepper_options.debug) printf("UAM server6:%s\n", hostname);
 
     memset(&hints, 0, sizeof(struct addrinfo));
@@ -1336,7 +1336,7 @@ static int process_options(int argc, char **argv, int firsttime)
     g_pepper_options.uamurl6 = g_pepper_args_info.uamserver6_arg;
   }
 
-  /* uamhomepage                                                  */
+  // uamhomepage                                                 
   if(!g_pepper_args_info.uamhomepage_arg)
   {
     g_pepper_options.uamhomepage = g_pepper_args_info.uamhomepage_arg;
@@ -1398,10 +1398,10 @@ static int process_options(int argc, char **argv, int firsttime)
     g_pepper_options.uamhomepage = g_pepper_args_info.uamhomepage_arg;
   }
 
-  /* uamsecret                                                    */
+  // uamsecret                                                   
   g_pepper_options.uamsecret = g_pepper_args_info.uamsecret_arg;
 
-  /* uamlisten6                                                   */
+  // uamlisten6                                                  
   if(!g_pepper_args_info.uamlisten_arg)
   {
     memcpy(&g_pepper_options.uamlisten6, &g_pepper_options.ip6listen, sizeof(struct in6_addr));
@@ -1413,10 +1413,10 @@ static int process_options(int argc, char **argv, int firsttime)
     return -1;
   }
 
-  /* uamport                                                      */
+  // uamport                                                     
   g_pepper_options.uamport = g_pepper_args_info.uamport_arg;
 
-  /* uamallowed                                                   */
+  // uamallowed                                                  
   memset(g_pepper_options.uamokip, 0, sizeof(g_pepper_options.uamokip));
   g_pepper_options.uamokiplen = 0;
   memset(g_pepper_options.uamokaddr, 0, sizeof(g_pepper_options.uamokaddr));
@@ -1440,10 +1440,10 @@ static int process_options(int argc, char **argv, int firsttime)
       return -1;
   }
 
-  /* uamanydns                                                    */
+  // uamanydns                                                   
   g_pepper_options.uamanydns = g_pepper_args_info.uamanydns_flag;
 
-  /* dynip                                                        */
+  // dynip                                                       
   g_pepper_options.allowdyn = 1;
   if(!g_pepper_args_info.dynip_arg)
   {
@@ -1462,7 +1462,7 @@ static int process_options(int argc, char **argv, int firsttime)
     }
   }
 
-  /* statip                                                        */
+  // statip                                                       
   if(g_pepper_args_info.statip_arg)
   {
     struct in_addr addr;
@@ -1481,9 +1481,9 @@ static int process_options(int argc, char **argv, int firsttime)
     g_pepper_options.allowstat = 0;
   }
 
-  /* dns1                                                         */
-  /* Store dns1 as in_addr                                        */
-  /* If DNS not given use system default                          */
+  // dns1                                                        
+  // Store dns1 as in_addr                                       
+  // If DNS not given use system default                         
   if(g_pepper_args_info.dns1_arg)
   {
     if(!inet_pton(AF_INET, g_pepper_args_info.dns1_arg, &g_pepper_options.dns1))
@@ -1505,9 +1505,9 @@ static int process_options(int argc, char **argv, int firsttime)
     g_pepper_options.dns1.s_addr = 0;
   }
 
-  /* dns2                                                         */
-  /* Store dns2 as in_addr                                        */
-  /* If DNS not given use system default else use DNS1            */
+  // dns2                                                        
+  // Store dns2 as in_addr                                       
+  // If DNS not given use system default else use DNS1           
   if(g_pepper_args_info.dns2_arg)
   {
     if(!inet_pton(AF_INET, g_pepper_args_info.dns2_arg, &g_pepper_options.dns2))
@@ -1529,19 +1529,19 @@ static int process_options(int argc, char **argv, int firsttime)
     g_pepper_options.dns2.s_addr = g_pepper_options.dns1.s_addr;
   }
 
-  /* Domain                                                       */
+  // Domain                                                      
   g_pepper_options.domain = g_pepper_args_info.domain_arg;
 
-  /* ipup */
+  // ipup
   g_pepper_options.ipup = g_pepper_args_info.ipup_arg;
 
-  /* ipdown */
+  // ipdown
   g_pepper_options.ipdown = g_pepper_args_info.ipdown_arg;
 
-  /* conup */
+  // conup
   g_pepper_options.conup = g_pepper_args_info.conup_arg;
 
-  /* condown */
+  // condown
   g_pepper_options.condown = g_pepper_args_info.condown_arg;
 
   memset(&hints, 0, sizeof(struct addrinfo));
@@ -1550,10 +1550,10 @@ static int process_options(int argc, char **argv, int firsttime)
   hints.ai_flags = 0;
   hints.ai_protocol = 0;
 
-  /* radiuslisten                                                 */
-  /* Check if it's an IPv6 or an IPv4 address            */
-  /* If no listen option is specified listen to any local port    */
-  /* Do hostname lookup to translate hostname to IP address       */
+  // radiuslisten                                                
+  // Check if it's an IPv6 or an IPv4 address           
+  // If no listen option is specified listen to any local port   
+  // Do hostname lookup to translate hostname to IP address      
   if(g_pepper_args_info.radiuslisten_arg)
   {
     if((err = getaddrinfo( g_pepper_args_info.radiuslisten_arg, NULL, &hints, &res)) != 0)
@@ -1583,7 +1583,7 @@ static int process_options(int argc, char **argv, int firsttime)
         close(sfd);
       }
 
-      if(rp == NULL)                 /* No address succeeded */
+      if(rp == NULL)                 // No address succeeded
       {
         fprintf(stderr, "Could not connect\n");
         return -1;
@@ -1615,9 +1615,9 @@ static int process_options(int argc, char **argv, int firsttime)
   hints.ai_flags = 0;
   hints.ai_protocol = 0;
 
-  /* radiusserver1 */
-  /* If no option is specified terminate                          */
-  /* Do hostname lookup to translate hostname to IP address       */
+  // radiusserver1
+  // If no option is specified terminate                         
+  // Do hostname lookup to translate hostname to IP address      
   if(g_pepper_args_info.radiusserver1_arg)
   {
     if((err = getaddrinfo(g_pepper_args_info.radiusserver1_arg, NULL, &hints, &res)) != 0)
@@ -1645,7 +1645,7 @@ static int process_options(int argc, char **argv, int firsttime)
         close(sfd);
       }
 
-      if(rp == NULL)                 /* No address succeeded */
+      if(rp == NULL)                 // No address succeeded
       {
         fprintf(stderr, "Could not connect\n");
         return -1;
@@ -1672,9 +1672,9 @@ static int process_options(int argc, char **argv, int firsttime)
     return -1;
   }
 
-  /* radiusserver2 */
-  /* If no option is specified terminate                          */
-  /* Do hostname lookup to translate hostname to IP address       */
+  // radiusserver2
+  // If no option is specified terminate                         
+  // Do hostname lookup to translate hostname to IP address      
   if(g_pepper_args_info.radiusserver2_arg)
   {
     if((err = getaddrinfo(g_pepper_args_info.radiusserver2_arg, NULL, &hints, &res)) != 0)
@@ -1702,7 +1702,7 @@ static int process_options(int argc, char **argv, int firsttime)
         close(sfd);
       }
 
-      if(rp == NULL)                 /* No address succeeded */
+      if(rp == NULL)                 // No address succeeded
       {
         fprintf(stderr, "Could not connect\n");
         return -1;
@@ -1728,13 +1728,13 @@ static int process_options(int argc, char **argv, int firsttime)
             "No radiusserver2 address given!");
     return -1;
   }
-  /* radiusauthport */
+  // radiusauthport
   g_pepper_options.radiusauthport = g_pepper_args_info.radiusauthport_arg;
 
-  /* radiusacctport */
+  // radiusacctport
   g_pepper_options.radiusacctport = g_pepper_args_info.radiusacctport_arg;
 
-  /* radiussecret */
+  // radiussecret
   if(!g_pepper_args_info.radiussecret_arg)
   {
     sys_err(LOG_ERR, __FILE__, __LINE__, 0,
@@ -1743,12 +1743,12 @@ static int process_options(int argc, char **argv, int firsttime)
   }
   g_pepper_options.radiussecret = g_pepper_args_info.radiussecret_arg;
 
-  /* radiusnasid */
+  // radiusnasid
   g_pepper_options.radiusnasid = g_pepper_args_info.radiusnasid_arg;
 
-  /* radiusnasip                                                  */
-  /* If not specified default to radiuslisten                     */
-  /* Do hostname lookup to translate hostname to IP address       */
+  // radiusnasip                                                 
+  // If not specified default to radiuslisten                    
+  // Do hostname lookup to translate hostname to IP address      
   if(g_pepper_args_info.radiusnasip_arg)
   {
     if((err = getaddrinfo(g_pepper_args_info.radiusnasip_arg, NULL, &hints, &res)) != 0)
@@ -1776,7 +1776,7 @@ static int process_options(int argc, char **argv, int firsttime)
         close(sfd);
       }
 
-      if(rp == NULL)                 /* No address succeeded */
+      if(rp == NULL)                 // No address succeeded
       {
         fprintf(stderr, "Could not connect\n");
         return -1;
@@ -1801,9 +1801,9 @@ static int process_options(int argc, char **argv, int firsttime)
     g_pepper_options.radiusnasip = g_pepper_options.radiuslisten;
   }
 
-  /* radiuscalled (Called-Station-ID)                             */
-  /* If not specified default to dhcpmac                          */
-  /* If no dhcpmac default to real mac address                    */
+  // radiuscalled (Called-Station-ID)                            
+  // If not specified default to dhcpmac                         
+  // If no dhcpmac default to real mac address                   
   if(g_pepper_args_info.radiuscalled_arg)
   {
     g_pepper_options.radiuscalled = g_pepper_args_info.radiuscalled_arg;
@@ -1837,24 +1837,24 @@ static int process_options(int argc, char **argv, int firsttime)
     g_pepper_options.radiuscalled = NULL;
   }
 
-  /* radiuslocationid */
+  // radiuslocationid
   g_pepper_options.radiuslocationid = g_pepper_args_info.radiuslocationid_arg;
 
-  /* radiuslocationname */
+  // radiuslocationname
   g_pepper_options.radiuslocationname = g_pepper_args_info.radiuslocationname_arg;
 
-  /* radiusnasporttype */
+  // radiusnasporttype
   g_pepper_options.radiusnasporttype = g_pepper_args_info.radiusnasporttype_arg;
 
-  /* coaport */
+  // coaport
   g_pepper_options.coaport = g_pepper_args_info.coaport_arg;
 
-  /* coanoipcheck                                                */
+  // coanoipcheck                                               
   g_pepper_options.coanoipcheck = g_pepper_args_info.coanoipcheck_flag;
 
-  /* proxylisten                                                  */
-  /* If no listen option is specified listen to any local port    */
-  /* Do hostname lookup to translate hostname to IP address       */
+  // proxylisten                                                 
+  // If no listen option is specified listen to any local port   
+  // Do hostname lookup to translate hostname to IP address      
   if(g_pepper_args_info.proxylisten_arg)
   {
     if((err = getaddrinfo(g_pepper_args_info.proxylisten_arg, NULL, &hints, &res)) != 0)
@@ -1882,7 +1882,7 @@ static int process_options(int argc, char **argv, int firsttime)
         close(sfd);
       }
 
-      if(rp == NULL)                 /* No address succeeded */
+      if(rp == NULL)                 // No address succeeded
       {
         fprintf(stderr, "Could not connect\n");
         return -1;
@@ -1908,11 +1908,11 @@ static int process_options(int argc, char **argv, int firsttime)
     g_pepper_options.proxylisten.ss_family = AF_INET6;
   }
 
-  /* proxyport                                                   */
+  // proxyport                                                  
   g_pepper_options.proxyport = g_pepper_args_info.proxyport_arg;
 
-  /* proxyclient */
-  /* Store proxyclient as in_addr net and mask                       */
+  // proxyclient
+  // Store proxyclient as in_addr net and mask                      
   if(g_pepper_args_info.proxyclient_arg)
   {
     if(strstr(g_pepper_args_info.proxyclient_arg, ":") == NULL)
@@ -1925,7 +1925,7 @@ static int process_options(int argc, char **argv, int firsttime)
         return -1;
       }
     }
-    else   /* IPv6 client */
+    else   // IPv6 client
     {
       int preflen = 0;
       int maskk = 0;
@@ -1939,12 +1939,12 @@ static int process_options(int argc, char **argv, int firsttime)
   }
   else
   {
-    ((struct sockaddr_in *)&g_pepper_options.proxyaddr)->sin_addr.s_addr = ~0; /* Let nobody through */
+    ((struct sockaddr_in *)&g_pepper_options.proxyaddr)->sin_addr.s_addr = ~0; // Let nobody through
     ((struct sockaddr_in *)&g_pepper_options.proxymask)->sin_addr.s_addr = 0;
   }
 
-  /* proxysecret */
-  /* If omitted default to radiussecret */
+  // proxysecret
+  // If omitted default to radiussecret
   if(!g_pepper_args_info.proxysecret_arg)
   {
     g_pepper_options.proxysecret = g_pepper_args_info.radiussecret_arg;
@@ -1958,11 +1958,11 @@ static int process_options(int argc, char **argv, int firsttime)
   g_pepper_options.macsuffix = g_pepper_args_info.macsuffix_arg;
   g_pepper_options.macpasswd = g_pepper_args_info.macpasswd_arg;
 
-  /* Radius remote configuration management */
+  // Radius remote configuration management
   g_pepper_options.confusername = g_pepper_args_info.confusername_arg;
   g_pepper_options.confpassword = g_pepper_args_info.confpassword_arg;
 
-  /* macallowed                                                   */
+  // macallowed                                                  
   memset(g_pepper_options.macok, 0, sizeof(g_pepper_options.macok));
   g_pepper_options.macoklen = 0;
   for(numargs = 0; numargs < g_pepper_args_info.macallowed_given; ++numargs)
@@ -1978,13 +1978,13 @@ static int process_options(int argc, char **argv, int firsttime)
       return -1;
   }
 
-  /* foreground                                                   */
-  /* If flag not given run as a daemon                            */
+  // foreground                                                  
+  // If flag not given run as a daemon                           
   if((!g_pepper_args_info.fg_flag) && (firsttime))
   {
     closelog();
-    /* Close the standard file descriptors. */
-    /* Is this really needed ? */
+    // Close the standard file descriptors.
+    // Is this really needed ?
     (void)freopen("/dev/null", "w", stdout);
     (void)freopen("/dev/null", "w", stderr);
     (void)freopen("/dev/null", "r", stdin);
@@ -1994,11 +1994,11 @@ static int process_options(int argc, char **argv, int firsttime)
               "daemon() failed!");
     }
 
-    /* Open log again. This time with new pid */
+    // Open log again. This time with new pid
     openlog(PACKAGE, LOG_PID, LOG_DAEMON);
   }
 
-  /* pidfile */
+  // pidfile
   g_pepper_options.pidfile = g_pepper_args_info.pidfile_arg;
 
   return 0;
@@ -2015,7 +2015,7 @@ static void reprocess_options(int argc, char **argv)
   sys_err(LOG_INFO, __FILE__, __LINE__, 0,
           "Rereading configuration file and doing DNS lookup");
 
-  memcpy(&options2, &g_pepper_options, sizeof(g_pepper_options)); /* Save original */
+  memcpy(&options2, &g_pepper_options, sizeof(g_pepper_options)); // Save original
   if(process_options(argc, argv, 0))
   {
     sys_err(LOG_ERR, __FILE__, __LINE__, 0,
@@ -2024,38 +2024,38 @@ static void reprocess_options(int argc, char **argv)
     return;
   }
 
-  /* Options which we do not allow to be affected */
-  /* fg, conf and statedir are not stored in g_pepper_options */
-  g_pepper_options.net = options2.net; /* net */
-  g_pepper_options.mask = options2.mask; /* net */
-  g_pepper_options.dhcplisten = options2.dhcplisten; /* net */
-  g_pepper_options.dynip = options2.dynip; /* dynip */
-  g_pepper_options.allowdyn = options2.allowdyn; /* dynip */
-  g_pepper_options.statip = options2.statip; /* statip */
-  g_pepper_options.allowstat = options2.allowstat; /* statip */
-  g_pepper_options.uamlisten = options2.uamlisten; /* uamlisten */
-  g_pepper_options.uamport = options2.uamport; /* uamport */
-  g_pepper_options.radiuslisten = options2.radiuslisten; /* radiuslisten */
-  g_pepper_options.coaport = g_pepper_options.coaport; /* coaport */
-  g_pepper_options.coanoipcheck = g_pepper_options.coanoipcheck; /* coanoipcheck */
-  g_pepper_options.proxylisten = options2.proxylisten; /* proxylisten */
-  g_pepper_options.proxyport = options2.proxyport; /* proxyport */
-  g_pepper_options.proxyaddr = options2.proxyaddr; /* proxyclient */
-  g_pepper_options.proxymask = options2.proxymask; /* proxyclient */
-  g_pepper_options.proxysecret = options2.proxysecret; /*proxysecret */
-  g_pepper_options.nodhcp = options2.nodhcp; /* dhcpif */
-  g_pepper_options.dhcpif = options2.dhcpif; /* dhcpif */
-  memcpy(g_pepper_options.dhcpmac, options2.dhcpmac, DHCP_ETH_ALEN); /* dhcpmac */
-  g_pepper_options.dhcpusemac = options2.dhcpusemac; /* dhcpmac */
-  g_pepper_options.lease = options2.lease; /* lease */
-  g_pepper_options.eapolenable = options2.eapolenable; /* eapolenable */
-  g_pepper_options.pidfile = options2.pidfile; /* pidfile */
-  g_pepper_options.ipversion = options2.ipversion; /* ipversion */
-  g_pepper_options.ip6listen = options2.ip6listen; /* ip6listen */
+  // Options which we do not allow to be affected
+  // fg, conf and statedir are not stored in g_pepper_options
+  g_pepper_options.net = options2.net; // net
+  g_pepper_options.mask = options2.mask; // net
+  g_pepper_options.dhcplisten = options2.dhcplisten; // net
+  g_pepper_options.dynip = options2.dynip; // dynip
+  g_pepper_options.allowdyn = options2.allowdyn; // dynip
+  g_pepper_options.statip = options2.statip; // statip
+  g_pepper_options.allowstat = options2.allowstat; // statip
+  g_pepper_options.uamlisten = options2.uamlisten; // uamlisten
+  g_pepper_options.uamport = options2.uamport; // uamport
+  g_pepper_options.radiuslisten = options2.radiuslisten; // radiuslisten
+  g_pepper_options.coaport = g_pepper_options.coaport; // coaport
+  g_pepper_options.coanoipcheck = g_pepper_options.coanoipcheck; // coanoipcheck
+  g_pepper_options.proxylisten = options2.proxylisten; // proxylisten
+  g_pepper_options.proxyport = options2.proxyport; // proxyport
+  g_pepper_options.proxyaddr = options2.proxyaddr; // proxyclient
+  g_pepper_options.proxymask = options2.proxymask; // proxyclient
+  g_pepper_options.proxysecret = options2.proxysecret; //proxysecret
+  g_pepper_options.nodhcp = options2.nodhcp; // dhcpif
+  g_pepper_options.dhcpif = options2.dhcpif; // dhcpif
+  memcpy(g_pepper_options.dhcpmac, options2.dhcpmac, DHCP_ETH_ALEN); // dhcpmac
+  g_pepper_options.dhcpusemac = options2.dhcpusemac; // dhcpmac
+  g_pepper_options.lease = options2.lease; // lease
+  g_pepper_options.eapolenable = options2.eapolenable; // eapolenable
+  g_pepper_options.pidfile = options2.pidfile; // pidfile
+  g_pepper_options.ipversion = options2.ipversion; // ipversion
+  g_pepper_options.ip6listen = options2.ip6listen; // ip6listen
   g_pepper_options.prefix = options2.prefix;
   g_pepper_options.prefixlen = options2.prefixlen;
 
-  /* Reinit DHCP parameters */
+  // Reinit DHCP parameters
   if(!strncmp(g_pepper_options.ipversion, "ipv4", 4))
   {
     (void)dhcp_set(g_pepper_dhcp, g_pepper_options.debug,
@@ -2070,7 +2070,7 @@ static void reprocess_options(int argc, char **argv)
                       g_pepper_options.uamokip6, g_pepper_options.uamokiplen6,
                       g_pepper_options.uamokaddr6, g_pepper_options.uamokmask6, g_pepper_options.uamoknetlen6);
   }
-  else /* dual */
+  else // dual
   {
     (void)dhcp_set(g_pepper_dhcp, (g_pepper_options.debug & DEBUG_DHCP),
                     g_pepper_options.uamserver, g_pepper_options.uamserverlen, g_pepper_options.uamanydns,
@@ -2083,13 +2083,13 @@ static void reprocess_options(int argc, char **argv)
                       g_pepper_options.uamokaddr6, g_pepper_options.uamokmask6, g_pepper_options.uamoknetlen6);
   }
 
-  /* Reinit RADIUS parameters */
+  // Reinit RADIUS parameters
   (void)radius_set(g_pepper_radius, (g_pepper_options.debug & DEBUG_RADIUS),
                     &g_pepper_options.radiusserver1, &g_pepper_options.radiusserver2,
                     g_pepper_options.radiusauthport, g_pepper_options.radiusacctport,
                     g_pepper_options.radiussecret);
 
-  /* Reinit Redir parameters */
+  // Reinit Redir parameters
   (void)redir_set(g_pepper_redir, (g_pepper_options.debug & DEBUG_REDIR), &g_pepper_options.prefix, g_pepper_options.prefixlen,
                    g_pepper_options.uamurl, g_pepper_options.uamurl6, g_pepper_options.uamhomepage, g_pepper_options.uamsecret,
                    &g_pepper_options.radiuslisten,
@@ -2158,7 +2158,7 @@ static int send_radius_access_challenge(struct app_conn_t *conn)
   }
   radius_pack.id = conn->radiusid;
 
-  /* Include EAP */
+  // Include EAP
   do
   {
     if((conn->challen - offset) > RADIUS_ATTR_VLEN)
@@ -2213,7 +2213,7 @@ static int send_radius_access_accept(struct app_conn_t *conn)
   }
   radius_pack.id = conn->radiusid;
 
-  /* Include EAP (if present) */
+  // Include EAP (if present)
   offset = 0;
   while(offset < conn->challen)
   {
@@ -2226,7 +2226,7 @@ static int send_radius_access_accept(struct app_conn_t *conn)
     offset += eaplen;
   }
 
-  /* Message Authenticator */
+  // Message Authenticator
   if(conn->challen)
     (void)radius_addattr(g_pepper_radius, &radius_pack, RADIUS_ATTR_MESSAGE_AUTHENTICATOR,
                           0, 0, 0, NULL, RADIUS_MD5LEN);
@@ -2349,7 +2349,7 @@ static int send_radius_accounting_request(struct app_conn_t *conn, int status_ty
   (void)radius_addattr(g_pepper_radius, &radius_pack, RADIUS_ATTR_SERVICE_TYPE, 0, 0,
                         RADIUS_SERVICE_TYPE_PEPPERSPOT_AUTHORIZE_ONLY, NULL, 0);
 
-  /* Include NAS-Identifier if given in configuration g_pepper_options */
+  // Include NAS-Identifier if given in configuration g_pepper_options
   if(g_pepper_options.radiusnasid)
     (void)radius_addattr(g_pepper_radius, &radius_pack, RADIUS_ATTR_NAS_IDENTIFIER, 0, 0, 0,
                           (uint8_t *) g_pepper_options.radiusnasid,
@@ -2421,7 +2421,7 @@ static int send_radius_accounting_request(struct app_conn_t *conn, int status_ty
     (void)radius_addattr(g_pepper_radius, &radius_pack, RADIUS_ATTR_ACCT_TERMINATE_CAUSE,
                           0, 0, conn->terminate_cause, NULL, 0);
 
-    /* TODO: This probably belongs somewhere else */
+    // TODO: This probably belongs somewhere else
     if(g_pepper_options.condown)
     {
       if(g_pepper_options.debug)
@@ -2453,7 +2453,7 @@ static int send_radius_macauth(struct app_conn_t *conn)
     return -1;
   }
 
-  /* Include his MAC address */
+  // Include his MAC address
   (void)snprintf(mac, MACSTRLEN + 1, "%.2X-%.2X-%.2X-%.2X-%.2X-%.2X",
                   dhcpconn->hismac[0], dhcpconn->hismac[1],
                   dhcpconn->hismac[2], dhcpconn->hismac[3],
@@ -2479,7 +2479,7 @@ static int send_radius_macauth(struct app_conn_t *conn)
   (void)radius_addattr(g_pepper_radius, &radius_pack, RADIUS_ATTR_CALLING_STATION_ID, 0, 0, 0,
                         (uint8_t *) mac, MACSTRLEN);
 
-  /* Include our MAC address */
+  // Include our MAC address
   if(g_pepper_options.radiuscalled)
     (void)radius_addattr(g_pepper_radius, &radius_pack, RADIUS_ATTR_CALLED_STATION_ID, 0, 0, 0,
                           (uint8_t *) g_pepper_options.radiuscalled, strlen(g_pepper_options.radiuscalled));
@@ -2497,9 +2497,9 @@ static int send_radius_macauth(struct app_conn_t *conn)
   (void)radius_addattr(g_pepper_radius, &radius_pack, RADIUS_ATTR_SERVICE_TYPE, 0, 0,
                         RADIUS_SERVICE_TYPE_PEPPERSPOT_AUTHORIZE_ONLY, NULL, 0);
   (void)radius_addattr(g_pepper_radius, &radius_pack, RADIUS_ATTR_SERVICE_TYPE, 0, 0,
-                        RADIUS_SERVICE_TYPE_LOGIN, NULL, 0); /* WISPr_V1.0 */
+                        RADIUS_SERVICE_TYPE_LOGIN, NULL, 0); // WISPr_V1.0
 
-  /* Include NAS-Identifier if given in configuration g_pepper_options */
+  // Include NAS-Identifier if given in configuration g_pepper_options
   if(g_pepper_options.radiusnasid)
     (void)radius_addattr(g_pepper_radius, &radius_pack, RADIUS_ATTR_NAS_IDENTIFIER, 0, 0, 0,
                           (uint8_t *) g_pepper_options.radiusnasid, strlen(g_pepper_options.radiusnasid));
@@ -2569,7 +2569,7 @@ static int dnprot_reject(struct app_conn_t *conn)
 
       if(conn->ipv6)
       {
-        /* Allocate dynamic IP address */
+        // Allocate dynamic IP address
         if(ippool_new_ip6(g_pepper_ippool, &ipm, &conn->hisipv6))
         {
           sys_err(LOG_ERR, __FILE__, __LINE__, 0,
@@ -2582,7 +2582,7 @@ static int dnprot_reject(struct app_conn_t *conn)
       }
       else
       {
-        /* Allocate dynamic IP address */
+        // Allocate dynamic IP address
         if(ippool_new_ip(g_pepper_ippool, &ipm, &conn->reqip, 0))
         {
           sys_err(LOG_ERR, __FILE__, __LINE__, 0,
@@ -2591,7 +2591,7 @@ static int dnprot_reject(struct app_conn_t *conn)
         }
         conn->hisip.s_addr = ipm->addr.s_addr;
 
-        /* TODO: Listening address is network address plus 1 */
+        // TODO: Listening address is network address plus 1
         conn->ourip.s_addr = htonl((ntohl(g_pepper_options.net.s_addr) + 1));
       }
 
@@ -2694,18 +2694,18 @@ static int dnprot_accept(struct app_conn_t *conn)
                                 &conn->ouripv6,
                                 g_pepper_options.domain);
 
-      /* This is the one and only place eapol authentication is accepted */
+      // This is the one and only place eapol authentication is accepted
       dhcpconn->authstate = DHCP_AUTH_PASS;
 
-      /* Initialise parameters for accounting */
+      // Initialise parameters for accounting
       conn->userlen = conn->proxyuserlen;
       memcpy(conn->user, conn->proxyuser, conn->userlen);
-      /*conn->nasip = conn->proxynasip; */
+      //conn->nasip = conn->proxynasip;
       conn->nasport = conn->proxynasport;
       memcpy(conn->hismac, conn->proxyhismac, DHCP_ETH_ALEN);
       memcpy(conn->ourmac, conn->proxyourmac, DHCP_ETH_ALEN);
 
-      /* Tell client it was successful */
+      // Tell client it was successful
       (void)dhcp_send_eap(dhcpconn, conn->chal, conn->challen);
 
       sys_err(LOG_WARNING, __FILE__, __LINE__, 0,
@@ -2728,13 +2728,13 @@ static int dnprot_accept(struct app_conn_t *conn)
                                 &conn->ouripv6,
                                 g_pepper_options.domain);
 
-      /* This is the one and only place UAM authentication for IPv4 is accepted */
+      // This is the one and only place UAM authentication for IPv4 is accepted
       dhcpconn->authstate = DHCP_AUTH_PASS;
 
-      /* Initialise parameters for accounting */
+      // Initialise parameters for accounting
       conn->userlen = conn->proxyuserlen;
       memcpy(conn->user, conn->proxyuser, conn->userlen);
-      /*conn->nasip = conn->proxynasip; */
+      //conn->nasip = conn->proxynasip;
       conn->nasport = conn->proxynasport;
       memcpy(conn->hismac, conn->proxyhismac, DHCP_ETH_ALEN);
       memcpy(conn->ourmac, conn->proxyourmac, DHCP_ETH_ALEN);
@@ -2756,18 +2756,18 @@ static int dnprot_accept(struct app_conn_t *conn)
                                 &conn->ouripv6,
                                 g_pepper_options.domain);
 
-      /* This is the one and only place WPA authentication is accepted */
+      // This is the one and only place WPA authentication is accepted
       dhcpconn->authstate = DHCP_AUTH_PASS;
 
-      /* Initialise parameters for accounting */
+      // Initialise parameters for accounting
       conn->userlen = conn->proxyuserlen;
       memcpy(conn->user, conn->proxyuser, conn->userlen);
-      /*conn->nasip = conn->proxynasip; */
+      //conn->nasip = conn->proxynasip;
       conn->nasport = conn->proxynasport;
       memcpy(conn->hismac, conn->proxyhismac, DHCP_ETH_ALEN);
       memcpy(conn->ourmac, conn->proxyourmac, DHCP_ETH_ALEN);
 
-      /* Tell access point it was successful */
+      // Tell access point it was successful
       send_radius_access_accept(conn);
 
       break;
@@ -2788,13 +2788,13 @@ static int dnprot_accept(struct app_conn_t *conn)
                                 &conn->ouripv6,
                                 g_pepper_options.domain);
 
-      /* This is the one and only place MAC authentication is accepted */
+      // This is the one and only place MAC authentication is accepted
       dhcpconn->authstate = DHCP_AUTH_PASS;
 
-      /* Initialise parameters for accounting */
+      // Initialise parameters for accounting
       conn->userlen = conn->proxyuserlen;
       memcpy(conn->user, conn->proxyuser, conn->userlen);
-      /*conn->nasip = conn->proxynasip; */
+      //conn->nasip = conn->proxynasip;
       conn->nasport = conn->proxynasport;
       memcpy(conn->hismac, conn->proxyhismac, DHCP_ETH_ALEN);
       memcpy(conn->ourmac, conn->proxyourmac, DHCP_ETH_ALEN);
@@ -2805,7 +2805,7 @@ static int dnprot_accept(struct app_conn_t *conn)
       return 0;
   }
 
-  /* Run connection up script */
+  // Run connection up script
   if((g_pepper_options.conup) && (!conn->authenticated))
   {
     if(g_pepper_options.debug)
@@ -2814,7 +2814,7 @@ static int dnprot_accept(struct app_conn_t *conn)
     (void)runscript(conn, g_pepper_options.conup);
   }
 
-  /* This is the one and only place state is switched to authenticated */
+  // This is the one and only place state is switched to authenticated
   if(!conn->authenticated)
   {
     conn->authenticated = 1;
@@ -2881,16 +2881,16 @@ static int upprot_getip(struct app_conn_t *conn, struct in_addr *hisip, int stat
 
   conn->ipv6 = 0;
 
-  /* If IP address is allready allocated: Fill it in */
-  /* This should only happen for UAM */
-  /* TODO */
+  // If IP address is allready allocated: Fill it in
+  // This should only happen for UAM
+  // TODO
   if(conn->uplink)
   {
     ipm = (struct ippoolm_t *) conn->uplink;
   }
   else
   {
-    /* Allocate static or dynamic IP address */
+    // Allocate static or dynamic IP address
 
     if((hisip) && (statip))
     {
@@ -2915,7 +2915,7 @@ static int upprot_getip(struct app_conn_t *conn, struct in_addr *hisip, int stat
     }
     conn->hisip.s_addr = ipm->addr.s_addr;
 
-    /* TODO: Listening address is network address plus 1 */
+    // TODO: Listening address is network address plus 1
     conn->ourip.s_addr = htonl((ntohl(g_pepper_options.net.s_addr) + 1));
 
     conn->uplink = ipm;
@@ -2937,16 +2937,16 @@ static int upprot_getip6(struct app_conn_t *conn, struct in6_addr *hisip)
   struct ippoolm_t *ipm = NULL;
 
   conn->ipv6 = 1;
-  /* If IP address is allready allocated: Fill it in */
-  /* This should only happen for UAM */
-  /* TODO */
+  // If IP address is allready allocated: Fill it in
+  // This should only happen for UAM
+  // TODO
   if(conn->uplink)
   {
     ipm = (struct ippoolm_t *) conn->uplink;
   }
   else
   {
-    /* Allocate static or dynamic IP address */
+    // Allocate static or dynamic IP address
     if((hisip))
     {
       if(ippool_new_ip6(g_pepper_ippool, &ipm, hisip))
@@ -2993,18 +2993,18 @@ static int upprot_getip6(struct app_conn_t *conn, struct in6_addr *hisip)
 static int init_conn(void)
 {
   int n = 0;
-  g_pepper_firstusedconn = NULL; /* Redundant */
-  g_pepper_lastusedconn = NULL; /* Redundant */
+  g_pepper_firstusedconn = NULL; // Redundant
+  g_pepper_lastusedconn = NULL; // Redundant
 
   gettimeofday(&g_pepper_checktime, NULL);
   gettimeofday(&g_pepper_rereadtime, NULL);
 
   for(n = 0; n < (2 * APP_NUM_CONN); n++)
   {
-    g_pepper_connection[n].inuse = 0; /* Redundant */
+    g_pepper_connection[n].inuse = 0; // Redundant
     if(n == 0)
     {
-      g_pepper_connection[n].prev = NULL; /* Redundant */
+      g_pepper_connection[n].prev = NULL; // Redundant
       g_pepper_firstfreeconn = &g_pepper_connection[n];
 
     }
@@ -3015,7 +3015,7 @@ static int init_conn(void)
     }
     if(n == ((2 * APP_NUM_CONN) - 1))
     {
-      g_pepper_connection[n].next = NULL; /* Redundant */
+      g_pepper_connection[n].next = NULL; // Redundant
       g_pepper_lastfreeconn = &g_pepper_connection[n];
     }
   }
@@ -3039,28 +3039,28 @@ static int new_conn(struct app_conn_t **conn)
 
   *conn = g_pepper_firstfreeconn;
 
-  /* Remove from link of free */
+  // Remove from link of free
   if(g_pepper_firstfreeconn->next)
   {
     g_pepper_firstfreeconn->next->prev = NULL;
     g_pepper_firstfreeconn = g_pepper_firstfreeconn->next;
   }
-  else   /* Took the last one */
+  else   // Took the last one
   {
     g_pepper_firstfreeconn = NULL;
     g_pepper_lastfreeconn = NULL;
   }
 
-  /* Initialise structures */
+  // Initialise structures
   memset(*conn, 0, sizeof(**conn));
 
-  /* Insert into link of used */
+  // Insert into link of used
   if(g_pepper_firstusedconn)
   {
     g_pepper_firstusedconn->prev = *conn;
     (*conn)->next = g_pepper_firstusedconn;
   }
-  else   /* First insert */
+  else   // First insert
   {
     g_pepper_lastusedconn = *conn;
   }
@@ -3070,7 +3070,7 @@ static int new_conn(struct app_conn_t **conn)
   (*conn)->inuse = 1;
   (*conn)->unit = (*conn) - g_pepper_connection;
 
-  return 0; /* Success */
+  return 0; // Success
 }
 
 //!
@@ -3080,37 +3080,37 @@ static int new_conn(struct app_conn_t **conn)
 //!
 static int free_conn(struct app_conn_t *conn)
 {
-  /* Remove from link of used */
+  // Remove from link of used
   if((conn->next) && (conn->prev))
   {
     conn->next->prev = conn->prev;
     conn->prev->next = conn->next;
   }
-  else if(conn->next)   /* && prev == 0 */
+  else if(conn->next)   // && prev == 0
   {
     conn->next->prev = NULL;
     g_pepper_firstusedconn = conn->next;
   }
-  else if(conn->prev)   /* && next == 0 */
+  else if(conn->prev)   // && next == 0
   {
     conn->prev->next = NULL;
     g_pepper_lastusedconn = conn->prev;
   }
-  else   /* if((next == 0) && (prev == 0)) */
+  else   // if((next == 0) && (prev == 0))
   {
     g_pepper_firstusedconn = NULL;
     g_pepper_lastusedconn = NULL;
   }
 
-  /* Initialise structures */
+  // Initialise structures
   memset(conn, 0, sizeof(*conn));
 
-  /* Insert into link of free */
+  // Insert into link of free
   if(g_pepper_firstfreeconn)
   {
     g_pepper_firstfreeconn->prev = conn;
   }
-  else   /* First insert */
+  else   // First insert
   {
     g_pepper_lastfreeconn = conn;
   }
@@ -3227,7 +3227,7 @@ static int check_conn(void)
     }
   }
 
-  /* Reread configuration file and recheck DNS */
+  // Reread configuration file and recheck DNS
   if(g_pepper_options.interval)
   {
     rereaddiff = timenow.tv_sec - g_pepper_rereadtime.tv_sec;
@@ -3282,7 +3282,7 @@ static int get_conn(struct app_conn_t **conn, struct sockaddr_storage nasip, uin
 {
   struct app_conn_t *appconn = NULL;
 
-  /* Count the number of used connections */
+  // Count the number of used connections
   appconn = g_pepper_firstusedconn;
   while(appconn)
   {
@@ -3298,7 +3298,7 @@ static int get_conn(struct app_conn_t **conn, struct sockaddr_storage nasip, uin
     }
     appconn = appconn->next;
   }
-  return -1; /* Not found */
+  return -1; // Not found
 }
 
 //!
@@ -3334,7 +3334,7 @@ static int get_conn_username(struct app_conn_t **conn, char *username, int usern
     }
     appconn = appconn->next;
   }
-  return -1; /* Not found */
+  return -1; // Not found
 }
 
 //! *********************************************************
@@ -3398,14 +3398,14 @@ static int handle_redir_uam_msg(struct redir_msg_t *msg)
     if(g_pepper_options.debug)
       printf("Received login from UAM\n");
 
-    /* Initialise */
+    // Initialise
     conn->statelen = 0;
     conn->challen = 0;
     conn->sendlen = 0;
     conn->recvlen = 0;
     conn->lmntlen = 0;
 
-    /* Store user name for accounting records */
+    // Store user name for accounting records
     strncpy(conn->user, msg->username, USERNAMESIZE);
     conn->userlen = strlen(msg->username);
 
@@ -3417,7 +3417,7 @@ static int handle_redir_uam_msg(struct redir_msg_t *msg)
     memcpy(conn->proxyhismac, dhcpconn->hismac, DHCP_ETH_ALEN);
     memcpy(conn->proxyourmac, dhcpconn->ourmac, DHCP_ETH_ALEN);
 
-    conn->policy = 0; /* TODO */
+    conn->policy = 0; // TODO
 
     conn->statelen = msg->statelen;
     memcpy(conn->statebuf, msg->statebuf, msg->statelen);
@@ -3478,7 +3478,7 @@ static int handle_redir_uam_msg(struct redir_msg_t *msg)
       set_sessionid(conn);
     }
 
-    /* [SG] Log out other client connection, if exists. */
+    // [SG] Log out other client connection, if exists.
     if(((msg->ipv6) ?
          dhcp_hash_get(g_pepper_dhcp, &dhcpconn, dhcpconn->hismac) :
          dhcp_hash_get6(g_pepper_dhcp, &dhcpconn, dhcpconn->hismac)
@@ -3507,8 +3507,8 @@ static int handle_redir_uam_msg(struct redir_msg_t *msg)
     sys_err(LOG_NOTICE, __FILE__, __LINE__, 0,
             "Received UAM abort from IP=%s", msg->ipv6 ? inet_ntop(AF_INET6, &conn->hisipv6, buf, sizeof(buf)) : inet_ntop(AF_INET, &conn->hisip, buf, sizeof(buf)));
 
-    conn->uamabort = 1; /* Next login will be aborted */
-    conn->uamtime = 0;  /* Force generation of new challenge */
+    conn->uamabort = 1; // Next login will be aborted
+    conn->uamtime = 0;  // Force generation of new challenge
     dhcpconn->authstate = DHCP_AUTH_DNAT;
 
     if(conn->authenticated == 1)
@@ -3581,8 +3581,8 @@ int parse_radius_access_request(struct radius_packet_t *pack, struct sockaddr_st
   struct app_conn_t *conn = NULL;
   struct dhcp_conn_t *dhcpconn = NULL;
 
-  uint8_t resp[EAP_LEN];         /* EAP response */
-  int resplen = 0;                   /* Length of EAP response */
+  uint8_t resp[EAP_LEN];         // EAP response
+  int resplen = 0;                   // Length of EAP response
 
   int offset = 0;
   int instance = 0;
@@ -3598,9 +3598,9 @@ int parse_radius_access_request(struct radius_packet_t *pack, struct sockaddr_st
   }
   radius_pack.id = pack->id;
 
-  /* User is identified by either IP address OR MAC address */
+  // User is identified by either IP address OR MAC address
 
-  /* Framed IP address (Conditional) */
+  // Framed IP address (Conditional)
   if(!radius_getattr(pack, &hisipattr, RADIUS_ATTR_FRAMED_IP_ADDRESS, 0, 0, 0))
   {
     if(g_pepper_options.debug)
@@ -3618,7 +3618,7 @@ int parse_radius_access_request(struct radius_packet_t *pack, struct sockaddr_st
     memcpy(&hisip.s_addr, &hisipattr->v.i, sizeof(struct in_addr));
   }
 
-  /* Framed IPv6 prefix (Conditional) */
+  // Framed IPv6 prefix (Conditional)
   if(!radius_getattr6(pack, &hisprefixattr, RADIUS_ATTR_FRAMED_IPV6_PREFIX, 0, 0, 0))
   {
     if(g_pepper_options.debug)
@@ -3636,7 +3636,7 @@ int parse_radius_access_request(struct radius_packet_t *pack, struct sockaddr_st
     memcpy(&hisprefix, &hisprefixattr->v.i, sizeof(struct in6_addr));
   }
 
-  /* Framed Interface Id (Conditional) */
+  // Framed Interface Id (Conditional)
   if(!radius_getattr6(pack, &hisifaceidattr, RADIUS_ATTR_FRAMED_INTERFACE_ID, 0, 0, 0))
   {
     if(g_pepper_options.debug)
@@ -3654,7 +3654,7 @@ int parse_radius_access_request(struct radius_packet_t *pack, struct sockaddr_st
     memcpy(&ifaceid, &hisifaceidattr->v.i, sizeof(uint64_t));
   }
 
-  /* Calling Station ID: MAC Address (Conditional) */
+  // Calling Station ID: MAC Address (Conditional)
   if(!radius_getattr(pack, &hismacattr, RADIUS_ATTR_CALLING_STATION_ID, 0, 0, 0))
   {
     if(g_pepper_options.debug)
@@ -3672,7 +3672,7 @@ int parse_radius_access_request(struct radius_packet_t *pack, struct sockaddr_st
     memcpy(macstr, hismacattr->v.t, macstrlen);
     macstr[macstrlen] = 0;
 
-    /* Replace anything but hex with space */
+    // Replace anything but hex with space
     for(i = 0; i < macstrlen; i++)
       if(!isxdigit(macstr[i])) macstr[i] = 0x20;
 
@@ -3689,7 +3689,7 @@ int parse_radius_access_request(struct radius_packet_t *pack, struct sockaddr_st
       hismac[i] = temp[i];
   }
 
-  /* Framed IP address or MAC Address must be given in request */
+  // Framed IP address or MAC Address must be given in request
   if((!hisipattr) && (!hismacattr) && (!hisprefixattr) && (hisifaceidattr))
   {
     sys_err(LOG_ERR, __FILE__, __LINE__, 0,
@@ -3697,7 +3697,7 @@ int parse_radius_access_request(struct radius_packet_t *pack, struct sockaddr_st
     return radius_resp(g_pepper_radius, &radius_pack, peer, pack->authenticator);
   }
 
-  /* Username (Mandatory) */
+  // Username (Mandatory)
   if(radius_getattr(pack, &uidattr, RADIUS_ATTR_USER_NAME, 0, 0, 0))
   {
     sys_err(LOG_ERR, __FILE__, __LINE__, 0,
@@ -3714,7 +3714,7 @@ int parse_radius_access_request(struct radius_packet_t *pack, struct sockaddr_st
     }
   }
 
-  if(hisipattr)   /* Find user based on IP address */
+  if(hisipattr)   // Find user based on IP address
   {
     if(ippool_get_ip(g_pepper_ippool, &ipm, &hisip))
     {
@@ -3731,7 +3731,7 @@ int parse_radius_access_request(struct radius_packet_t *pack, struct sockaddr_st
     conn = (struct app_conn_t *) ipm->peer;
     dhcpconn = (struct dhcp_conn_t *) conn->dnlink;
   }
-  else if(hismacattr) /* Look for mac address. If not found allocate new */
+  else if(hismacattr) // Look for mac address. If not found allocate new
   {
     if(dhcp_hash_get(g_pepper_dhcp, &dhcpconn, hismac))
     {
@@ -3759,18 +3759,18 @@ int parse_radius_access_request(struct radius_packet_t *pack, struct sockaddr_st
     return radius_resp(g_pepper_radius, &radius_pack, peer, pack->authenticator);
   }
 
-  /* Silently ignore Radius request if allready processing one */
+  // Silently ignore Radius request if allready processing one
   if(conn->radiuswait)
     return 0;
 
-  /* Radius auth only for DHCP */
+  // Radius auth only for DHCP
   if((conn->dnprot != DNPROT_UAM) &&
       (conn->dnprot != DNPROT_WPA))
   {
     return radius_resp(g_pepper_radius, &radius_pack, peer, pack->authenticator);
   }
 
-  /* Password */
+  // Password
   if(!radius_getattr(pack, &pwdattr, RADIUS_ATTR_USER_PASSWORD, 0, 0, 0))
   {
     if(g_pepper_options.debug)
@@ -3791,7 +3791,7 @@ int parse_radius_access_request(struct radius_packet_t *pack, struct sockaddr_st
     if(g_pepper_options.debug) printf("Password is: %s\n", pwd);
   }
 
-  /* Get EAP message */
+  // Get EAP message
   resplen = 0;
   do
   {
@@ -3812,7 +3812,7 @@ int parse_radius_access_request(struct radius_packet_t *pack, struct sockaddr_st
   }
   while(eapattr);
 
-  /* Passwd or EAP must be given in request */
+  // Passwd or EAP must be given in request
   if((!pwdattr) && (!resplen))
   {
     sys_err(LOG_ERR, __FILE__, __LINE__, 0,
@@ -3829,10 +3829,10 @@ int parse_radius_access_request(struct radius_packet_t *pack, struct sockaddr_st
      a accounting stop message for the old connection.
      this does however pose a denial of service attack possibility */
 
-  /* If allready logged in send back accept message with username */
-  /* TODO ? Should this be a reject: Dont login twice ? */
+  // If allready logged in send back accept message with username
+  // TODO ? Should this be a reject: Dont login twice ?
 
-  /* Reject if trying to login with another username */
+  // Reject if trying to login with another username
   if((conn->authenticated == 1) &&
       ((conn->userlen != uidattr->l - 2) ||
        (memcmp(conn->user, uidattr->v.t, uidattr->l - 2))))
@@ -3840,7 +3840,7 @@ int parse_radius_access_request(struct radius_packet_t *pack, struct sockaddr_st
     return radius_resp(g_pepper_radius, &radius_pack, peer, pack->authenticator);
   }
 
-  /* NAS PORT */
+  // NAS PORT
   if(!radius_getattr(pack, &nasportattr, RADIUS_ATTR_NAS_PORT, 0, 0, 0))
   {
     if((nasportattr->l - 2) != sizeof(conn->nasport))
@@ -3852,7 +3852,7 @@ int parse_radius_access_request(struct radius_packet_t *pack, struct sockaddr_st
     conn->proxynasport = nasportattr->v.i;
   }
 
-  /* Store parameters for later use */
+  // Store parameters for later use
   if(uidattr->l - 2 <= USERNAMESIZE)
   {
     memcpy(conn->proxyuser, uidattr->v.t, uidattr->l - 2);
@@ -3869,7 +3869,7 @@ int parse_radius_access_request(struct radius_packet_t *pack, struct sockaddr_st
   memcpy(conn->proxyhismac, dhcpconn->hismac, DHCP_ETH_ALEN);
   memcpy(conn->proxyourmac, dhcpconn->ourmac, DHCP_ETH_ALEN);
 
-  /* Build up Radius request */
+  // Build up Radius request
   radius_pack.code = RADIUS_CODE_ACCESS_REQUEST;
   (void)radius_addattr(g_pepper_radius, &radius_pack, RADIUS_ATTR_USER_NAME, 0, 0, 0,
                         uidattr->v.t, uidattr->l - 2);
@@ -3885,7 +3885,7 @@ int parse_radius_access_request(struct radius_packet_t *pack, struct sockaddr_st
     (void)radius_addattr(g_pepper_radius, &radius_pack, RADIUS_ATTR_USER_PASSWORD, 0, 0, 0,
                           (uint8_t *) pwd, pwdlen);
 
-  /* Include EAP (if present) */
+  // Include EAP (if present)
   offset = 0;
   while(offset < resplen)
   {
@@ -3902,7 +3902,7 @@ int parse_radius_access_request(struct radius_packet_t *pack, struct sockaddr_st
     (void)radius_addattr(g_pepper_radius, &radius_pack, RADIUS_ATTR_MESSAGE_AUTHENTICATOR,
                           0, 0, 0, NULL, RADIUS_MD5LEN);
 
-  /* Include his MAC address */
+  // Include his MAC address
   (void)snprintf(mac, MACSTRLEN + 1, "%.2X-%.2X-%.2X-%.2X-%.2X-%.2X",
                   conn->proxyhismac[0], conn->proxyhismac[1],
                   conn->proxyhismac[2], conn->proxyhismac[3],
@@ -3925,7 +3925,7 @@ int parse_radius_access_request(struct radius_packet_t *pack, struct sockaddr_st
   else
     (void)radius_addattr6(g_pepper_radius, &radius_pack, RADIUS_ATTR_NAS_IPV6_ADDRESS, 0, 0,
                             ((struct sockaddr_in6 *)&g_pepper_options.radiusnasip)->sin6_addr, NULL, 0);
-  /* Include NAS-Identifier if given in configuration g_pepper_options */
+  // Include NAS-Identifier if given in configuration g_pepper_options
   if(g_pepper_options.radiusnasid)
     (void)radius_addattr(g_pepper_radius, &radius_pack, RADIUS_ATTR_NAS_IDENTIFIER, 0, 0, 0,
                           (uint8_t *) g_pepper_options.radiusnasid, strlen(g_pepper_options.radiusnasid));
@@ -3969,7 +3969,7 @@ int parse_radius_accounting_request(struct radius_packet_t *pack, struct sockadd
   }
   radius_pack.id = pack->id;
 
-  /* Status type */
+  // Status type
   if(radius_getattr(pack, &typeattr, RADIUS_ATTR_ACCT_STATUS_TYPE, 0, 0, 0))
   {
     sys_err(LOG_ERR, __FILE__, __LINE__, 0,
@@ -3984,7 +3984,7 @@ int parse_radius_accounting_request(struct radius_packet_t *pack, struct sockadd
     return 0;
   }
 
-  /* NAS IP */
+  // NAS IP
   if(!radius_getattr(pack, &nasipattr, RADIUS_ATTR_NAS_IP_ADDRESS, 0, 0, 0))
   {
     if((nasipattr->l - 2) != sizeof(conn->nasip))
@@ -3996,7 +3996,7 @@ int parse_radius_accounting_request(struct radius_packet_t *pack, struct sockadd
     ((struct sockaddr_in *)&nasip)->sin_addr.s_addr = nasipattr->v.i;
   }
 
-  /* NAS IPV6 */
+  // NAS IPV6
   if(!radius_getattr6(pack, &nasipattr6, RADIUS_ATTR_NAS_IPV6_ADDRESS, 0, 0, 0))
   {
     if((nasipattr6->l - 2) != sizeof(conn->nasip))
@@ -4008,7 +4008,7 @@ int parse_radius_accounting_request(struct radius_packet_t *pack, struct sockadd
     memcpy(((struct sockaddr_in6 *)&nasip)->sin6_addr.s6_addr, &nasipattr6->v.i, sizeof(nasipattr6->v.i));
   }
 
-  /* NAS PORT */
+  // NAS PORT
   if(!radius_getattr(pack, &nasportattr, RADIUS_ATTR_NAS_PORT, 0, 0, 0))
   {
     if((nasportattr->l - 2) != sizeof(conn->nasport))
@@ -4020,7 +4020,7 @@ int parse_radius_accounting_request(struct radius_packet_t *pack, struct sockadd
     nasport = nasportattr->v.i;
   }
 
-  /* Calling Station ID (MAC Address) */
+  // Calling Station ID (MAC Address)
   if(!radius_getattr(pack, &hismacattr, RADIUS_ATTR_CALLING_STATION_ID, 0, 0, 0))
   {
     if(g_pepper_options.debug)
@@ -4038,7 +4038,7 @@ int parse_radius_accounting_request(struct radius_packet_t *pack, struct sockadd
     memcpy(macstr, hismacattr->v.t, macstrlen);
     macstr[macstrlen] = 0;
 
-    /* Replace anything but hex with space */
+    // Replace anything but hex with space
     for(i = 0; i < macstrlen; i++)
       if(!isxdigit(macstr[i])) macstr[i] = 0x20;
 
@@ -4055,7 +4055,7 @@ int parse_radius_accounting_request(struct radius_packet_t *pack, struct sockadd
       hismac[i] = temp[i];
   }
 
-  if(hismacattr)   /* Look for mac address.*/
+  if(hismacattr)   // Look for mac address.
   {
     if(dhcp_hash_get(g_pepper_dhcp, &dhcpconn, hismac))
     {
@@ -4072,7 +4072,7 @@ int parse_radius_accounting_request(struct radius_packet_t *pack, struct sockadd
     }
     conn = (struct app_conn_t *) dhcpconn->peer;
   }
-  else if(nasipattr && nasportattr)   /* Look for NAS IP / Port */
+  else if(nasipattr && nasportattr)   // Look for NAS IP / Port
   {
     if(get_conn(&conn, nasip, nasport))
     {
@@ -4090,11 +4090,11 @@ int parse_radius_accounting_request(struct radius_packet_t *pack, struct sockadd
     return 0;
   }
 
-  /* Silently ignore Radius request if allready processing one */
+  // Silently ignore Radius request if allready processing one
   if(conn->radiuswait)
     return 0;
 
-  /* TODO: Check validity of pointers */
+  // TODO: Check validity of pointers
 
   switch(conn->dnprot)
   {
@@ -4108,12 +4108,12 @@ int parse_radius_accounting_request(struct radius_packet_t *pack, struct sockadd
         sys_err(LOG_ERR, __FILE__, __LINE__, 0,"No downlink protocol");
         return 0;
       }
-      /* Connection is simply deleted */
+      // Connection is simply deleted
       if(dhcpconn->ipv6)
       {
         dhcp_free_conn6(dhcpconn);
       }
-      else /* IPv4 */
+      else // IPv4
       {
         dhcp_free_conn(dhcpconn);
       }
@@ -4147,21 +4147,21 @@ int parse_radius_conf_packet(struct radius_t *radius, struct radius_packet_t *pa
 {
   struct radius_attr_t *attr = NULL;
 
-  /* To avoid unused parameter warning */
+  // To avoid unused parameter warning
   (void)radius;
   (void)pack_req;
 
   if(g_pepper_options.debug)
     printf("Received configuration management message from Radius server\n");
 
-  if(!pack) /* Timeout */
+  if(!pack) // Timeout
   {
     sys_err(LOG_ERR, __FILE__, __LINE__, 0,
             "Radius request timed out");
     return 0;
   }
 
-  /* ACCESS-REJECT */
+  // ACCESS-REJECT
   if(pack->code == RADIUS_CODE_ACCESS_REJECT)
   {
     if(g_pepper_options.debug)
@@ -4169,7 +4169,7 @@ int parse_radius_conf_packet(struct radius_t *radius, struct radius_packet_t *pa
     return 0;
   }
 
-  /* ACCESS-CHALLENGE */
+  // ACCESS-CHALLENGE
   if(pack->code == RADIUS_CODE_ACCESS_CHALLENGE)
   {
     if(g_pepper_options.debug)
@@ -4177,7 +4177,7 @@ int parse_radius_conf_packet(struct radius_t *radius, struct radius_packet_t *pa
     return 0;
   }
 
-  /* ACCESS-ACCEPT */
+  // ACCESS-ACCEPT
   if(pack->code != RADIUS_CODE_ACCESS_ACCEPT)
   {
     sys_err(LOG_ERR, __FILE__, __LINE__, 0,
@@ -4185,7 +4185,7 @@ int parse_radius_conf_packet(struct radius_t *radius, struct radius_packet_t *pa
     return 0;
   }
 
-  /* Get Service Type */
+  // Get Service Type
   if(!radius_getattr(pack, &attr, RADIUS_ATTR_SERVICE_TYPE, 0, 0, 0))
   {
     if(ntohl(attr->v.i) != RADIUS_SERVICE_TYPE_PEPPERSPOT_AUTHORIZE_ONLY)
@@ -4225,7 +4225,7 @@ int parse_radius_conf_packet(struct radius_t *radius, struct radius_packet_t *pa
     if(g_pepper_options.interval < 0) g_pepper_options.interval = 0;
   }
 
-  /* Reinit DHCP parameters */
+  // Reinit DHCP parameters
   if(!strncmp(g_pepper_options.ipversion, "ipv4", 4))
   {
     (void)dhcp_set(g_pepper_dhcp, (g_pepper_options.debug & DEBUG_DHCP),
@@ -4288,7 +4288,7 @@ int cb_radius_ind(struct radius_t *radius, struct radius_packet_t *pack,
 
   switch(pack->code)
   {
-    case RADIUS_CODE_ACCOUNTING_REQUEST: /* TODO: Exclude ??? */
+    case RADIUS_CODE_ACCOUNTING_REQUEST: // TODO: Exclude ???
       return parse_radius_accounting_request(pack, peer);
     case RADIUS_CODE_ACCESS_REQUEST:
       return parse_radius_access_request(pack, peer);
@@ -4351,21 +4351,21 @@ int cb_radius_auth_conf(struct radius_t *radius, struct radius_packet_t *pack,
       return 0;*/
   }
 
-  /* Initialise */
+  // Initialise
   conn->statelen = 0;
   conn->challen  = 0;
   conn->sendlen  = 0;
   conn->recvlen  = 0;
   conn->lmntlen  = 0;
 
-  if(!pack) /* Timeout */
+  if(!pack) // Timeout
   {
     sys_err(LOG_ERR, __FILE__, __LINE__, 0,
             "Radius request timed out");
     return dnprot_reject(conn);
   }
 
-  /* ACCESS-REJECT */
+  // ACCESS-REJECT
   if(pack->code == RADIUS_CODE_ACCESS_REJECT)
   {
     if(g_pepper_options.debug)
@@ -4373,13 +4373,13 @@ int cb_radius_auth_conf(struct radius_t *radius, struct radius_packet_t *pack,
     return dnprot_reject(conn);
   }
 
-  /* ACCESS-CHALLENGE */
+  // ACCESS-CHALLENGE
   if(pack->code == RADIUS_CODE_ACCESS_CHALLENGE)
   {
     if(g_pepper_options.debug)
       printf("Received access challenge from Radius server\n");
 
-    /* Get EAP message */
+    // Get EAP message
     conn->challen = 0;
     do
     {
@@ -4407,7 +4407,7 @@ int cb_radius_auth_conf(struct radius_t *radius, struct radius_packet_t *pack,
       return dnprot_reject(conn);
     }
 
-    /* Get State */
+    // Get State
     if(!radius_getattr(pack, &stateattr, RADIUS_ATTR_STATE, 0, 0, 0))
     {
       conn->statelen = stateattr->l - 2;
@@ -4416,7 +4416,7 @@ int cb_radius_auth_conf(struct radius_t *radius, struct radius_packet_t *pack,
     return dnprot_challenge(conn);
   }
 
-  /* ACCESS-ACCEPT */
+  // ACCESS-ACCEPT
   if(pack->code != RADIUS_CODE_ACCESS_ACCEPT)
   {
     sys_err(LOG_ERR, __FILE__, __LINE__, 0,
@@ -4424,7 +4424,7 @@ int cb_radius_auth_conf(struct radius_t *radius, struct radius_packet_t *pack,
     return dnprot_reject(conn);
   }
 
-  /* Get Service Type */
+  // Get Service Type
   if(!radius_getattr(pack, &stateattr, RADIUS_ATTR_SERVICE_TYPE, 0, 0, 0))
   {
     if(ntohl(attr->v.i) == RADIUS_SERVICE_TYPE_PEPPERSPOT_AUTHORIZE_ONLY)
@@ -4435,14 +4435,14 @@ int cb_radius_auth_conf(struct radius_t *radius, struct radius_packet_t *pack,
     }
   }
 
-  /* Get State */
+  // Get State
   if(!radius_getattr(pack, &stateattr, RADIUS_ATTR_STATE, 0, 0, 0))
   {
     conn->statelen = stateattr->l - 2;
     memcpy(conn->statebuf, stateattr->v.t, stateattr->l - 2);
   }
 
-  /* Class */
+  // Class
   if(!radius_getattr(pack, &classattr, RADIUS_ATTR_CLASS, 0, 0, 0))
   {
     conn->classlen = classattr->l - 2;
@@ -4453,7 +4453,7 @@ int cb_radius_auth_conf(struct radius_t *radius, struct radius_packet_t *pack,
     conn->classlen = 0;
   }
 
-  /* Session timeout */
+  // Session timeout
   if(!radius_getattr(pack, &attr, RADIUS_ATTR_SESSION_TIMEOUT,
                       0, 0, 0))
   {
@@ -4464,7 +4464,7 @@ int cb_radius_auth_conf(struct radius_t *radius, struct radius_packet_t *pack,
     conn->sessiontimeout = 0;
   }
 
-  /* Idle timeout */
+  // Idle timeout
   if(!radius_getattr(pack, &attr, RADIUS_ATTR_IDLE_TIMEOUT,
                       0, 0, 0))
   {
@@ -4475,7 +4475,7 @@ int cb_radius_auth_conf(struct radius_t *radius, struct radius_packet_t *pack,
     conn->idletimeout = 0;
   }
 
-  /* Framed IP address (Optional) */
+  // Framed IP address (Optional)
   if(conn->ipv6)
   {
     if(!radius_getattr(pack, &hisipattr, RADIUS_ATTR_FRAMED_IP_ADDRESS, 0, 0, 0))
@@ -4525,23 +4525,23 @@ int cb_radius_auth_conf(struct radius_t *radius, struct radius_packet_t *pack,
     }
   }
 
-  /* Filter ID */
+  // Filter ID
   if(!radius_getattr(pack, &attr, RADIUS_ATTR_FILTER_ID,
                       0, 0, 0))
   {
     conn->filteridlen = attr->l - 2;
     memcpy(conn->filteridbuf, attr->v.t, attr->l - 2);
     conn->filteridbuf[attr->l - 2] = 0;
-    /*conn->filterid = conn->filteridbuf;*/
+    //conn->filterid = conn->filteridbuf;
   }
   else
   {
     conn->filteridlen = 0;
     conn->filteridbuf[0] = 0;
-    /*conn->filterid = NULL;*/
+    //conn->filterid = NULL;
   }
 
-  /* Interim interval */
+  // Interim interval
   if(!radius_getattr(pack, &interimattr, RADIUS_ATTR_ACCT_INTERIM_INTERVAL,
                       0, 0, 0))
   {
@@ -4565,7 +4565,7 @@ int cb_radius_auth_conf(struct radius_t *radius, struct radius_packet_t *pack,
     conn->interim_interval = 0;
   }
 
-  /* Bandwidth up */
+  // Bandwidth up
   if(!radius_getattr(pack, &attr, RADIUS_ATTR_VENDOR_SPECIFIC,
                       RADIUS_VENDOR_WISPR,
                       RADIUS_ATTR_WISPR_BANDWIDTH_MAX_UP, 0))
@@ -4584,7 +4584,7 @@ int cb_radius_auth_conf(struct radius_t *radius, struct radius_packet_t *pack,
     conn->bandwidthmaxup = 0;
   }
 
-  /* Bandwidth down */
+  // Bandwidth down
   if(!radius_getattr(pack, &attr, RADIUS_ATTR_VENDOR_SPECIFIC,
                       RADIUS_VENDOR_WISPR,
                       RADIUS_ATTR_WISPR_BANDWIDTH_MAX_DOWN, 0))
@@ -4604,7 +4604,7 @@ int cb_radius_auth_conf(struct radius_t *radius, struct radius_packet_t *pack,
   }
 
 #ifdef RADIUS_ATTR_PEPPERSPOT_BANDWIDTH_MAX_UP
-  /* Bandwidth up */
+  // Bandwidth up
   if(!radius_getattr(pack, &attr, RADIUS_ATTR_VENDOR_SPECIFIC,
                       RADIUS_VENDOR_PEPPERSPOT,
                       RADIUS_ATTR_PEPPERSPOT_BANDWIDTH_MAX_UP, 0))
@@ -4617,7 +4617,7 @@ int cb_radius_auth_conf(struct radius_t *radius, struct radius_packet_t *pack,
 #endif
 
 #ifdef RADIUS_ATTR_PEPPERSPOT_BANDWIDTH_MAX_DOWN
-  /* Bandwidth down */
+  // Bandwidth down
   if(!radius_getattr(pack, &attr, RADIUS_ATTR_VENDOR_SPECIFIC,
                       RADIUS_VENDOR_PEPPERSPOT,
                       RADIUS_ATTR_PEPPERSPOT_BANDWIDTH_MAX_DOWN, 0))
@@ -4629,7 +4629,7 @@ int cb_radius_auth_conf(struct radius_t *radius, struct radius_packet_t *pack,
   }
 #endif
 
-  /* Max input octets */
+  // Max input octets
   if(!radius_getattr(pack, &attr, RADIUS_ATTR_VENDOR_SPECIFIC,
                       RADIUS_VENDOR_PEPPERSPOT,
                       RADIUS_ATTR_PEPPERSPOT_MAX_INPUT_OCTETS, 0))
@@ -4641,7 +4641,7 @@ int cb_radius_auth_conf(struct radius_t *radius, struct radius_packet_t *pack,
     conn->maxinputoctets = 0;
   }
 
-  /* Max output octets */
+  // Max output octets
   if(!radius_getattr(pack, &attr, RADIUS_ATTR_VENDOR_SPECIFIC,
                       RADIUS_VENDOR_PEPPERSPOT,
                       RADIUS_ATTR_PEPPERSPOT_MAX_OUTPUT_OCTETS, 0))
@@ -4653,7 +4653,7 @@ int cb_radius_auth_conf(struct radius_t *radius, struct radius_packet_t *pack,
     conn->maxoutputoctets = 0;
   }
 
-  /* Max total octets */
+  // Max total octets
   if(!radius_getattr(pack, &attr, RADIUS_ATTR_VENDOR_SPECIFIC,
                       RADIUS_VENDOR_PEPPERSPOT,
                       RADIUS_ATTR_PEPPERSPOT_MAX_TOTAL_OCTETS, 0))
@@ -4665,7 +4665,7 @@ int cb_radius_auth_conf(struct radius_t *radius, struct radius_packet_t *pack,
     conn->maxtotaloctets = 0;
   }
 
-  /* Session-Terminate-Time */
+  // Session-Terminate-Time
   if(!radius_getattr(pack, &attr, RADIUS_ATTR_VENDOR_SPECIFIC,
                       RADIUS_VENDOR_WISPR,
                       RADIUS_ATTR_WISPR_SESSION_TERMINATE_TIME, 0))
@@ -4679,18 +4679,18 @@ int cb_radius_auth_conf(struct radius_t *radius, struct radius_packet_t *pack,
                     &stt.tm_year, &stt.tm_mon, &stt.tm_mday,
                     &stt.tm_hour, &stt.tm_min, &stt.tm_sec,
                     &tzhour, &tzmin);
-    if(result == 8)   /* Timezone */
+    if(result == 8)   // Timezone
     {
-      /* tzhour and tzmin is hours and minutes east of GMT */
-      /* timezone is defined as seconds west of GMT. Excludes DST */
+      // tzhour and tzmin is hours and minutes east of GMT
+      // timezone is defined as seconds west of GMT. Excludes DST
       stt.tm_year -= 1900;
       stt.tm_mon  -= 1;
-      stt.tm_hour -= tzhour; /* Adjust for timezone */
-      stt.tm_min  -= tzmin;  /* Adjust for timezone */
-      /*      stt.tm_hour += daylight;*/
-      /*stt.tm_min  -= (timezone / 60);*/
+      stt.tm_hour -= tzhour; // Adjust for timezone
+      stt.tm_min  -= tzmin;  // Adjust for timezone
+      //stt.tm_hour += daylight;
+      //stt.tm_min  -= (timezone / 60);
       tz = getenv("TZ");
-      setenv("TZ", "", 1); /* Set environment to UTC */
+      setenv("TZ", "", 1); // Set environment to UTC
       tzset();
       conn->sessionterminatetime = mktime(&stt);
       if(tz)
@@ -4699,12 +4699,12 @@ int cb_radius_auth_conf(struct radius_t *radius, struct radius_packet_t *pack,
         unsetenv("TZ");
       tzset();
     }
-    else if(result >= 6)   /* Local time */
+    else if(result >= 6)   // Local time
     {
       tzset();
       stt.tm_year -= 1900;
       stt.tm_mon  -= 1;
-      stt.tm_isdst = -1; /*daylight;*/
+      stt.tm_isdst = -1; //daylight
       conn->sessionterminatetime = mktime(&stt);
     }
     else
@@ -4726,7 +4726,7 @@ int cb_radius_auth_conf(struct radius_t *radius, struct radius_packet_t *pack,
     conn->sessionterminatetime = 0;
   }
 
-  /* EAP Message */
+  // EAP Message
   conn->challen = 0;
   do
   {
@@ -4747,7 +4747,7 @@ int cb_radius_auth_conf(struct radius_t *radius, struct radius_packet_t *pack,
   }
   while(eapattr);
 
-  /* Get sendkey */
+  // Get sendkey
   if(!radius_getattr(pack, &sendattr, RADIUS_ATTR_VENDOR_SPECIFIC,
                       RADIUS_VENDOR_MS,
                       RADIUS_ATTR_MS_MPPE_SEND_KEY, 0))
@@ -4763,7 +4763,7 @@ int cb_radius_auth_conf(struct radius_t *radius, struct radius_packet_t *pack,
     }
   }
 
-  /* Get recvkey */
+  // Get recvkey
   if(!radius_getattr(pack, &recvattr, RADIUS_ATTR_VENDOR_SPECIFIC,
                       RADIUS_VENDOR_MS,
                       RADIUS_ATTR_MS_MPPE_RECV_KEY, 0))
@@ -4779,12 +4779,12 @@ int cb_radius_auth_conf(struct radius_t *radius, struct radius_packet_t *pack,
     }
   }
 
-  /* Get LMNT keys */
+  // Get LMNT keys
   if(!radius_getattr(pack, &lmntattr, RADIUS_ATTR_VENDOR_SPECIFIC,
                       RADIUS_VENDOR_MS,
                       RADIUS_ATTR_MS_CHAP_MPPE_KEYS, 0))
   {
-    /* TODO: Check length of vendor attributes */
+    // TODO: Check length of vendor attributes
     if(radius_pwdecode(radius, conn->lmntkeys, RADIUS_MPPEKEYSSIZE,
                         &conn->lmntlen, (uint8_t *) &lmntattr->v.t,
                         lmntattr->l - 2, pack_req->authenticator,
@@ -4796,7 +4796,7 @@ int cb_radius_auth_conf(struct radius_t *radius, struct radius_packet_t *pack,
     }
   }
 
-  /* Get encryption policy */
+  // Get encryption policy
   if(!radius_getattr(pack, &policyattr, RADIUS_ATTR_VENDOR_SPECIFIC,
                       RADIUS_VENDOR_MS,
                       RADIUS_ATTR_MS_MPPE_ENCRYPTION_POLICY, 0))
@@ -4804,7 +4804,7 @@ int cb_radius_auth_conf(struct radius_t *radius, struct radius_packet_t *pack,
     conn->policy = ntohl(policyattr->v.i);
   }
 
-  /* Get encryption types */
+  // Get encryption types
   if(!radius_getattr(pack, &typesattr, RADIUS_ATTR_VENDOR_SPECIFIC,
                       RADIUS_VENDOR_MS,
                       RADIUS_ATTR_MS_MPPE_ENCRYPTION_TYPES, 0))
@@ -4812,7 +4812,7 @@ int cb_radius_auth_conf(struct radius_t *radius, struct radius_packet_t *pack,
     conn->types = ntohl(typesattr->v.i);
   }
 
-  /* Get MS_Chap_v2 SUCCESS */
+  // Get MS_Chap_v2 SUCCESS
   if(!radius_getattr(pack, &succattr, RADIUS_ATTR_VENDOR_SPECIFIC,
                       RADIUS_VENDOR_MS,
                       RADIUS_ATTR_MS_CHAP2_SUCCESS, 0))
@@ -4823,13 +4823,13 @@ int cb_radius_auth_conf(struct radius_t *radius, struct radius_packet_t *pack,
               "Wrong length of MS-CHAP2 success: %d", succattr->l - 5);
       return dnprot_reject(conn);
     }
-    memcpy(conn->ms2succ, ((char *)&succattr->v.t) + 3, MS2SUCCSIZE);  /* cast with (char *) to avoid use of void * in arithmetic warning */
+    memcpy(conn->ms2succ, ((char *)&succattr->v.t) + 3, MS2SUCCSIZE);  // cast with (char *) to avoid use of void * in arithmetic warning
   }
 
   switch(conn->authtype)
   {
     case PAP_PASSWORD:
-      conn->policy = 0; /* TODO */
+      conn->policy = 0; // TODO
       break;
     case EAP_MESSAGE:
       if(!conn->challen)
@@ -4839,7 +4839,7 @@ int cb_radius_auth_conf(struct radius_t *radius, struct radius_packet_t *pack,
       }
       break;
     case CHAP_DIGEST_MD5:
-      conn->policy = 0; /* TODO */
+      conn->policy = 0; // TODO
       break;
     case CHAP_MICROSOFT:
       if(!lmntattr)
@@ -4905,7 +4905,7 @@ int cb_radius_coa_ind(struct radius_t *radius, struct radius_packet_t *pack,
             "Radius packet not supported: %d,\n", pack->code);
   }
 
-  /* Get username */
+  // Get username
   if(radius_getattr(pack, &userattr, RADIUS_ATTR_USER_NAME, 0, 0, 0))
   {
     sys_err(LOG_INFO, __FILE__, __LINE__, 0,
@@ -4970,7 +4970,7 @@ static int cb_redir_getstate(struct redir_t *redir, struct in_addr *addr, struct
   struct app_conn_t *appconn = NULL;
   struct dhcp_conn_t *dhcpconn = NULL;
 
-  /* To avoid unused parameter warning */
+  // To avoid unused parameter warning
   (void)redir;
 
   if(g_pepper_options.debug) printf("cb_redir_getstate\n");
@@ -5005,7 +5005,7 @@ static int cb_redir_getstate(struct redir_t *redir, struct in_addr *addr, struct
 
   conn->ipv6 = 0;
 
-  /* Stuff needed for status */
+  // Stuff needed for status
   conn->input_octets    = appconn->input_octets;
   conn->output_octets   = appconn->output_octets;
   conn->sessiontimeout  = appconn->sessiontimeout;
@@ -5034,7 +5034,7 @@ static int cb_redir_getstate6(struct redir_t *redir, struct in6_addr *addr, stru
   struct app_conn_t *appconn = NULL;
   struct dhcp_conn_t *dhcpconn = NULL;
 
-  /* To avoid unused parameter warning */
+  // To avoid unused parameter warning
   (void)redir;
 
   if(ippool_get_ip6(g_pepper_ippool, &ipm, addr))
@@ -5069,12 +5069,12 @@ static int cb_redir_getstate6(struct redir_t *redir, struct in6_addr *addr, stru
   memcpy(&conn->ouripv6, &appconn->ouripv6, sizeof(struct in6_addr));
   memcpy(&conn->hisipv6, &appconn->hisipv6, sizeof(struct in6_addr));
   memcpy(conn->sessionid, appconn->sessionid, REDIR_SESSIONID_LEN);
-  /*strncpy(conn->userurl, appconn->userurl, REDIR_MAXCHAR);*/
-  /*conn->userurl[REDIR_MAXCHAR - 1] = 0;*/
+  //strncpy(conn->userurl, appconn->userurl, REDIR_MAXCHAR);
+  //conn->userurl[REDIR_MAXCHAR - 1] = 0;
 
   conn->ipv6 = 1;
 
-  /* Stuff needed for status */
+  // Stuff needed for status
   conn->input_octets    = appconn->input_octets;
   conn->output_octets   = appconn->output_octets;
   conn->sessiontimeout  = appconn->sessiontimeout;
@@ -5110,7 +5110,7 @@ static int cb_tun_ind(struct tun_t *tun, void *pack, unsigned len)
   struct app_conn_t *conn = NULL;
   char buf[INET_ADDRSTRLEN];
 
-  /* To avoid unused parameter warning */
+  // To avoid unused parameter warning
   (void)tun;
 
   if(g_pepper_options.debug)
@@ -5143,15 +5143,15 @@ static int cb_tun_ind(struct tun_t *tun, void *pack, unsigned len)
 #ifndef NO_LEAKY_BUCKET
 #ifndef COUNT_DOWNLINK_DROP
     if(leaky_bucket(conn, 0, len)) return 0;
-#endif /* ifndef COUNT_DOWNLINK_DROP */
-#endif /* ifndef NO_LEAKY_BUCKET */
+#endif // ifndef COUNT_DOWNLINK_DROP
+#endif // ifndef NO_LEAKY_BUCKET
     conn->output_packets++;
     conn->output_octets += len;
 #ifndef NO_LEAKY_BUCKET
 #ifdef COUNT_DOWNLINK_DROP
     if(leaky_bucket(conn, 0, len)) return 0;
-#endif /* ifdef COUNT_DOWNLINK_DROP */
-#endif /* ifndef NO_LEAKY_BUCKET */
+#endif // ifdef COUNT_DOWNLINK_DROP
+#endif // ifndef NO_LEAKY_BUCKET
   }
 
   switch(conn->dnprot)
@@ -5187,7 +5187,7 @@ static int cb_tun6_ind(struct tun6_t *tun, void *pack, unsigned len)
   struct app_conn_t *conn = NULL;
   char buf[INET6_ADDRSTRLEN];
 
-  /* To avoid unused parameter warning */
+  // To avoid unused parameter warning
   (void)tun;
 
   memcpy(&dst, ip6h->dst_addr, sizeof(ip6h->dst_addr));
@@ -5218,15 +5218,15 @@ static int cb_tun6_ind(struct tun6_t *tun, void *pack, unsigned len)
 #ifndef NO_LEAKY_BUCKET
 #ifndef COUNT_DOWNLINK_DROP
     if(leaky_bucket(conn, 0, len)) return 0;
-#endif /* ifndef COUNT_DOWNLINK_DROP */
-#endif /* ifndef NO_LEAKY_BUCKET */
+#endif // ifndef COUNT_DOWNLINK_DROP
+#endif // ifndef NO_LEAKY_BUCKET
     conn->output_packets++;
     conn->output_octets += len;
 #ifndef NO_LEAKY_BUCKET
 #ifdef COUNT_DOWNLINK_DROP
     if(leaky_bucket(conn, 0, len)) return 0;
-#endif /* ifdef COUNT_DOWNLINK_DROP */
-#endif /* ifndef NO_LEAKY_BUCKET */
+#endif // ifdef COUNT_DOWNLINK_DROP
+#endif // ifndef NO_LEAKY_BUCKET
   }
 
   switch(conn->dnprot)
@@ -5274,9 +5274,9 @@ static int cb_dhcp_request(struct dhcp_conn_t *conn, struct in_addr *addr)
     return -1;
   }
 
-  appconn->reqip.s_addr = addr->s_addr; /* Save for MAC auth later */
+  appconn->reqip.s_addr = addr->s_addr; // Save for MAC auth later
 
-  /* If IP address is allready allocated: Fill it in */
+  // If IP address is allready allocated: Fill it in
   if(appconn->uplink)
   {
     ipm = (struct ippoolm_t *) appconn->uplink;
@@ -5306,7 +5306,7 @@ static int cb_dhcp_request(struct dhcp_conn_t *conn, struct in_addr *addr)
               "Requested IP address when allready allocated");
     }
 
-    /* Allocate dynamic IP address */
+    // Allocate dynamic IP address
     if(ippool_new_ip(g_pepper_ippool, &ipm, &appconn->reqip, 0))
     {
       sys_err(LOG_ERR, __FILE__, __LINE__, 0,
@@ -5322,7 +5322,7 @@ static int cb_dhcp_request(struct dhcp_conn_t *conn, struct in_addr *addr)
             conn->hismac[4], conn->hismac[5],
             inet_ntop(AF_INET, &appconn->hisip, buf, sizeof(buf)));
 
-    /* TODO: Listening address is network address plus 1 */
+    // TODO: Listening address is network address plus 1
     appconn->ourip.s_addr = htonl((ntohl(g_pepper_options.net.s_addr) + 1));
     appconn->ipv6 = 0;
     appconn->uplink =  ipm;
@@ -5334,7 +5334,7 @@ static int cb_dhcp_request(struct dhcp_conn_t *conn, struct in_addr *addr)
 
   conn->authstate = DHCP_AUTH_DNAT;
 
-  /* If IP was requested before authentication it was UAM */
+  // If IP was requested before authentication it was UAM
   if(appconn->dnprot == DNPROT_DHCP_NONE)
     appconn->dnprot = DNPROT_UAM;
 
@@ -5362,7 +5362,7 @@ static int cb_dhcp_request6(struct dhcp_conn_t *conn, struct in6_addr *addr)
     return -1;
   }
 
-  /* MAC authentification */
+  // MAC authentification
   if(appconn->dnprot == DNPROT_MAC)
   {
     return -1;
@@ -5381,7 +5381,7 @@ static int cb_dhcp_request6(struct dhcp_conn_t *conn, struct in6_addr *addr)
     return -1;
   }
 
-  /* Allocate IPv6 address */
+  // Allocate IPv6 address
   if(ippool_new_ip6(g_pepper_ippool, &ipm, addr))
   {
     sys_err(LOG_ERR, __FILE__, __LINE__, 0,
@@ -5400,7 +5400,7 @@ static int cb_dhcp_request6(struct dhcp_conn_t *conn, struct in6_addr *addr)
 
   conn->authstate = DHCP_AUTH_DNAT;
 
-  /* If IP was requested before authentication it was UAM */
+  // If IP was requested before authentication it was UAM
   if(appconn->dnprot == DNPROT_DHCP_NONE)
     appconn->dnprot = DNPROT_UAM;
 
@@ -5424,7 +5424,7 @@ static int cb_dhcp_connect(struct dhcp_conn_t *conn)
 
   if(g_pepper_options.debug) printf("New DHCP connection established\n");
 
-  /* Allocate new application connection */
+  // Allocate new application connection
   if(new_conn(&appconn))
   {
     sys_err(LOG_ERR, __FILE__, __LINE__, 0,
@@ -5449,7 +5449,7 @@ static int cb_dhcp_connect(struct dhcp_conn_t *conn)
 
   set_sessionid(appconn);
 
-  conn->authstate = DHCP_AUTH_NONE; /* TODO: Not yet authenticated */
+  conn->authstate = DHCP_AUTH_NONE; // TODO: Not yet authenticated
 
   return 0;
 }
@@ -5472,7 +5472,7 @@ static int cb_dhcp_connect6(struct dhcp_conn_t *conn)
 
   if(g_pepper_options.debug) printf("New IPv6 connection established\n");
 
-  /* Allocate new application connection */
+  // Allocate new application connection
   if(new_conn(&appconn))
   {
     sys_err(LOG_ERR, __FILE__, __LINE__, 0,
@@ -5491,7 +5491,7 @@ static int cb_dhcp_connect6(struct dhcp_conn_t *conn)
   memcpy(appconn->proxyourmac, conn->ourmac, DHCP_ETH_ALEN);
 
   set_sessionid(appconn);
-  conn->authstate = DHCP_AUTH_NONE; /* TODO: Not yet authenticated */
+  conn->authstate = DHCP_AUTH_NONE; // TODO: Not yet authenticated
   if(g_pepper_options.debug) printf("authstate:%d\n", conn->authstate);
   return 0;
 }
@@ -5516,7 +5516,7 @@ static int cb_dhcp_disconnect(struct dhcp_conn_t *conn)
   if(g_pepper_options.debug) printf("DHCP connection removed\n");
 
   if(!conn->peer)
-    return 0; /* No conn allocated. Stop here */
+    return 0; // No conn allocated. Stop here
   else
     appconn = (struct app_conn_t *) conn->peer;
 
@@ -5528,11 +5528,11 @@ static int cb_dhcp_disconnect(struct dhcp_conn_t *conn)
      (appconn->dnprot != DNPROT_WPA) &&
      (appconn->dnprot != DNPROT_EAPOL))
   {
-    return 0; /* DNPROT_WPA and DNPROT_EAPOL are affected by dhcp release? */
+    return 0; // DNPROT_WPA and DNPROT_EAPOL are affected by dhcp release?
   }
 
-  /* User is logged out here. Can also happen by Radius disconnect */
-  if(appconn->authenticated == 1)   /* Only send accounting if logged in */
+  // User is logged out here. Can also happen by Radius disconnect
+  if(appconn->authenticated == 1)   // Only send accounting if logged in
   {
     appconn->authenticated = 0;
     appconn->terminate_cause = RADIUS_TERMINATE_CAUSE_LOST_CARRIER;
@@ -5540,7 +5540,7 @@ static int cb_dhcp_disconnect(struct dhcp_conn_t *conn)
     set_sessionid(appconn);
   }
 
-  conn->authstate = DHCP_AUTH_NONE; /* TODO: Redundant */
+  conn->authstate = DHCP_AUTH_NONE; // TODO: Redundant
 
   if(appconn->uplink)
     if(ippool_free_ip(g_pepper_ippool, (struct ippoolm_t *) appconn->uplink))
@@ -5575,7 +5575,7 @@ static int cb_dhcp_disconnect6(struct dhcp_conn_t *conn)
   if(g_pepper_options.debug) printf("IPv6 DHCP connection removed\n");
 
   if(!conn->peer)
-    return 0; /* No conn allocated. Stop here */
+    return 0; // No conn allocated. Stop here
   else
     appconn = (struct app_conn_t *) conn->peer;
 
@@ -5585,11 +5585,11 @@ static int cb_dhcp_disconnect6(struct dhcp_conn_t *conn)
      (appconn->dnprot != DNPROT_WPA) &&
      (appconn->dnprot != DNPROT_EAPOL))
   {
-    return 0; /* DNPROT_WPA and DNPROT_EAPOL are affected by dhcp release? */
+    return 0; // DNPROT_WPA and DNPROT_EAPOL are affected by dhcp release?
   }
 
-  /* User is logged out here. Can also happen by Radius disconnect */
-  if(appconn->authenticated == 1)   /* Only send accounting if logged in */
+  // User is logged out here. Can also happen by Radius disconnect
+  if(appconn->authenticated == 1)   // Only send accounting if logged in
   {
     appconn->authenticated = 0;
     appconn->terminate_cause = RADIUS_TERMINATE_CAUSE_LOST_CARRIER;
@@ -5597,7 +5597,7 @@ static int cb_dhcp_disconnect6(struct dhcp_conn_t *conn)
     set_sessionid(appconn);
   }
 
-  conn->authstate = DHCP_AUTH_NONE; /* TODO: Redundant */
+  conn->authstate = DHCP_AUTH_NONE; // TODO: Redundant
 
   if(appconn->uplink)
     if(ippool_free_ip(g_pepper_ippool, (struct ippoolm_t *) appconn->uplink))
@@ -5645,15 +5645,15 @@ static int cb_dhcp_ip_ind(struct dhcp_conn_t *conn, void *pack, unsigned len)
 #ifndef NO_LEAKY_BUCKET
 #ifndef COUNT_UPLINK_DROP
     if(leaky_bucket(appconn, len, 0)) return 0;
-#endif /* ifndef COUNT_UPLINK_DROP */
-#endif /* ifndef NO_LEAKY_BUCKET */
+#endif // ifndef COUNT_UPLINK_DROP
+#endif // ifndef NO_LEAKY_BUCKET
     appconn->input_packets++;
     appconn->input_octets +=len;
 #ifndef NO_LEAKY_BUCKET
 #ifdef COUNT_UPLINK_DROP
     if(leaky_bucket(appconn, len, 0)) return 0;
-#endif /* ifdef COUNT_UPLINK_DROP */
-#endif /* ifndef NO_LEAKY_BUCKET */
+#endif // ifdef COUNT_UPLINK_DROP
+#endif // ifndef NO_LEAKY_BUCKET
   }
 
   return tun_encaps(g_pepper_tun, pack, len);
@@ -5684,15 +5684,15 @@ static int cb_dhcp_ipv6_ind(struct dhcp_conn_t * conn, void * pack, unsigned int
 #ifndef NO_LEAKY_BUCKET
 #ifndef COUNT_UPLINK_DROP
     if(leaky_bucket(appconn, len, 0)) return 0;
-#endif /* ifndef COUNT_UPLINK_DROP */
-#endif /* ifndef NO_LEAKY_BUCKET */
+#endif // ifndef COUNT_UPLINK_DROP
+#endif // ifndef NO_LEAKY_BUCKET
     appconn->input_packets++;
     appconn->input_octets += len;
 #ifndef NO_LEAKY_BUCKET
 #ifdef COUNT_UPLINK_DROP
     if(leaky_bucket(appconn, len, 0)) return 0;
-#endif /* ifdef COUNT_UPLINK_DROP */
-#endif /* ifndef NO_LEAKY_BUCKET */
+#endif // ifdef COUNT_UPLINK_DROP
+#endif // ifndef NO_LEAKY_BUCKET
   }
   return tun6_encaps(g_pepper_tun6, pack, len);
 }
@@ -5713,13 +5713,13 @@ static int cb_dhcp_eap_ind(struct dhcp_conn_t *conn, void *pack, unsigned int le
 
   if(g_pepper_options.debug) printf("EAP Packet received \n");
 
-  /* If this is the first EAPOL authentication request */
+  // If this is the first EAPOL authentication request
   if((appconn->dnprot == DNPROT_DHCP_NONE) ||
       (appconn->dnprot == DNPROT_EAPOL))
   {
-    if((eap->code == 2) && /* Response */
-        (eap->type == 1) && /* Identity */
-        (len > 5) &&        /* Must be at least 5 octets */
+    if((eap->code == 2) && // Response
+        (eap->type == 1) && // Identity
+        (len > 5) &&        // Must be at least 5 octets
         ((len - 5) <= USERNAMESIZE ))
     {
       appconn->proxyuserlen = len -5;
@@ -5735,7 +5735,7 @@ static int cb_dhcp_eap_ind(struct dhcp_conn_t *conn, void *pack, unsigned int le
     }
   }
 
-  /* Return if not EAPOL */
+  // Return if not EAPOL
   if(appconn->dnprot != DNPROT_EAPOL)
   {
     sys_err(LOG_ERR, __FILE__, __LINE__, 0,
@@ -5750,7 +5750,7 @@ static int cb_dhcp_eap_ind(struct dhcp_conn_t *conn, void *pack, unsigned int le
     return -1;
   }
 
-  /* Build up Radius request */
+  // Build up Radius request
   radius_pack.code = RADIUS_CODE_ACCESS_REQUEST;
   (void)radius_addattr(g_pepper_radius, &radius_pack, RADIUS_ATTR_USER_NAME, 0, 0, 0,
                         (uint8_t *) appconn->proxyuser, appconn->proxyuserlen);
@@ -5762,7 +5762,7 @@ static int cb_dhcp_eap_ind(struct dhcp_conn_t *conn, void *pack, unsigned int le
                           appconn->statelen);
   }
 
-  /* Include EAP (if present) */
+  // Include EAP (if present)
   offset = 0;
   while(offset < len)
   {
@@ -5772,7 +5772,7 @@ static int cb_dhcp_eap_ind(struct dhcp_conn_t *conn, void *pack, unsigned int le
     else
       eaplen = len - offset;
     (void)radius_addattr(g_pepper_radius, &radius_pack, RADIUS_ATTR_EAP_MESSAGE, 0, 0, 0,
-                          (unsigned char *)pack + offset, eaplen); /* cast with (unsigned char *) to avoid use of void * in arithmetic warning */
+                          (unsigned char *)pack + offset, eaplen); // cast with (unsigned char *) to avoid use of void * in arithmetic warning
     offset += eaplen;
   }
 
@@ -5793,7 +5793,7 @@ static int cb_dhcp_eap_ind(struct dhcp_conn_t *conn, void *pack, unsigned int le
     (void)radius_addattr6(g_pepper_radius, &radius_pack, RADIUS_ATTR_NAS_IPV6_ADDRESS, 0, 0,
                             ((struct sockaddr_in6 *)&g_pepper_options.radiusnasip)->sin6_addr, NULL, 0);
 
-  /* Include NAS-Identifier if given in configuration g_pepper_options */
+  // Include NAS-Identifier if given in configuration g_pepper_options
   if(g_pepper_options.radiusnasid)
     (void)radius_addattr(g_pepper_radius, &radius_pack, RADIUS_ATTR_NAS_IDENTIFIER, 0, 0, 0,
                           (uint8_t *) g_pepper_options.radiusnasid,
@@ -5815,13 +5815,13 @@ static int cb_dhcp_unauth_dnat(struct dhcp_conn_t *conn)
   struct app_conn_t *appconn;
   struct dhcp_conn_t *dhcpconn;
 
-  /* We search if an other dhcp connection exists. */
+  // We search if an other dhcp connection exists.
   result = (conn->ipv6) ? dhcp_hash_get(g_pepper_dhcp, &dhcpconn, conn->hismac) :
            dhcp_hash_get6(g_pepper_dhcp, &dhcpconn, conn->hismac);
 
   if(result == 0)
   {
-    /* Look if the other connection is already logged. */
+    // Look if the other connection is already logged.
     if(dhcpconn->authstate == DHCP_AUTH_PASS && dhcpconn->peer != NULL)
     {
       appconn = (struct app_conn_t *) dhcpconn->peer;
@@ -5832,7 +5832,7 @@ static int cb_dhcp_unauth_dnat(struct dhcp_conn_t *conn)
       }
       else
       {
-        /* We fill a redir message. */
+        // We fill a redir message.
         memset(&msg, 0, sizeof(msg));
 
         msg.type = REDIR_LOGIN;
@@ -5872,7 +5872,7 @@ static int cb_dhcp_unauth_dnat(struct dhcp_conn_t *conn)
         strncpy(msg.filteridbuf, appconn->filteridbuf, sizeof(msg.filteridbuf));
         msg.filteridlen = appconn->filteridlen;
 
-        /* Finally we send the redir message. */
+        // Finally we send the redir message.
         result = handle_redir_uam_msg(&msg);
       }
     }
@@ -5889,12 +5889,12 @@ static int cb_dhcp_unauth_dnat(struct dhcp_conn_t *conn)
 //!
 int main(int argc, char **argv)
 {
-  int maxfd = 0; /* For select() */
-  fd_set fds; /* For select() */
-  struct timeval idleTime; /* How long to select() */
+  int maxfd = 0; // For select()
+  fd_set fds; // For select()
+  struct timeval idleTime; // How long to select()
   int status = 0;
   int msgresult = 0;
-  /* Stack mode of client connections */
+  // Stack mode of client connections
   int ipv4 = 0;
   int ipv6 = 0;
   int dual = 0;
@@ -5903,11 +5903,11 @@ int main(int argc, char **argv)
   struct sigaction act;
   struct itimerval itval;
 
-  /* open a connection to the syslog daemon */
-  /*openlog(PACKAGE, LOG_PID, LOG_DAEMON);*/
+  // open a connection to the syslog daemon
+  //openlog(PACKAGE, LOG_PID, LOG_DAEMON);
   openlog(PACKAGE, (LOG_PID | LOG_PERROR), LOG_DAEMON);
 
-  /* Process g_pepper_options given in configuration file and command line */
+  // Process g_pepper_options given in configuration file and command line
   if(process_options(argc, argv, 1))
   {
     cmdline_parser_free(&g_pepper_args_info);
@@ -5927,10 +5927,10 @@ int main(int argc, char **argv)
   ipv4 = !strncmp(g_pepper_options.ipversion, "ipv4", 4);
   dual = !strncmp(g_pepper_options.ipversion, "dual", 4);
 
-  /* Initialise connections */
+  // Initialise connections
   (void)init_conn();
 
-  /* Allocate g_pepper_ippool for dynamic IP address allocation */
+  // Allocate g_pepper_ippool for dynamic IP address allocation
   if(ippool_new(&g_pepper_ippool, g_pepper_options.dynip, g_pepper_options.statip,
                  g_pepper_options.allowdyn, g_pepper_options.allowstat,
                  IPPOOL_NONETWORK | IPPOOL_NOBROADCAST | IPPOOL_NOGATEWAY))
@@ -5944,7 +5944,7 @@ int main(int argc, char **argv)
 
   if(ipv4 || dual)
   {
-    /* Create a IPv4 tunnel interface */
+    // Create a IPv4 tunnel interface
     if(tun_new((struct tun_t **) &g_pepper_tun))
     {
       sys_err(LOG_ERR, __FILE__, __LINE__, 0,
@@ -5968,10 +5968,10 @@ int main(int argc, char **argv)
 
   if(ipv6 || dual)
   {
-    /* [SV]: create the ICMPv6 socket */
+    // [SV]: create the ICMPv6 socket
     if(icmp6_init() == -1)
     {
-      /* error */
+      // error
       printf("ICMPv6 socket creation error\n");
       if(g_pepper_tun) tun_free(g_pepper_tun);
       if(g_pepper_ippool)
@@ -5982,7 +5982,7 @@ int main(int argc, char **argv)
       exit(EXIT_FAILURE);
     }
 
-    /* [SV]: Create an IPv6 tunnel interface */
+    // [SV]: Create an IPv6 tunnel interface
     if(tun6_new(&g_pepper_tun6) != 0)
     {
       sys_err(LOG_ERR, __FILE__, __LINE__, 0, "Failed to create tun6");
@@ -5996,15 +5996,15 @@ int main(int argc, char **argv)
       exit(EXIT_FAILURE);
     }
 
-    /* [SV]: IPv6 address */
-    tun6_setaddr(g_pepper_tun6, &g_pepper_options.ip6listen, 64); /* we assume that a 64 prefix length to simplify a little bit... :) */
+    // [SV]: IPv6 address
+    tun6_setaddr(g_pepper_tun6, &g_pepper_options.ip6listen, 64); // we assume that a 64 prefix length to simplify a little bit... :)
 
     tun6_set_cb_ind(g_pepper_tun6, cb_tun6_ind);
 
     if(g_pepper_tun6->fd6 > maxfd) maxfd = g_pepper_tun6->fd6;
   }
 
-  /* Create an instance of g_pepper_dhcp */
+  // Create an instance of g_pepper_dhcp
   if(!g_pepper_options.nodhcp)
   {
     if(dhcp_new(&g_pepper_dhcp, 2 * APP_NUM_CONN, g_pepper_options.dhcpif,
@@ -6026,7 +6026,7 @@ int main(int argc, char **argv)
       maxfd = g_pepper_dhcp->eapol_fd;
     (void)dhcp_set_cb_eap_ind(g_pepper_dhcp, cb_dhcp_eap_ind);
 
-    /* [SG] */
+    // [SG]
     if(dual)
       dhcp_set_cb_unauth_dnat(g_pepper_dhcp, cb_dhcp_unauth_dnat);
 
@@ -6063,7 +6063,7 @@ int main(int argc, char **argv)
     {
       if(g_pepper_dhcp->ipv6_fd > maxfd)
         maxfd = g_pepper_dhcp->ipv6_fd;
-      /* [SV] */
+      // [SV]
       dhcp_set_cb_ipv6_ind(g_pepper_dhcp, cb_dhcp_ipv6_ind);
       dhcp_set_cb_request6(g_pepper_dhcp, cb_dhcp_request6);
       dhcp_set_cb_connect6(g_pepper_dhcp, cb_dhcp_connect6);
@@ -6087,7 +6087,7 @@ int main(int argc, char **argv)
     }
   }
 
-  /* Create an instance of g_pepper_radius */
+  // Create an instance of g_pepper_radius
   if(radius_new(&g_pepper_radius,
                  &g_pepper_options.radiuslisten, g_pepper_options.coaport, g_pepper_options.coanoipcheck,
                  &g_pepper_options.proxylisten, g_pepper_options.proxyport,
@@ -6119,10 +6119,10 @@ int main(int argc, char **argv)
   (void)radius_set_cb_ind(g_pepper_radius, cb_radius_ind);
   (void)radius_set_cb_coa_ind(g_pepper_radius, cb_radius_coa_ind);
 
-  /* Get remote config from Radius server */
+  // Get remote config from Radius server
   (void)get_remote_config_from_radius();
 
-  /* Create an instance of redir */
+  // Create an instance of redir
   if(ipv4)
   {
     if(redir_new(&g_pepper_redir,
@@ -6153,7 +6153,7 @@ int main(int argc, char **argv)
       exit(EXIT_FAILURE);
     }
   }
-  else   /* dual */
+  else   // dual
   {
     if(redir_new(&g_pepper_redir, g_pepper_options.uamserver, g_pepper_options.uamserver6, g_pepper_options.uamport))
     {
@@ -6177,7 +6177,7 @@ int main(int argc, char **argv)
 
   if(ipv6 || dual)
   {
-    /* [SV] */
+    // [SV]
     if(g_pepper_redir->fd6 > maxfd)
     {
       maxfd = g_pepper_redir->fd6;
@@ -6199,7 +6199,7 @@ int main(int argc, char **argv)
   if(ipv6 || dual)
     (void)redir_set_cb_getstate6(g_pepper_redir, cb_redir_getstate6);
 
-  /* Set up signal handlers */
+  // Set up signal handlers
   memset(&act, 0, sizeof(act));
   act.sa_handler = sig_handler;
   sigaction(SIGCHLD, &act, NULL);
@@ -6210,16 +6210,16 @@ int main(int argc, char **argv)
 
   memset(&itval, 0, sizeof(itval));
   itval.it_interval.tv_sec = 0;
-  itval.it_interval.tv_usec = 500000; /* TODO 0.5 second */
+  itval.it_interval.tv_usec = 500000; // TODO 0.5 second
   itval.it_value.tv_sec = 0;
-  itval.it_value.tv_usec = 500000; /* TODO 0.5 second */
+  itval.it_value.tv_usec = 500000; // TODO 0.5 second
   if(setitimer(ITIMER_REAL, &itval, NULL))
   {
     sys_err(LOG_ERR, __FILE__, __LINE__, errno,
             "setitimer() failed!");
   }
 
-  /* Store the process ID in pidfile */
+  // Store the process ID in pidfile
   if(g_pepper_options.pidfile)
   {
     log_pid(g_pepper_options.pidfile);
@@ -6228,15 +6228,15 @@ int main(int argc, char **argv)
   if(g_pepper_options.debug)
     printf("Waiting for client request...\n");
 
-  /* **************************************************************** */
-  /* Main select loop                                                 */
-  /* **************************************************************** */
+  // ****************************************************************
+  // Main select loop                                                
+  // ****************************************************************
 
   while(g_pepper_keep_going)
   {
     if(g_pepper_do_timeouts)
     {
-      /*if(g_pepper_options.debug) printf("Do timeouts!\n");*/
+      //if(g_pepper_options.debug) printf("Do timeouts!\n");
       (void)radius_timeout(g_pepper_radius);
       if(g_pepper_dhcp) (void)dhcp_timeout(g_pepper_dhcp);
       (void)check_conn();
@@ -6299,7 +6299,7 @@ int main(int argc, char **argv)
         }
         break;
       case 0:
-        /*  if(g_pepper_options.debug) printf("PepperSpot is alive and ready to process packets!\n");*/
+        //if(g_pepper_options.debug) printf("PepperSpot is alive and ready to process packets!\n");
         break;
       default:
         break;
@@ -6326,7 +6326,7 @@ int main(int argc, char **argv)
 
       if(ipv6 || dual)
       {
-        /* [SV] */
+        // [SV]
         if(g_pepper_tun6->fd6 != -1 && FD_ISSET(g_pepper_tun6->fd6, &fds) && tun6_decaps(g_pepper_tun6) < 0)
         {
           sys_err(LOG_ERR, __FILE__, __LINE__, 0, "tun6_decaps failed!");
@@ -6361,7 +6361,7 @@ int main(int argc, char **argv)
 
       if(ipv6 || dual)
       {
-        /* [SV]: hey we saw an IPv6 packet check it out!! */
+        // [SV]: hey we saw an IPv6 packet check it out!!
         if(g_pepper_dhcp && FD_ISSET(g_pepper_dhcp->ipv6_fd, &fds) && dhcp_ipv6_ind(g_pepper_dhcp) < 0)
         {
           if(errno != EINTR)
@@ -6440,7 +6440,7 @@ int main(int argc, char **argv)
 
   if(g_pepper_ippool) (void)ippool_free(g_pepper_ippool);
 
-  /* free parser memory */
+  // free parser memory
   cmdline_parser_free(&g_pepper_args_info);
 
   return 0;

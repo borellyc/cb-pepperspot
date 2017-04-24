@@ -74,21 +74,21 @@
 #ifndef _DHCP_H
 #define _DHCP_H
 
-#include <stdint.h>                          /* ISO C99 types: uint8_t, uint16_t, ... */
-#include <net/if.h>                          /* IFNAMSIZ */
-#include <netinet/in.h>                      /* in_addr */
+#include <stdint.h>                          // ISO C99 types: uint8_t, uint16_t, ...
+#include <net/if.h>                          // IFNAMSIZ
+#include <netinet/in.h>                      // in_addr
 
-/* DHCP Ethernet frame types */
+// DHCP Ethernet frame types
 #define DHCP_ETH_IP                   0x0800 //!< IPv4 protocol number
-/* [SV] */
+// [SV]
 #define DHCP_ETH_IPV6                 0x86dd //!< IPv6 protocol number
 #define DHCP_ETH_ARP                  0x0806 //!< ARP protocol number
 #define DHCP_ETH_EAPOL                0x888e //!< EAPOL protocol number
 
-/* Misc decl */
+// Misc decl
 #define DHCP_MTU                        1492 //!< Maximum MTU size
 
-/* Option constants */
+// Option constants
 #define DHCP_OPTION_MAGIC         0x63825363 //!< DHCP magic number
 #define DHCP_OPTION_MAGIC_LEN              4 //!< DHCP magic number length
 
@@ -104,11 +104,11 @@
 #define DHCP_OPTION_SERVER_ID             54 //!< DHCP server ID
 #define DHCP_OPTION_END                  255 //!< End of options
 
-/* BOOTP Message Types */
+// BOOTP Message Types
 #define DHCP_BOOTREQUEST                   1 //!< BOOTP request code
 #define DHCP_BOOTREPLY                     2 //!< BOOTP reply code
 
-/* DHCP Message Types */
+// DHCP Message Types
 #define DHCPDISCOVER                       1 //!< DISCOVER message type
 #define DHCPOFFER                          2 //!< OFFER message type
 #define DHCPREQUEST                        3 //!< REQUEST message type
@@ -117,16 +117,16 @@
 #define DHCPNAK                            6 //!< NAK message type
 #define DHCPRELEASE                        7 //!< RELEASE message type
 
-/* UDP Ports */
+// UDP Ports
 #define DHCP_BOOTPS                       67 //!< BOOTPS protocol number
 #define DHCP_BOOTPC                       68 //!< BOOTPC protocol number
 #define DHCP_DNS                          53 //!< DNS protocol number
 
-/* TCP Ports */
+// TCP Ports
 #define DHCP_HTTP                         80 //!< HTTP protocol number
 #define DHCP_HTTPS                       443 //!< HTTPS protocol number
 
-/* Length constants for Ethernet packet */
+// Length constants for Ethernet packet
 #define DHCP_ETH_ALEN                      6 //!< Ethernet address length
 #define DHCP_ETH_HLEN                     14 //!< Ethernet header length
 
@@ -141,7 +141,7 @@ struct dhcp_eth_hdr_t
   uint16_t prot;                             //!< Layer 3 protocol
 };
 
-/* Constants for IP packet */
+// Constants for IP packet
 #define DHCP_IP_ALEN                       4 //!< IPv4 address length
 #define DHCP_IP_HLEN                      20 //!< IPv4 header length
 #define DHCP_IP_ICMP                       1 //!< ICMP Protocol number
@@ -197,12 +197,12 @@ struct dhcp_tcp_hdr_t
   uint8_t  options[1];                       //!< TCP Options (TODO)
 };
 
-/* Constants for IPv6 packet */
+// Constants for IPv6 packet
 #define DHCP_IPV6_ICMPV6                  58 //!< ICMPv6 protocol number
 #define DHCP_IPV6_TCP                      6 //!< TCP protocol number
 #define DHCP_IPV6_UDP                     17 //!< UDP protocol number
 
-/* [SV] */
+// [SV]
 //!
 //!  \struct dhcp_ipv6_hdr_t
 //!  \brief IPv6 header.
@@ -285,7 +285,7 @@ struct dhcp_ip_packet_t
   uint8_t payload[DHCP_IP_PLEN];             //!< Data
 } __attribute__((packed));
 
-/* [SV] */
+// [SV]
 #define DHCP_IPV6_PLEN                  1500 //!< IPv6 payload length
 
 //!
@@ -321,7 +321,7 @@ struct dhcp_dot1x_packet_t
   struct dhcp_eap_hdr_t   eap;                //!< EAPOL header
 } __attribute__((packed));
 
-/* Length constants for DHCP packet */
+// Length constants for DHCP packet
 #define DHCP_CHADDR_LEN                       16 //!< Length of client hardware address
 #define DHCP_SNAME_LEN                        64 //!< Length of server host name
 #define DHCP_FILE_LEN                        128 //!< Length of boot file name
@@ -329,7 +329,7 @@ struct dhcp_dot1x_packet_t
 #define DHCP_MIN_LEN          28 + 16 + 64 + 128 //!< Length of packet excluding options
 #define DHCP_LEN DHCP_MIN_LEN + DHCP_OPTIONS_LEN //!< Total length of DHCP packet
 
-/* Value Constants */
+// Value Constants
 
 #define DHCP_HTYPE_ETH                     1 //!< DHCP hardware type for ethernet network
 
@@ -337,7 +337,7 @@ struct dhcp_dot1x_packet_t
 //!  \struct dhcp_packet_t
 //!  \brief DHCP packet from RFC 2131.
 //!
-struct dhcp_packet_t   /* From RFC 2131 */
+struct dhcp_packet_t   // From RFC 2131
 {
   uint8_t  op;                               //!< 1 Message op code / message type, 1 = BOOTREQUEST, 2 = BOOTREPLY
   uint8_t  htype;                            //!< 1 Hardware address type, see ARP section in "Assigned Numbers" RFC;
@@ -383,7 +383,7 @@ struct dhcp_fullpacket_t
 //!  \struct dhcp_arp_packet_t
 //!  \brief ARP packet.
 //!
-struct dhcp_arp_packet_t                     /* From RFC 826 */
+struct dhcp_arp_packet_t                     // From RFC 826
 {
   uint16_t hrd;                              //!< 16 bit: (ar$hrd) Hardware address space (eg, Ethernet, Packet Radio Net)
   uint16_t pro;                              //!< 16 bit: (ar$pro) Protocol address space 
@@ -415,7 +415,7 @@ struct dhcp_arp_fullpacket_t
 //!  \struct dhcp_dns_packet_t
 //!  \brief DNS packet.
 //!
-struct dhcp_dns_packet_t                     /* From RFC 1035 */
+struct dhcp_dns_packet_t                     // From RFC 1035
 {
   uint16_t id;                               //!< 16 bit: Generated by requester. Copied in reply
   uint16_t flags;                            //!< 16 bit: Flags
@@ -456,9 +456,9 @@ static int dhcp_check_dns(struct dhcp_conn_t *conn, struct dhcp_ip_packet_t *pac
 
 #endif
 
-struct dhcp_t;                               /* Forward declaration */
+struct dhcp_t;                               // Forward declaration
 
-/* Authentication states */
+// Authentication states
 #define DHCP_AUTH_NONE                     0 //!< None state
 #define DHCP_AUTH_DROP                     1 //!< Drop all packet
 #define DHCP_AUTH_PASS                     2 //!< Authorized, packet pass
@@ -503,12 +503,12 @@ struct dhcp_conn_t
   uint32_t dnatip[DHCP_DNAT_MAX];            //!< Destination NAT destination IP address
   uint16_t dnatport[DHCP_DNAT_MAX];          //!< Destination NAT source port
 
-  /* [SV] */
+  // [SV]
   int nextdnat6;                             //!< Next location to use for DNATv6
   struct in6_addr dnatip6[DHCP_DNATV6_MAX];  //!< Destination NAT destination IPv6 address
   uint16_t dnatport6[DHCP_DNATV6_MAX];       //!< Destination NAT source port
 
-  /* uint16_t mtu;                           Maximum transfer unit */
+  // uint16_t mtu;                           Maximum transfer unit
 };
 
 //!
@@ -521,10 +521,10 @@ struct dhcp_conn_t
 //!
 struct dhcp_t
 {
-  /* Parameters related to the network interface */
+  // Parameters related to the network interface
 
   int nb_conn;                               //!< Maximum number of connections for IPv4
-  /* [SV] */
+  // [SV]
   int nb_conn6;                              //!< Maximum number of connections for IPv6
   int fd;                                    //!< File descriptor to network interface
   char devname[IFNAMSIZ];                    //!< Name of the network interface
@@ -543,7 +543,7 @@ struct dhcp_t
   int eapol_fd;                              //!< File descriptor to network interface
   unsigned char eapol_hwaddr[DHCP_ETH_ALEN]; //!< Hardware address of interface
   int eapol_ifindex;                         //!< EAP-related interface index
-  /* [SV] : IPv6 support */
+  // [SV] : IPv6 support
   unsigned char ipv6_hwaddr[DHCP_ETH_ALEN];  //!< Hardware address of interface
   int ipv6_fd;                               //!< File descriptor to network interface
   int ipv6_ifindex;                          //!< IPv6-related interface index
@@ -574,35 +574,35 @@ struct dhcp_t
   int uamoknetlen;                           //!< Number of allowed networks
   int uamoknetlen6;                          //!< Number of allowed networks
 
-  /* Connection management */
+  // Connection management
   struct dhcp_conn_t *conn;                  //!< Linked list of IPv4 addresses
   struct dhcp_conn_t *first_free_conn;       //!< First free in linked list
   struct dhcp_conn_t *last_free_conn;        //!< Last free in linked list
   struct dhcp_conn_t *first_used_conn;       //!< First used in linked list
   struct dhcp_conn_t *last_used_conn;        //!< Last used in linked list
 
-  /* Connection IPv6 managment */
+  // Connection IPv6 managment
   struct dhcp_conn_t *conn6;                  //!< Linked list of IPv6 addresses
   struct dhcp_conn_t *first_free_conn6;       //!< First free in IPv6 linked list
   struct dhcp_conn_t *last_free_conn6;        //!< Last free in IPv6 linked list
   struct dhcp_conn_t *first_used_conn6;       //!< First used in IPv6 linked list
   struct dhcp_conn_t *last_used_conn6;        //!< Last used in IPv6 linked list
 
-  /* Hash related parameters */
+  // Hash related parameters
   int hashsize;                              //!< Size of hash table
   int hashlog;                               //!< Log2 size of hash table
   int hashmask;                              //!< Bitmask for calculating hash
   struct dhcp_conn_t **hash;                 //!< Hashsize array of pointer to member
   struct dhcp_conn_t **hash6;                //!< Hashsize array of pointer to IPv6 member
 
-  /* Call back functions */
+  // Call back functions
 
 //!
 //!  \brief Callback function when peers request an IPv6 address.
 //!
   int (*cb_request)(struct dhcp_conn_t *conn, struct in_addr *addr);
 
-  /* [SV] */
+  // [SV]
 //!
 //!  \brief Callback function when peers request an IPv6 address.
 //!
@@ -613,7 +613,7 @@ struct dhcp_t
 //!
   int (*cb_connect)(struct dhcp_conn_t *conn);
 
-  /* [SV] */
+  // [SV]
 //!
 //!  \brief Callback function when IPv6 peers connect.
 //!
@@ -624,13 +624,13 @@ struct dhcp_t
 //!
   int (*cb_disconnect)(struct dhcp_conn_t *conn);
 
-  /* [SV] */
+  // [SV]
 //!
 //!  \brief Callback function when IPv6 peers disconnect.
 //!
   int (*cb_disconnect6)(struct dhcp_conn_t *conn);
 
-  /* [SG] */
+  // [SG]
 //!
 //!  \brief Callback to check if a peer is already authenticated
 //!  in IPv4 or IPv6.
@@ -654,7 +654,7 @@ struct dhcp_t
 
 };
 
-/* External API functions */
+// External API functions
 
 //!
 //!  \brief Get the MAC address of the interface.
@@ -885,7 +885,7 @@ int dhcp_arp_ind(struct dhcp_t *this);
 //!
 int dhcp_eapol_ind(struct dhcp_t *this);
 
-/* [SV] */
+// [SV]
 //!
 //!  \brief Call this function when a new IPv6 packet has arrived.
 //!  This function should be part of a select() loop in the application.
@@ -929,7 +929,7 @@ int dhcp_free(struct dhcp_t *this);
 //!
 int dhcp_set_cb_request(struct dhcp_t *this,
                         int (*cb_request)(struct dhcp_conn_t *conn, struct in_addr *addr));
-/* [SV] */
+// [SV]
 //!
 //!  \brief Set the callback which is called when a machine requests an IPv6 address.
 //!  \param this dhcp_t instance
@@ -948,7 +948,7 @@ int dhcp_set_cb_request6(struct dhcp_t *this,
 int dhcp_set_cb_connect(struct dhcp_t *this,
                         int (*cb_connect)(struct dhcp_conn_t *conn));
 
-/* [SV] */
+// [SV]
 //!
 //!  \brief Set the callback which is called when an IPv6 connection is created.
 //!  \param this dhcp_t instance
@@ -967,7 +967,7 @@ int dhcp_set_cb_connect6(struct dhcp_t *this,
 int dhcp_set_cb_disconnect(struct dhcp_t *this,
                            int (*cb_disconnect)(struct dhcp_conn_t *conn));
 
-/* [SV] */
+// [SV]
 //!
 //!  \brief Set the callback which is called when a IPv6 connection is deleted.
 //!  \param this dhcp_t instance
@@ -977,7 +977,7 @@ int dhcp_set_cb_disconnect(struct dhcp_t *this,
 int dhcp_set_cb_disconnect6(struct dhcp_t *this,
                             int (*cb_disconnect)(struct dhcp_conn_t *conn));
 
-/* [SG] */
+// [SG]
 //!
 //!  \brief Set callback function which is called to check if
 //!  a client is already logged in another IP version.
@@ -997,7 +997,7 @@ int dhcp_set_cb_unauth_dnat(struct dhcp_t *this,
 int dhcp_set_cb_ip_ind(struct dhcp_t *this,
                        int (*cb_ip_ind)(struct dhcp_conn_t *conn, void *pack, unsigned len));
 
-/* [SV] */
+// [SV]
 //!
 //!  \brief Set callback which is called when IPv6 data has arrived on tun6 interface.
 //!
@@ -1019,5 +1019,5 @@ int dhcp_set_cb_ipv6_ind(struct dhcp_t *this,
 int dhcp_set_cb_eap_ind(struct dhcp_t *this,
                         int (*cb_eap_ind)(struct dhcp_conn_t *conn, void *pack, unsigned len));
 
-#endif /* !_DHCP_H */
+#endif // !_DHCP_H
 

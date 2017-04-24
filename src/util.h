@@ -20,7 +20,7 @@
  *          sebastien.vincent@pepperspot.info
  */
 
-/* $Id: util.h 1.54 06/02/22 16:21:55+02:00 anttit@tcs.hut.fi $ */
+// $Id: util.h 1.54 06/02/22 16:21:55+02:00 anttit@tcs.hut.fi $
 
 //!
 //!  \file util.h
@@ -30,12 +30,12 @@
 #ifndef _UTIL_H
 #define _UTIL_H
 
-#include <stdlib.h>                     /* free */
+#include <stdlib.h>                     // free
 // #include <string.h>
-#include <netinet/in.h>                 /* in_addr */
+#include <netinet/in.h>                 // in_addr
 // #include <sys/uio.h>
 
-/* For emission and reception distinction */
+// For emission and reception distinction
 #ifndef IPV6_RECVHOPLIMIT
 #define IPV6_RECVHOPLIMIT IPV6_HOPLIMIT //!< IPv6 socket option to get/set hop limit value
 #endif
@@ -58,7 +58,7 @@
 #define IN6ADDR_ALL_ROUTERS_MC_INIT \
   { { { 0xff, 0x02, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x2 } } }
 
-/* Following 4 routines are taken from include/net/ipv6.h */
+// Following 4 routines are taken from include/net/ipv6.h
 
 //!
 //!  \brief Set an IPv6 address.
@@ -122,5 +122,5 @@ static inline void free_iov_data(struct iovec *iov, int count)
   }
 }
 
-#endif /* !_UTIL_H */
+#endif // !_UTIL_H
 

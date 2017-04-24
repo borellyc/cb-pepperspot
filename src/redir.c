@@ -317,7 +317,7 @@ static int redir_stradd(char *dst, unsigned int dstsize, char *fmt, ...)
   va_start(args, fmt);
   vsnprintf(buf, REDIR_MAXBUFFER, fmt, args);
   va_end(args);
-  buf[REDIR_MAXBUFFER - 1] = 0; /* Make sure it is null terminated */
+  buf[REDIR_MAXBUFFER - 1] = 0; // Make sure it is null terminated
 
   if((strlen(dst) + strlen(buf)) > dstsize - 1)
   {
@@ -438,7 +438,7 @@ static int redir_xmlreply(struct redir_t *redir, struct redir_conn_t *conn,
                      redir->radiuslocationname);
       }
 
-      /* [SV] */
+      // [SV]
       if(conn->ipv6)
       {
         redir_stradd(dst, dstsize,
@@ -615,7 +615,7 @@ static int redir_reply(struct redir_t *redir, int fd,
 
   if(resp)
   {
-    /* [SV] */
+    // [SV]
     if(conn->ipv6)
     {
       snprintf(buffer, sizeof(buffer),
@@ -750,10 +750,10 @@ static int redir_get_path(struct redir_t *redir, char *src, char *dst, int dstsi
   char *peol = NULL;
   int dstlen = 0;
 
-  /* To avoid unused parameter warning */
+  // To avoid unused parameter warning
   (void)redir;
 
-  if(!(peol = strstr(src, "\n"))) /* End of the first line */
+  if(!(peol = strstr(src, "\n"))) // End of the first line
     return -1;
 
   if(!strncmp("GET ", src, 4))
@@ -769,21 +769,21 @@ static int redir_get_path(struct redir_t *redir, char *src, char *dst, int dstsi
     return -1;
   }
 
-  while(*p1 == ' ') p1++; /* Advance through additional white space */
+  while(*p1 == ' ') p1++; // Advance through additional white space
 
   if(*p1 == '/')
     p1++;
   else
     return -1;
 
-  /* The path ends with a ? or a space */
+  // The path ends with a ? or a space
   p2 = strstr(p1, "?");
   p3 = strstr(p1, " ");
 
-  if((p2 == NULL) && (p3 == NULL))  /* Not found at all */
+  if((p2 == NULL) && (p3 == NULL))  // Not found at all
     return -1;
 
-  if((p2 >= peol) && (p3 >= peol)) /* Not found on first line */
+  if((p2 >= peol) && (p3 >= peol)) // Not found on first line
     return -1;
 
   if(p2 && !p3)
@@ -828,12 +828,12 @@ static int redir_get_url(struct redir_t *redir, char *src, char *dst, int dstsiz
   char *host = NULL;
   int hostlen = 0;
 
-  /* To avoid unused parameter warning */
+  // To avoid unused parameter warning
   (void)redir;
 
-  dst[0] = 0; /* Null terminate in case of error return */
+  dst[0] = 0; // Null terminate in case of error return
 
-  if(!(peol = strstr(src, "\r\n"))) /* End of the line */
+  if(!(peol = strstr(src, "\r\n"))) // End of the line
     return -1;
 
   /* HTTP Request can be
@@ -854,11 +854,11 @@ static int redir_get_url(struct redir_t *redir, char *src, char *dst, int dstsiz
     return -1;
   }
 
-  while(*p1 == ' ') p1++; /* Advance through additional white space */
+  while(*p1 == ' ') p1++; // Advance through additional white space
 
-  p3 = strstr(p1, " ");   /* The path ends with a space */
+  p3 = strstr(p1, " ");   // The path ends with a space
 
-  if((p3 == NULL) || (p3 >= peol))  /* Not found at all or at first line */
+  if((p3 == NULL) || (p3 >= peol))  // Not found at all or at first line
     return -1;
 
   path = p1;
@@ -868,9 +868,9 @@ static int redir_get_url(struct redir_t *redir, char *src, char *dst, int dstsiz
     return -1;
 
   p1 += 7;
-  while(*p1 == ' ') p1++; /* Advance through additional white space */
+  while(*p1 == ' ') p1++; // Advance through additional white space
 
-  if(!(peol = strstr(p1, "\r\n"))) /* End of the line */
+  if(!(peol = strstr(p1, "\r\n"))) // End of the line
     return -1;
 
   hostlen = peol - p1;
@@ -900,7 +900,7 @@ static int redir_get_url(struct redir_t *redir, char *src, char *dst, int dstsiz
 //!  \param dstsize length of dst C-string
 //!  \return 0 if found, -1 otherwise (not found, malformed HTTP response)
 //!
-/* TODO: Should be merged with other parsers */
+// TODO: Should be merged with other parsers
 static int redir_get_param(struct redir_t *redir, char *src,
                           char *param,
                           char *dst, int dstsize)
@@ -912,12 +912,12 @@ static int redir_get_param(struct redir_t *redir, char *src,
   char sstr[255];
   int len = 0;
 
-  /* To avoid unused parameter warning */
+  // To avoid unused parameter warning
   (void)redir;
 
-  printf("Looking for: %s\n", param); /* TODO */
+  printf("Looking for: %s\n", param); // TODO
 
-  if(!(peol = strstr(src, "\n"))) /* End of the first line */
+  if(!(peol = strstr(src, "\n"))) // End of the first line
     return -1;
 
   if(strncmp("GET ", src, 4))
@@ -935,16 +935,16 @@ static int redir_get_param(struct redir_t *redir, char *src,
 
   p1 += strlen(sstr);
 
-  /* The parameter ends with a & or a space */
+  // The parameter ends with a & or a space
   p2 = strstr(p1, "&");
   p3 = strstr(p1, " ");
 
   printf("p1:\n%s\n\np2\n%s\n\np3:%s\n\n", p1, p2, p3);
 
-  if((p2 == NULL) && (p3 == NULL))  /* Not found at all */
+  if((p2 == NULL) && (p3 == NULL))  // Not found at all
     return -1;
 
-  if((p2 >= peol) && (p3 >= peol)) /* Not found on first line */
+  if((p2 >= peol) && (p3 >= peol)) // Not found on first line
     return -1;
 
   if(p2 && !p3)
@@ -976,9 +976,9 @@ static int redir_get_param(struct redir_t *redir, char *src,
 //!
 static int redir_get_req(struct redir_t *redir, int fd, struct redir_conn_t *conn)
 {
-  int maxfd = 0; /* For select() */
-  fd_set fds;  /* For select() */
-  struct timeval idleTime; /* How long to select() */
+  int maxfd = 0; // For select()
+  fd_set fds;  // For select()
+  struct timeval idleTime; // How long to select()
   int status = 0;
   char buffer[REDIR_MAXBUFFER];
   int buflen = 0;
@@ -992,7 +992,7 @@ static int redir_get_req(struct redir_t *redir, int fd, struct redir_conn_t *con
   memset(buffer, 0, sizeof(buffer));
   memset(path, 0, sizeof(path));
 
-  /* Read whatever the client send to us */
+  // Read whatever the client send to us
   while((redir->starttime + REDIR_HTTP_MAX_TIME) > time(NULL))
   {
     FD_ZERO(&fds);
@@ -1023,11 +1023,11 @@ static int redir_get_req(struct redir_t *redir, int fd, struct redir_conn_t *con
       }
       buflen += recvlen;
       buffer[buflen] = 0;
-      if(strstr(buffer, "\n")) break; /* Only interested in first line */
+      if(strstr(buffer, "\n")) break; // Only interested in first line
     }
   }
 
-  for(i = 0; i < buflen; i++) if(buffer[i] == 0) buffer[i] = 0x0a; /* TODO: Hack to make Flash work */
+  for(i = 0; i < buflen; i++) if(buffer[i] == 0) buffer[i] = 0x0a; // TODO: Hack to make Flash work
 
   if(buflen <= 0)
   {
@@ -1056,8 +1056,8 @@ static int redir_get_req(struct redir_t *redir, int fd, struct redir_conn_t *con
       return -1;
     }
 
-    /* SV */
-    /* printf("username = %s\n", conn->username); */
+    // SV
+    // printf("username = %s\n", conn->username);
 
     if(!redir_get_param(redir, buffer, "response",
                         resp, sizeof(resp)))
@@ -1151,7 +1151,7 @@ static int redir_cb_radius_auth_conf(struct radius_t *radius,
   int result = 0;
   struct redir_conn_t *conn = (struct redir_conn_t *) cbp;
 
-  /* To avoid unused parameter warning */
+  // To avoid unused parameter warning
   (void)radius;
   (void)pack_req;
 
@@ -1165,14 +1165,14 @@ static int redir_cb_radius_auth_conf(struct radius_t *radius,
     return 0;
   }
 
-  if(!pack)   /* Timeout */
+  if(!pack)   // Timeout
   {
     sys_err(LOG_ERR, __FILE__, __LINE__, 0, "Radius request timed out");
     conn->response = REDIR_FAILED_OTHER;
     return 0;
   }
 
-  /* We expect ACCESS-ACCEPT, ACCESS-REJECT (or ACCESS-CHALLENGE) */
+  // We expect ACCESS-ACCEPT, ACCESS-REJECT (or ACCESS-CHALLENGE)
   if((pack->code != RADIUS_CODE_ACCESS_REJECT) &&
       (pack->code != RADIUS_CODE_ACCESS_CHALLENGE) &&
       (pack->code != RADIUS_CODE_ACCESS_ACCEPT))
@@ -1183,7 +1183,7 @@ static int redir_cb_radius_auth_conf(struct radius_t *radius,
     return 0;
   }
 
-  /* Reply message (might be present in both ACCESS-ACCEPT and ACCESS-REJECT */
+  // Reply message (might be present in both ACCESS-ACCEPT and ACCESS-REJECT
   if(!radius_getattr(pack, &attr, RADIUS_ATTR_REPLY_MESSAGE, 0, 0, 0))
   {
     memcpy(conn->replybuf, attr->v.t, attr->l - 2);
@@ -1196,14 +1196,14 @@ static int redir_cb_radius_auth_conf(struct radius_t *radius,
     conn->reply = NULL;
   }
 
-  /* ACCESS-ACCEPT */
+  // ACCESS-ACCEPT
   if(pack->code != RADIUS_CODE_ACCESS_ACCEPT)
   {
     conn->response = REDIR_FAILED_REJECT;
     return 0;
   }
 
-  /* Get Service Type */
+  // Get Service Type
   if(!radius_getattr(pack, &attr, RADIUS_ATTR_SERVICE_TYPE, 0, 0, 0))
   {
     if(ntohl(attr->v.i) == RADIUS_SERVICE_TYPE_PEPPERSPOT_AUTHORIZE_ONLY)
@@ -1215,7 +1215,7 @@ static int redir_cb_radius_auth_conf(struct radius_t *radius,
     }
   }
 
-  /* State */
+  // State
   if(!radius_getattr(pack, &stateattr, RADIUS_ATTR_STATE, 0, 0, 0))
   {
     conn->statelen = stateattr->l - 2;
@@ -1226,7 +1226,7 @@ static int redir_cb_radius_auth_conf(struct radius_t *radius,
     conn->statelen = 0;
   }
 
-  /* Class */
+  // Class
   if(!radius_getattr(pack, &classattr, RADIUS_ATTR_CLASS, 0, 0, 0))
   {
     conn->classlen = classattr->l - 2;
@@ -1237,7 +1237,7 @@ static int redir_cb_radius_auth_conf(struct radius_t *radius,
     conn->classlen = 0;
   }
 
-  /* Session timeout */
+  // Session timeout
   if(!radius_getattr(pack, &attr, RADIUS_ATTR_SESSION_TIMEOUT,
                       0, 0, 0))
   {
@@ -1248,7 +1248,7 @@ static int redir_cb_radius_auth_conf(struct radius_t *radius,
     conn->sessiontimeout = 0;
   }
 
-  /* Idle timeout */
+  // Idle timeout
   if(!radius_getattr(pack, &attr, RADIUS_ATTR_IDLE_TIMEOUT,
                       0, 0, 0))
   {
@@ -1259,7 +1259,7 @@ static int redir_cb_radius_auth_conf(struct radius_t *radius,
     conn->idletimeout = 0;
   }
 
-  /* Filter ID */
+  // Filter ID
   if(!radius_getattr(pack, &attr, RADIUS_ATTR_FILTER_ID,
                       0, 0, 0))
   {
@@ -1275,7 +1275,7 @@ static int redir_cb_radius_auth_conf(struct radius_t *radius,
     conn->filterid = NULL;
   }
 
-  /* Interim interval */
+  // Interim interval
   if(!radius_getattr(pack, &interimattr, RADIUS_ATTR_ACCT_INTERIM_INTERVAL,
                       0, 0, 0))
   {
@@ -1299,7 +1299,7 @@ static int redir_cb_radius_auth_conf(struct radius_t *radius,
     conn->interim_interval = 0;
   }
 
-  /* Redirection URL */
+  // Redirection URL
   if(!radius_getattr(pack, &attr, RADIUS_ATTR_VENDOR_SPECIFIC,
                       RADIUS_VENDOR_WISPR,
                       RADIUS_ATTR_WISPR_REDIRECTION_URL, 0))
@@ -1316,7 +1316,7 @@ static int redir_cb_radius_auth_conf(struct radius_t *radius,
     conn->redirurl = NULL;
   }
 
-  /* Bandwidth up */
+  // Bandwidth up
   if(!radius_getattr(pack, &attr, RADIUS_ATTR_VENDOR_SPECIFIC,
                       RADIUS_VENDOR_WISPR,
                       RADIUS_ATTR_WISPR_BANDWIDTH_MAX_UP, 0))
@@ -1328,7 +1328,7 @@ static int redir_cb_radius_auth_conf(struct radius_t *radius,
     conn->bandwidthmaxup = 0;
   }
 
-  /* Bandwidth down */
+  // Bandwidth down
   if(!radius_getattr(pack, &attr, RADIUS_ATTR_VENDOR_SPECIFIC,
                       RADIUS_VENDOR_WISPR,
                       RADIUS_ATTR_WISPR_BANDWIDTH_MAX_DOWN, 0))
@@ -1341,7 +1341,7 @@ static int redir_cb_radius_auth_conf(struct radius_t *radius,
   }
 
 #ifdef RADIUS_ATTR_PEPPERSPOT_BANDWIDTH_MAX_UP
-  /* Bandwidth up */
+  // Bandwidth up
   if(!radius_getattr(pack, &attr, RADIUS_ATTR_VENDOR_SPECIFIC,
                       RADIUS_VENDOR_PEPPERSPOT,
                       RADIUS_ATTR_PEPPERSPOT_BANDWIDTH_MAX_UP, 0))
@@ -1351,7 +1351,7 @@ static int redir_cb_radius_auth_conf(struct radius_t *radius,
 #endif
 
 #ifdef RADIUS_ATTR_PEPPERSPOT_BANDWIDTH_MAX_DOWN
-  /* Bandwidth down */
+  // Bandwidth down
   if(!radius_getattr(pack, &attr, RADIUS_ATTR_VENDOR_SPECIFIC,
                       RADIUS_VENDOR_PEPPERSPOT,
                       RADIUS_ATTR_PEPPERSPOT_BANDWIDTH_MAX_DOWN, 0))
@@ -1360,7 +1360,7 @@ static int redir_cb_radius_auth_conf(struct radius_t *radius,
   }
 #endif
 
-  /* Max input octets */
+  // Max input octets
   if(!radius_getattr(pack, &attr, RADIUS_ATTR_VENDOR_SPECIFIC,
                       RADIUS_VENDOR_PEPPERSPOT,
                       RADIUS_ATTR_PEPPERSPOT_MAX_INPUT_OCTETS, 0))
@@ -1372,7 +1372,7 @@ static int redir_cb_radius_auth_conf(struct radius_t *radius,
     conn->maxinputoctets = 0;
   }
 
-  /* Max output octets */
+  // Max output octets
   if(!radius_getattr(pack, &attr, RADIUS_ATTR_VENDOR_SPECIFIC,
                       RADIUS_VENDOR_PEPPERSPOT,
                       RADIUS_ATTR_PEPPERSPOT_MAX_OUTPUT_OCTETS, 0))
@@ -1384,7 +1384,7 @@ static int redir_cb_radius_auth_conf(struct radius_t *radius,
     conn->maxoutputoctets = 0;
   }
 
-  /* Max total octets */
+  // Max total octets
   if(!radius_getattr(pack, &attr, RADIUS_ATTR_VENDOR_SPECIFIC,
                       RADIUS_VENDOR_PEPPERSPOT,
                       RADIUS_ATTR_PEPPERSPOT_MAX_TOTAL_OCTETS, 0))
@@ -1396,7 +1396,7 @@ static int redir_cb_radius_auth_conf(struct radius_t *radius,
     conn->maxtotaloctets = 0;
   }
 
-  /* Session-Terminate-Time */
+  // Session-Terminate-Time
   if(!radius_getattr(pack, &attr, RADIUS_ATTR_VENDOR_SPECIFIC,
                       RADIUS_VENDOR_WISPR,
                       RADIUS_ATTR_WISPR_SESSION_TERMINATE_TIME, 0))
@@ -1410,18 +1410,18 @@ static int redir_cb_radius_auth_conf(struct radius_t *radius,
                     &stt.tm_year, &stt.tm_mon, &stt.tm_mday,
                     &stt.tm_hour, &stt.tm_min, &stt.tm_sec,
                     &tzhour, &tzmin);
-    if(result == 8)   /* Timezone */
+    if(result == 8)   // Timezone
     {
-      /* tzhour and tzmin is hours and minutes east of GMT */
-      /* timezone is defined as seconds west of GMT. Excludes DST */
+      // tzhour and tzmin is hours and minutes east of GMT
+      // timezone is defined as seconds west of GMT. Excludes DST
       stt.tm_year -= 1900;
       stt.tm_mon  -= 1;
-      stt.tm_hour -= tzhour; /* Adjust for timezone */
-      stt.tm_min  -= tzmin;  /* Adjust for timezone */
-      /*      stt.tm_hour += daylight;*/
-      /*stt.tm_min  -= (timezone / 60);*/
+      stt.tm_hour -= tzhour; // Adjust for timezone
+      stt.tm_min  -= tzmin;  // Adjust for timezone
+      //stt.tm_hour += daylight;
+      //stt.tm_min  -= (timezone / 60);
       tz = getenv("TZ");
-      setenv("TZ", "", 1); /* Set environment to UTC */
+      setenv("TZ", "", 1); // Set environment to UTC
       tzset();
       conn->sessionterminatetime = mktime(&stt);
       if(tz)
@@ -1430,12 +1430,12 @@ static int redir_cb_radius_auth_conf(struct radius_t *radius,
         unsetenv("TZ");
       tzset();
     }
-    else if(result >= 6)   /* Local time */
+    else if(result >= 6)   // Local time
     {
       tzset();
       stt.tm_year -= 1900;
       stt.tm_mon  -= 1;
-      stt.tm_isdst = -1; /*daylight;*/
+      stt.tm_isdst = -1; // daylight
       conn->sessionterminatetime = mktime(&stt);
     }
     else
@@ -1472,11 +1472,11 @@ static int redir_cb_radius_auth_conf(struct radius_t *radius,
 static int redir_radius(struct redir_t *redir, struct sockaddr_storage *addr,
                         struct redir_conn_t *conn)
 {
-  struct radius_t *radius = NULL;      /* Radius client instance */
+  struct radius_t *radius = NULL;      // Radius client instance
   struct radius_packet_t radius_pack;
-  int maxfd = 0;          /* For select() */
-  fd_set fds;      /* For select() */
-  struct timeval idleTime;  /* How long to select() */
+  int maxfd = 0;          // For select()
+  fd_set fds;      // For select()
+  struct timeval idleTime;  // How long to select()
   int status = 0;
   unsigned char chap_password[REDIR_MD5LEN + 1];
   unsigned char chap_challenge[REDIR_MD5LEN];
@@ -1491,7 +1491,7 @@ static int redir_radius(struct redir_t *redir, struct sockaddr_storage *addr,
   char url[REDIR_URL_LEN];
   int n = 0;
 
-  /* To avoid unused parameter warning */
+  // To avoid unused parameter warning
   (void)addr;
 
   if(radius_new(&radius,
@@ -1579,7 +1579,7 @@ static int redir_radius(struct redir_t *redir, struct sockaddr_storage *addr,
   else if(conn->chap == 1)
   {
     memcpy(chap_challenge, conn->uamchal, REDIR_MD5LEN);
-    chap_password[0] = 0; /* Chap ident */
+    chap_password[0] = 0; // Chap ident
     memcpy(chap_password + 1, conn->chappassword, REDIR_MD5LEN);
     radius_addattr(radius, &radius_pack, RADIUS_ATTR_CHAP_CHALLENGE, 0, 0, 0,
                    chap_challenge, REDIR_MD5LEN);
@@ -1590,16 +1590,16 @@ static int redir_radius(struct redir_t *redir, struct sockaddr_storage *addr,
   if(redir->radiuslisten.ss_family == AF_INET)
   {
     radius_addattr(radius, &radius_pack, RADIUS_ATTR_NAS_IP_ADDRESS, 0, 0,
-                   ntohl(((struct sockaddr_in *)&redir->radiusnasip)->sin_addr.s_addr), NULL, 0); /* WISPr_V1.0 */
+                   ntohl(((struct sockaddr_in *)&redir->radiusnasip)->sin_addr.s_addr), NULL, 0); // WISPr_V1.0
   }
   else
   {
     radius_addattr6(radius, &radius_pack, RADIUS_ATTR_NAS_IPV6_ADDRESS, 0, 0,
-                     ((struct sockaddr_in6 *)&redir->radiusnasip)->sin6_addr, NULL, 0); /* WISPr_V1.0 */
+                     ((struct sockaddr_in6 *)&redir->radiusnasip)->sin6_addr, NULL, 0); // WISPr_V1.0
   }
 
   radius_addattr(radius, &radius_pack, RADIUS_ATTR_SERVICE_TYPE, 0, 0,
-                 RADIUS_SERVICE_TYPE_LOGIN, NULL, 0); /* WISPr_V1.0 */
+                 RADIUS_SERVICE_TYPE_LOGIN, NULL, 0); // WISPr_V1.0
 
   if(!conn->ipv6)
   {
@@ -1610,7 +1610,7 @@ static int redir_radius(struct redir_t *redir, struct sockaddr_storage *addr,
   {
     (void)radius_addattr6(radius, &radius_pack, RADIUS_ATTR_FRAMED_IPV6_PREFIX, 0, 0,
                             redir->prefix, NULL, redir->prefixlen + 2);
-    /* todo: interface id */
+    // todo: interface id
 
     ippool_get_suffix6(&addr6, &conn->hisipv6, 64);
 
@@ -1623,7 +1623,7 @@ static int redir_radius(struct redir_t *redir, struct sockaddr_storage *addr,
     (void)radius_addattr6(radius, &radius_pack, RADIUS_ATTR_FRAMED_INTERFACE_ID, 0, 0, addr6, NULL, 8);
   }
 
-  /* Include his MAC address */
+  // Include his MAC address
   snprintf(mac, REDIR_MACSTRLEN + 1, "%.2X-%.2X-%.2X-%.2X-%.2X-%.2X",
            conn->hismac[0], conn->hismac[1],
            conn->hismac[2], conn->hismac[3],
@@ -1634,12 +1634,12 @@ static int redir_radius(struct redir_t *redir, struct sockaddr_storage *addr,
 
   if(redir->radiuscalled)
     radius_addattr(radius, &radius_pack, RADIUS_ATTR_CALLED_STATION_ID, 0, 0, 0,
-                   (uint8_t *) redir->radiuscalled, strlen(redir->radiuscalled)); /* WISPr_V1.0 */
+                   (uint8_t *) redir->radiuscalled, strlen(redir->radiuscalled)); // WISPr_V1.0
 
   if(redir->radiusnasid)
     radius_addattr(radius, &radius_pack, RADIUS_ATTR_NAS_IDENTIFIER, 0, 0, 0,
                    (uint8_t *) redir->radiusnasid,
-                   strlen(redir->radiusnasid)); /* WISPr_V1.0 */
+                   strlen(redir->radiusnasid)); // WISPr_V1.0
 
   radius_addattr(radius, &radius_pack, RADIUS_ATTR_ACCT_SESSION_ID, 0, 0, 0,
                  (uint8_t *) conn->sessionid, REDIR_SESSIONID_LEN - 1);
@@ -1755,7 +1755,7 @@ static void redir_memcopy(int msg_type, unsigned char *challenge, char *hexchal,
   msg->addr = addr.sin_addr;
   memcpy(&msg->addr6, &addr6.sin6_addr, sizeof(struct in6_addr));
   msg->ipv6 = (addrstorage.ss_family == AF_INET6);
-  /* [SV] TODO */
+  // [SV] TODO
   memcpy(&msg->uamchal, challenge, REDIR_MD5LEN);
   return;
 }
@@ -1771,7 +1771,7 @@ static void redir_close(int new_socket)
   return;
 }
 
-/* Allocate new instance of redir */
+// Allocate new instance of redir
 int redir_new(struct redir_t **redir,
               struct in_addr *addr, struct in6_addr *addr6, int port)
 {
@@ -1793,7 +1793,7 @@ int redir_new(struct redir_t **redir,
 
   if(addr)
   {
-    /* Set up address */
+    // Set up address
     address.sin_family = AF_INET;
     address.sin_addr.s_addr = addr->s_addr;
     address.sin_port = htons(port);
@@ -1810,7 +1810,7 @@ int redir_new(struct redir_t **redir,
     }
 
 #if defined(__FreeBSD__) || defined(__APPLE__)
-    /* TODO: FreeBSD */
+    // TODO: FreeBSD
     if(setsockopt((*redir)->fd, SOL_SOCKET, SO_REUSEPORT,
                    &optval, sizeof(optval)))
     {
@@ -1834,7 +1834,7 @@ int redir_new(struct redir_t **redir,
       {
         sys_err(LOG_WARNING, __FILE__, __LINE__, 0,
                 "UAM port already in use. Waiting for retry.");
-        if(sleep(30))   /* In case we got killed */
+        if(sleep(30))   // In case we got killed
         {
           close((*redir)->fd);
           return -1;
@@ -1859,13 +1859,13 @@ int redir_new(struct redir_t **redir,
 
   if(addr6)
   {
-    /* [SV] */
+    // [SV]
     memset(&address6, 0x00, sizeof(struct sockaddr_in6));
     address6.sin6_family = AF_INET6;
     memcpy(&address6.sin6_addr, addr6, sizeof(struct in6_addr));
     address6.sin6_port = htons(port);
     address6.sin6_flowinfo = htonl(1);
-    /*address6.sin6_scope_id = htons(0);*/
+    //address6.sin6_scope_id = htons(0);
 #if defined(__FreeBSD__)  || defined(__APPLE__)
     address6.sin6_len = sizeof(struct sockaddr_in6);
 #endif
@@ -1929,7 +1929,7 @@ int redir_new(struct redir_t **redir,
   return 0;
 }
 
-/* Set redir parameters */
+// Set redir parameters
 void redir_set(struct redir_t *redir, int debug, struct in6_addr *prefix, int prefixlen,
                char *url, char *url6, char *homepage, char *secret,
                struct sockaddr_storage *radiuslisten,
@@ -1940,7 +1940,7 @@ void redir_set(struct redir_t *redir, int debug, struct in6_addr *prefix, int pr
                char *radiuslocationid, char *radiuslocationname,
                int radiusnasporttype)
 {
-  g_redir_optionsdebug = 1; /* TODO: Do not change static variable from instance */
+  g_redir_optionsdebug = 1; // TODO: Do not change static variable from instance
 
   redir->debug = debug;
   memcpy(&redir->prefix, prefix, prefixlen);
@@ -1967,12 +1967,12 @@ void redir_set(struct redir_t *redir, int debug, struct in6_addr *prefix, int pr
   return;
 }
 
-/* Accept connection and redirect URL */
+// Accept connection and redirect URL
 int redir_accept(struct redir_t *redir, int ipv6)
 {
   int new_socket = -1;
   struct sockaddr_in addr;
-  /* [SV] */
+  // [SV]
   struct sockaddr_in6 addr6;
   struct sockaddr_storage addrstorage;
   int addrlen = sizeof(addrstorage);
@@ -2016,7 +2016,7 @@ int redir_accept(struct redir_t *redir, int ipv6)
     return 0;
   }
 
-  if(status > 0)   /* Parent */
+  if(status > 0)   // Parent
   {
     close(new_socket);
     return 0;
@@ -2089,7 +2089,7 @@ int redir_accept(struct redir_t *redir, int ipv6)
 
   if(conn.type == REDIR_LOGIN)
   {
-    /* Was client was already logged on? */
+    // Was client was already logged on?
     if(state == 1)
     {
       if(g_redir_optionsdebug) printf("redir_accept: Already logged on\n");
@@ -2100,7 +2100,7 @@ int redir_accept(struct redir_t *redir, int ipv6)
       exit(0);
     }
 
-    /* Did the challenge expire? */
+    // Did the challenge expire?
     if((conn.uamtime + REDIR_CHALLENGETIMEOUT2) < time(NULL))
     {
       if(g_redir_optionsdebug) printf("redir_accept: Challenge expired: %d : %d\n",
@@ -2128,7 +2128,7 @@ int redir_accept(struct redir_t *redir, int ipv6)
     g_redir_termstate = REDIR_TERM_REPLY;
     if(g_redir_optionsdebug) printf("Received radius reply\n");
 
-    if(conn.response == REDIR_SUCCESS)   /* Radius-Accept */
+    if(conn.response == REDIR_SUCCESS)   // Radius-Accept
     {
       redir_reply(redir, new_socket, &conn, conn.response, conn.sessiontimeout,
                   NULL, conn.username, conn.userurl, conn.reply,
@@ -2178,7 +2178,7 @@ int redir_accept(struct redir_t *redir, int ipv6)
     }
 
     redir_close(new_socket);
-    exit(0); /* Terminate the client */
+    exit(0); // Terminate the client
   }
   else if(conn.type == REDIR_LOGOUT)
   {
@@ -2194,7 +2194,7 @@ int redir_accept(struct redir_t *redir, int ipv6)
                 hexchal, NULL, conn.userurl, NULL,
                 NULL, conn.hismac);
     redir_close(new_socket);
-    exit(0); /* Terminate the client */
+    exit(0); // Terminate the client
   }
   else if(conn.type == REDIR_PRELOGIN)
   {
@@ -2280,11 +2280,11 @@ int redir_accept(struct redir_t *redir, int ipv6)
     exit(0);
   }
 
-  /* It was not a request for a known path. It must be an original request */
+  // It was not a request for a known path. It must be an original request
 
   if(g_redir_optionsdebug) printf("redir_accept: Original request\n");
 
-  /* Did the challenge expire? */
+  // Did the challenge expire?
   if((conn.uamtime + REDIR_CHALLENGETIMEOUT1) < time(NULL))
   {
     redir_memcopy(REDIR_CHALLENGE, challenge, hexchal, &msg, addr, addr6, addrstorage);
@@ -2339,10 +2339,10 @@ int redir_accept(struct redir_t *redir, int ipv6)
   redir_close(new_socket);
   exit(0);
 
-  /*  close(redir->fd);*/
+  //close(redir->fd);
 }
 
-/* Free instance of redir */
+// Free instance of redir
 int redir_free(struct redir_t *redir)
 {
   if(redir->fd != -1)
@@ -2353,7 +2353,7 @@ int redir_free(struct redir_t *redir)
     }
   }
 
-  /* [SV] */
+  // [SV]
   if(redir->fd6 != -1)
   {
     if(close(redir->fd6))
@@ -2371,7 +2371,7 @@ int redir_free(struct redir_t *redir)
   return 0;
 }
 
-/* Set callback to determine state information for the connection */
+// Set callback to determine state information for the connection
 int redir_set_cb_getstate(struct redir_t *redir,
                           int (*cb_getstate)(struct redir_t *redir, struct in_addr *addr,
                                              struct redir_conn_t *conn))
@@ -2380,7 +2380,7 @@ int redir_set_cb_getstate(struct redir_t *redir,
   return 0;
 }
 
-/* Set callback to determine state information for the IPv6 connection */
+// Set callback to determine state information for the IPv6 connection
 int redir_set_cb_getstate6(struct redir_t *redir,
                            int (*cb_getstate6)(struct redir_t *redir, struct in6_addr *addr,
                                                struct redir_conn_t *conn))

@@ -46,7 +46,7 @@ extern "C"
 
 #if (!defined(HAVE_CLEARENV) && !defined(_XOPEN_SOURCE)) || defined(__APPLE__)
 
-/* code from miredo */
+// code from miredo
 #if defined(__APPLE__)
 #include <crt_externs.h>
 #define environ (*_NSGetEnviron())   //!< Extern variable environ replacement for Mac OS X
@@ -80,5 +80,5 @@ int daemon(int nochdir, int noclose);
 }
 #endif
 
-#endif /* !_COMPAT_H */
+#endif // !_COMPAT_H
 

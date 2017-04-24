@@ -50,22 +50,22 @@
 #endif
 
 #include <assert.h>
-#include <stdio.h>      /* snprintf() for BSD drivers */
+#include <stdio.h>      // snprintf() for BSD drivers
 #include <string.h>
-#include <stdlib.h>     /* free() */
+#include <stdlib.h>     // free()
 #include <inttypes.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <sys/ioctl.h>
 #include <unistd.h>
-#include <sys/uio.h>    /* readv() & writev() */
+#include <sys/uio.h>    // readv() & writev()
 #include <poll.h>
 #include <syslog.h>
 #include <errno.h>
-#include <netinet/in.h> /* htons(), struct in6_addr */
-#include <sys/socket.h> /* socket(AF_INET6, SOCK_DGRAM, 0) */
-#include <net/if.h>     /* struct ifreq, if_nametoindex(), if_indextoname() */
+#include <netinet/in.h> // htons(), struct in6_addr
+#include <sys/socket.h> // socket(AF_INET6, SOCK_DGRAM, 0)
+#include <net/if.h>     // struct ifreq, if_nametoindex(), if_indextoname()
 
 #if defined(__linux__)
 //!
@@ -74,9 +74,9 @@
 const char os_driver[] = "Linux";
 #define USE_LINUX 1
 
-#include <linux/if_tun.h>     /* TUNSETIFF - Linux tunnel driver */
-#include <net/route.h>        /* struct in6_rtmsg */
-#include <netinet/if_ether.h> /* ETH_P_IPV6 */
+#include <linux/if_tun.h>     // TUNSETIFF - Linux tunnel driver
+#include <net/route.h>        // struct in6_rtmsg
+#include <netinet/if_ether.h> // ETH_P_IPV6
 
 //!
 //!  \struct in6_ifreq
@@ -103,7 +103,7 @@ typedef struct
       defined(__NetBSD__) || defined(__NetBSD_kernel__) || \
       defined(__OpenBSD__) || defined(__OpenBSD_kernel__) || \
       defined(__DragonFly__) || \
-      defined(__APPLE__) /* Darwin */
+      defined(__APPLE__) // Darwin
 //!
 //!  \brief BSD tunneling driver
 //!  NOTE: the driver is NOT tested on Darwin (Mac OS X).
@@ -111,7 +111,7 @@ typedef struct
 const char os_driver[] = "BSD";
 #define USE_BSD 1
 
-/* TUNSIFHEAD or TUNSLMODE */
+// TUNSIFHEAD or TUNSLMODE
 #if defined(HAVE_NET_IF_TUN_H)
   #include <net/if_tun.h>
 #elif defined(HAVE_NET_TUN_IF_TUN_H)
@@ -124,10 +124,10 @@ const char os_driver[] = "BSD";
   #include <net/if_var.h>
 #endif
 
-#include <net/if_dl.h> /* struct sockaddr_dl */
-#include <net/route.h> /* AF_ROUTE things */
-#include <netinet6/in6_var.h> /* struct in6_aliasreq */
-#include <netinet6/nd6.h> /* ND6_INFINITE_LIFETIME */
+#include <net/if_dl.h> // struct sockaddr_dl
+#include <net/route.h> // AF_ROUTE things
+#include <netinet6/in6_var.h> // struct in6_aliasreq
+#include <netinet6/nd6.h> // ND6_INFINITE_LIFETIME
 #include <pthread.h>
 
 typedef uint32_t tun_head_t;
@@ -226,7 +226,7 @@ static void plen_to_sin6(unsigned plen, struct sockaddr_in6 *sin6)
 #endif
   plen_to_mask(plen, &sin6->sin6_addr);
 }
-#endif /* ifdef SOCAIFADDR_IN6 */
+#endif // ifdef SOCAIFADDR_IN6
 
 //!
 //!  Set the flags on the interface.
@@ -248,7 +248,7 @@ static int tun6_set_interface_flags(struct tun6_t *this, int flags)
     return -1;
   }
 
-  ifr.ifr_name[IFNAMSIZ - 1] = 0; /* Make sure to terminate */
+  ifr.ifr_name[IFNAMSIZ - 1] = 0; // Make sure to terminate
 
   if((fd = socket(AF_INET6, SOCK_DGRAM, 0)) < 0)
   {
@@ -276,7 +276,7 @@ static int tun6_set_interface_flags(struct tun6_t *this, int flags)
 //!
 static struct tun6 *tun6_create(const char *req_name)
 {
-  /*  (void)bindtextdomain (PACKAGE_NAME, LOCALEDIR); */
+  //  (void)bindtextdomain (PACKAGE_NAME, LOCALEDIR);
   struct tun6 *t = (struct tun6 *)malloc(sizeof(*t));
   if(t == NULL)
     return NULL;
@@ -316,7 +316,7 @@ static struct tun6 *tun6_create(const char *req_name)
     return NULL;
   }
 
-  /* Allocates the tunneling virtual network interface */
+  // Allocates the tunneling virtual network interface
   if(ioctl(fd, TUNSETIFF, (void *)&req))
   {
     syslog(LOG_ERR, "Tunneling driver error (%s): %s", "TUNSETIFF", strerror(errno));
@@ -383,7 +383,7 @@ static struct tun6 *tun6_create(const char *req_name)
   }
 
 #ifdef TUNSIFMODE
-  /* Sets sensible tunnel type (broadcast rather than point-to-point) */
+  // Sets sensible tunnel type (broadcast rather than point-to-point)
   (void)ioctl(fd, TUNSIFMODE, &(int)
   {
     IFF_BROADCAST
@@ -391,7 +391,7 @@ static struct tun6 *tun6_create(const char *req_name)
 #endif
 
 #if defined(TUNSIFHEAD)
-  /* Enables TUNSIFHEAD */
+  // Enables TUNSIFHEAD
   if(ioctl(fd, TUNSIFHEAD, &(int)
 {
   1
@@ -408,7 +408,7 @@ static struct tun6 *tun6_create(const char *req_name)
       goto error;
   }
 #elif defined(TUNSLMODE)
-  /* Disables TUNSLMODE (deprecated opposite of TUNSIFHEAD) */
+  // Disables TUNSLMODE (deprecated opposite of TUNSIFHEAD)
   if(ioctl(fd, TUNSLMODE, &(int)
 {
   0
@@ -420,7 +420,7 @@ static struct tun6 *tun6_create(const char *req_name)
   }
 #endif
 
-  /* Customizes interface name */
+  // Customizes interface name
   if(req_name != NULL)
   {
     struct ifreq req;
@@ -457,7 +457,7 @@ static struct tun6 *tun6_create(const char *req_name)
   }
 #else
 #error No tunneling driver implemented on your platform!
-#endif /* HAVE_os */
+#endif // HAVE_os
 
   fcntl(fd, F_SETFD, FD_CLOEXEC);
   int val = fcntl(fd, F_GETFL);
@@ -494,7 +494,7 @@ static int tun6_set_state(struct tun6 *t, int up)
       || ioctl(t->reqfd, SIOCGIFFLAGS, &req))
     return -1;
 
-  /* settings we want/don't want: */
+  // settings we want/don't want:
   req.ifr_flags |= IFF_NOARP;
   req.ifr_flags &= ~(IFF_MULTICAST | IFF_BROADCAST);
   if(up)
@@ -502,7 +502,7 @@ static int tun6_set_state(struct tun6 *t, int up)
   else
     req.ifr_flags &= ~(IFF_UP | IFF_RUNNING);
 
-  /* Sets up the interface */
+  // Sets up the interface
   if((if_indextoname(t->id, req.ifr_name) == NULL)
       || ioctl(t->reqfd, SIOCSIFFLAGS, &req))
     return -1;
@@ -663,7 +663,7 @@ static int tun6_add_address(struct tun6 *t, const struct in6_addr *addr, unsigne
   {
     char proc_path[24 + IFNAMSIZ + 16 + 1] = "/proc/sys/net/ipv6/conf/";
 #if 0
-    /* Disable Autoconfiguration */
+    // Disable Autoconfiguration
     snprintf(proc_path + 24, sizeof(proc_path) - 24,
               "%s/accept_ra", ifname);
     proc_write_zero(proc_path);
@@ -672,7 +672,7 @@ static int tun6_add_address(struct tun6 *t, const struct in6_addr *addr, unsigne
               "%s/autoconf", ifname);
     proc_write_zero(proc_path);
 #endif
-    /* Disable ICMPv6 Redirects. */
+    // Disable ICMPv6 Redirects.
     snprintf(proc_path + 24, sizeof(proc_path) - 24,
               "%s/accept_redirects", ifname);
     proc_write_zero(proc_path);
@@ -706,7 +706,7 @@ static inline int tun6_recv_inner(int fd, void *buffer, size_t maxlen)
   int len = readv(fd, vect, 2);
   if((len < (int)sizeof(head))
       || !tun_head_is_ipv6(head))
-    return -1; /* only accept IPv6 packets */
+    return -1; // only accept IPv6 packets
 
   return len - sizeof(head);
 }
@@ -731,7 +731,7 @@ static int tun6_send(struct tun6 *t, const void *packet, size_t len)
   struct iovec vect[2];
   vect[0].iov_base = (char *)&head;
   vect[0].iov_len = sizeof(head);
-  vect[1].iov_base = (char *)packet; /* necessary cast to non-const */
+  vect[1].iov_base = (char *)packet; // necessary cast to non-const
   vect[1].iov_len = len;
 
   int val = writev(t->fd, vect, 2);
@@ -745,7 +745,7 @@ static int tun6_send(struct tun6 *t, const void *packet, size_t len)
   return val;
 }
 
-/* Create a tun6_t instance */
+// Create a tun6_t instance
 int tun6_new(struct tun6_t **this)
 {
   *this = malloc(sizeof(struct tun6_t));
@@ -772,7 +772,7 @@ int tun6_new(struct tun6_t **this)
   return 0;
 }
 
-/* Decapsulate a packet */
+// Decapsulate a packet
 int tun6_decaps(struct tun6_t *this)
 {
 #if defined(__linux__) || defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__) || defined(__APPLE__)
@@ -795,26 +795,26 @@ int tun6_decaps(struct tun6_t *this)
   return -1;
 }
 
-/* Encapsulate a packet */
+// Encapsulate a packet
 int tun6_encaps(struct tun6_t *this, void *pack, unsigned int len)
 {
   return tun6_send(this->device, pack, len);
 }
 
-/* Set an IPv6 address on the interface */
+// Set an IPv6 address on the interface
 int tun6_setaddr(struct tun6_t *this, struct in6_addr *addr, uint8_t prefixlen)
 {
   int code = tun6_add_address(this->device, addr, prefixlen);
-  /* turn the interface on */
+  // turn the interface on
   tun6_set_interface_flags(this, IFF_UP | IFF_RUNNING);
   return code;
 }
 
-/* Set an IPv6 route on the interface */
+// Set an IPv6 route on the interface
 int tun6_addroute(struct tun6_t *this, struct in6_addr *dst,
                   struct in6_addr *gateway, uint8_t prefixlen)
 {
-  /* TODO : use _iface_route */
+  // TODO : use _iface_route
   (void)this;
   (void)dst;
   (void)gateway;
@@ -822,23 +822,23 @@ int tun6_addroute(struct tun6_t *this, struct in6_addr *dst,
   return -1;
 }
 
-/* Run script */
+// Run script
 int tun6_runscript(struct tun6_t *this, char *script)
 {
-  /* TODO */
+  // TODO
   (void)this;
   (void)script;
   return 0;
 }
 
-/* Free the ressource associated with the tun6_t instance */
+// Free the ressource associated with the tun6_t instance
 int tun6_free(struct tun6_t *this)
 {
   tun6_destroy(this->device);
   free(this);
   return 0;
 }
-/* Set an IPv6 address on the interface */
+// Set an IPv6 address on the interface
 int tun6_set_cb_ind(struct tun6_t *this,
                     int (*cb_ind)(struct tun6_t *this, void *pack, unsigned len))
 {

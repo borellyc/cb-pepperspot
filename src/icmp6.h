@@ -20,7 +20,7 @@
  *          sebastien.vincent@pepperspot.info
  */
 
-/* $Id: icmp6.h 1.17 06/05/07 21:52:43+03:00 anttit@tcs.hut.fi $ */
+// $Id: icmp6.h 1.17 06/05/07 21:52:43+03:00 anttit@tcs.hut.fi $
 
 //!
 //!  \file icmp6.h
@@ -33,7 +33,7 @@
 // #include <sys/types.h>
 // #include <sys/socket.h>
 // #include <netinet/in.h>
-#include <netinet/ip6.h>     /* in6_addr */
+#include <netinet/ip6.h>     // in6_addr
 
 #if defined(__APPLE__)
 #include <sys/socketvar.h>
@@ -95,5 +95,5 @@ int icmp6_send(int oif, uint8_t hoplimit, const struct in6_addr *src,
 //!
 void icmp6_cleanup(void);
 
-#endif /* !_ICMP6_H */
+#endif // !_ICMP6_H
 
