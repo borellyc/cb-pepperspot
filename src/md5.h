@@ -14,7 +14,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
+ * USA.
  *
  * Contact: thibault.vancon@pepperspot.info
  *          sebastien.vincent@pepperspot.info
@@ -28,7 +29,7 @@
 #ifndef _MD5_H
 #define _MD5_H
 
-#include <stdint.h>     // ISO C99 types: uint8_t, uint16_t, ...
+#include <stdint.h> // ISO C99 types: uint8_t, uint16_t, ...
 
 /*
 #if defined(__alpha)
@@ -46,8 +47,7 @@
 //!
 //!  Buffer used for MD5 operations.
 //!
-struct MD5Context
-{
+struct MD5Context {
   uint32_t buf[4];      //!< state (ABCD)
   uint32_t bits[2];     //!< number of bits, modulo 2^64 (lsb first)
   unsigned char in[64]; //!< Input buffer
@@ -98,4 +98,3 @@ void MD5Transform(uint32_t buf[4], uint32_t const in[16]);
 typedef struct MD5Context MD5_CTX;
 
 #endif // !_MD5_H
-

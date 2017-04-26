@@ -14,7 +14,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
+ * USA.
  *
  * Contact: thibault.vancon@pepperspot.info
  *          sebastien.vincent@pepperspot.info
@@ -103,4 +104,3 @@ int iphash_new6(struct ippool_t **this, struct ippoolm_t *list, int listsize);
 int iphash_free(struct ippool_t *this);
 
 #endif // !_IPHASH_H
-

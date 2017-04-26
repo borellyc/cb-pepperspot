@@ -14,7 +14,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
+ * USA.
  *
  * Contact: thibault.vancon@pepperspot.info
  *          sebastien.vincent@pepperspot.info
@@ -33,19 +34,18 @@
 // #include <sys/types.h>
 // #include <sys/socket.h>
 // #include <netinet/in.h>
-#include <netinet/ip6.h>     // in6_addr
+#include <netinet/ip6.h> // in6_addr
 
 #if defined(__APPLE__)
-#include <sys/socketvar.h>
 #include <netinet/in_pcb.h>
+#include <sys/socketvar.h>
 #endif
 
 //!
 //!  \brief ICMPv6 socket.
 //!
-struct icmpv6_socket
-{
-  int fd;                    //!< Socket descriptor
+struct icmpv6_socket {
+  int fd; //!< Socket descriptor
 };
 
 //!
@@ -60,7 +60,8 @@ struct icmpv6_socket
 //!  \param cmd join/leave command
 //!  \return 0 if success, -1 otherwise
 //!
-int if_mc_group(int sock, int ifindex, const struct in6_addr *mc_addr, int cmd);
+int if_mc_group(int sock, int ifindex, const struct in6_addr *mc_addr,
+                int cmd);
 
 //!
 //!  \brief Initialize ICMPv6 socket.
@@ -96,4 +97,3 @@ int icmp6_send(int oif, uint8_t hoplimit, const struct in6_addr *src,
 void icmp6_cleanup(void);
 
 #endif // !_ICMP6_H
-

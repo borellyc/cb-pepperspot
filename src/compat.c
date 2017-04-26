@@ -14,7 +14,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
+ * USA.
  *
  * Contact: thibault.vancon@pepperspot.info
  *          sebastien.vincent@pepperspot.info
@@ -29,18 +30,17 @@
 #include <config.h>
 #endif
 
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/stat.h>
 #include <fcntl.h>
+#include <stdlib.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 #include "compat.h"
 
 #if !defined(HAVE_CLEARENV) || !defined(_XOPEN_SOURCE)
 
 // clearenv replacement function (non POSIX)
-int clearenv(void)
-{
+int clearenv(void) {
   environ = NULL;
   return 0;
 }
@@ -50,52 +50,37 @@ int clearenv(void)
 #if !defined(HAVE_DAEMON) || defined(_POSIX_C_SOURCE)
 
 // daemon replacement function (non POSIX)
-int daemon(int nochdir, int noclose)
-{
+int daemon(int nochdir, int noclose) {
   pid_t pid = -1;
   pid = fork();
 
-  if(pid == -1) // error
+  if (pid == -1) // error
   {
     return -1;
-  }
-  else if(pid == 0) // child
+  } else if (pid == 0) // child
   {
-    if(setsid() == -1)
-    {
-      return -1;
-    }
+    if (setsid() == -1) { return -1; }
 
-    if(!nochdir)
-    {
-      chdir("/");
-    }
+    if (!nochdir) { chdir("/"); }
 
-    if(!noclose)
-    {
+    if (!noclose) {
       // open /dev/null
       int fd = -1;
-      if((fd = open("/dev/null", O_RDWR, 0)) != -1)
-      {
+      if ((fd = open("/dev/null", O_RDWR, 0)) != -1) {
         // redirect stdin, stdout and stderr to /dev/null
         dup2(fd, STDIN_FILENO);
         dup2(fd, STDOUT_FILENO);
         dup2(fd, STDERR_FILENO);
 
-        if(fd > -1)
-        {
-          close(fd);
-        }
+        if (fd > -1) { close(fd); }
       }
     }
 
     return 0;
-  }
-  else // father
+  } else // father
   {
     _exit(EXIT_SUCCESS);
   }
 }
 
 #endif
-

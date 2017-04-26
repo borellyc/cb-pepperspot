@@ -14,7 +14,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
+ * USA.
  *
  * Contact: thibault.vancon@pepperspot.info
  *          sebastien.vincent@pepperspot.info
@@ -52,30 +53,30 @@
 //!  \brief IPv6 neighbor discovery.
 //!
 
-#include <stdio.h>
+#include <errno.h>
 #include <pthread.h>
+#include <stdio.h>
 #include <sys/ioctl.h>
 #include <unistd.h>
-#include <errno.h>
 
-#include <sys/types.h>
-#include <sys/socket.h>
 #include <sys/select.h>
+#include <sys/socket.h>
+#include <sys/types.h>
 
 #include <net/if.h>
-#include <netinet/ip6.h>
 #include <netinet/icmp6.h>
+#include <netinet/ip6.h>
 
-#if defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__) || defined(__APPLE__)
+#if defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__) || \
+    defined(__APPLE__)
 #include <ifaddrs.h>
 #include <net/if_dl.h>
 #include <net/if_types.h>
-#include <ifaddrs.h>
 #endif
 
 #include "icmp6.h"
-#include "util.h"
 #include "ndisc.h"
+#include "util.h"
 
 //!
 //!  \var in6addr_all_nodes_mc
@@ -87,7 +88,8 @@ static const struct in6_addr in6addr_all_nodes_mc = IN6ADDR_ALL_NODES_MC_INIT;
 //!  \var in6addr_all_routers_mc
 //!  \brief Multicast address for all routers (FF02::2).
 //!
-static const struct in6_addr in6addr_all_routers_mc = IN6ADDR_ALL_ROUTERS_MC_INIT;
+static const struct in6_addr in6addr_all_routers_mc =
+    IN6ADDR_ALL_ROUTERS_MC_INIT;
 
 //!
 //!  \brief Create an ICMPv6 option.
@@ -98,15 +100,13 @@ static const struct in6_addr in6addr_all_routers_mc = IN6ADDR_ALL_ROUTERS_MC_INI
 //!  \return header or NULL if failure
 //!
 static struct nd_opt_hdr *ndisc_opt_create(struct iovec *iov, uint8_t type,
-                                           uint16_t len, uint8_t *value)
-{
+                                           uint16_t len, uint8_t *value) {
   struct nd_opt_hdr *opt = NULL;
   int hlen = sizeof(struct nd_opt_hdr);
 
   // len must be lenght(value) in bytes
   opt = malloc(len + hlen);
-  if(opt == NULL)
-    return NULL;
+  if (opt == NULL) return NULL;
 
   opt->nd_opt_type = type;
   opt->nd_opt_len = (len + hlen) >> 3;
@@ -122,17 +122,15 @@ static struct nd_opt_hdr *ndisc_opt_create(struct iovec *iov, uint8_t type,
 //!  \param iface_type type of an address
 //!  \return length of L2 address
 //!
-static inline short ndisc_get_l2addr_len(unsigned short iface_type)
-{
-  switch(iface_type)
-  {
-    // supported physical devices
-    case ARPHRD_ETHER:
-    case ARPHRD_IEEE802:
-    // case ARPHRD_IEEE802_TR:
-    case ARPHRD_IEEE80211:
+static inline short ndisc_get_l2addr_len(unsigned short iface_type) {
+  switch (iface_type) {
+  // supported physical devices
+  case ARPHRD_ETHER:
+  case ARPHRD_IEEE802:
+  // case ARPHRD_IEEE802_TR:
+  case ARPHRD_IEEE80211:
     // case ARPHRD_FDDI:
-      return 6;
+    return 6;
 #if 0
     case ARPHRD_ARCNET:
       return 1;
@@ -143,9 +141,9 @@ static inline short ndisc_get_l2addr_len(unsigned short iface_type)
     case ARPHRD_IPGRE:
       return 0;
 #endif
-    default:
-      // unsupported
-      return -1;
+  default:
+    // unsupported
+    return -1;
   }
 }
 
@@ -155,31 +153,30 @@ static inline short ndisc_get_l2addr_len(unsigned short iface_type)
 //!  \param addr resulting address will be filled in
 //!  \return 0 if success, -1 otherwise
 //!
-static int ndisc_get_l2addr(int ifindex, uint8_t *addr)
-{
+static int ndisc_get_l2addr(int ifindex, uint8_t *addr) {
   int res = 0;
 #if defined(__linux__)
   struct ifreq ifr;
   int fd = -1;
 
   fd = socket(PF_PACKET, SOCK_DGRAM, 0);
-  if(fd < 0) return -1;
+  if (fd < 0) return -1;
 
   memset(&ifr, 0, sizeof(ifr));
   if_indextoname(ifindex, ifr.ifr_name);
-  if(ioctl(fd, SIOCGIFHWADDR, &ifr) < 0)
-  {
+  if (ioctl(fd, SIOCGIFHWADDR, &ifr) < 0) {
     close(fd);
     return -1;
   }
-  if((res = ndisc_get_l2addr_len(ifr.ifr_hwaddr.sa_family)) < 0)
+  if ((res = ndisc_get_l2addr_len(ifr.ifr_hwaddr.sa_family)) < 0)
     printf("Unsupported sa_family %d.\n", ifr.ifr_hwaddr.sa_family);
-  else if(res > 0)
+  else if (res > 0)
     memcpy(addr, ifr.ifr_hwaddr.sa_data, res);
 
   close(fd);
 
-#elif defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__) || defined(__APPLE__)
+#elif defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__) || \
+    defined(__APPLE__)
   struct ifaddrs *ifap = NULL;
   struct ifaddrs *ifa = NULL;
   struct sockaddr_dl *sdl = NULL;
@@ -187,23 +184,16 @@ static int ndisc_get_l2addr(int ifindex, uint8_t *addr)
 
   if_indextoname(ifindex, ifname);
 
-  if(getifaddrs(&ifap))
-  {
-    return -1;
-  }
+  if (getifaddrs(&ifap)) { return -1; }
 
   ifa = ifap;
-  while(ifa)
-  {
-    if((strcmp(ifa->ifa_name, ifname) == 0) && (ifa->ifa_addr->sa_family == AF_LINK))
-    {
+  while (ifa) {
+    if ((strcmp(ifa->ifa_name, ifname) == 0) &&
+        (ifa->ifa_addr->sa_family == AF_LINK)) {
       sdl = (struct sockaddr_dl *)ifa->ifa_addr;
-      if((res = ndisc_get_l2addr_len(sdl->sdl_type)) < 0)
-      {
+      if ((res = ndisc_get_l2addr_len(sdl->sdl_type)) < 0) {
         printf("Unsupported sa_family %d.\n", sdl->sdl_type);
-      }
-      else if(res > 0)
-      {
+      } else if (res > 0) {
         memcpy(addr, LLADDR(sdl), res);
       }
 
@@ -221,9 +211,8 @@ static int ndisc_get_l2addr(int ifindex, uint8_t *addr)
 
 // Send Neighbor Advertisement
 int ndisc_send_na(int ifindex, const struct in6_addr *src,
-                  const struct in6_addr *dst,
-                  const struct in6_addr *target, uint32_t flags)
-{
+                  const struct in6_addr *dst, const struct in6_addr *target,
+                  uint32_t flags) {
   struct nd_neighbor_advert *na = NULL;
   struct iovec iov[2];
   uint8_t l2addr[32];
@@ -231,15 +220,14 @@ int ndisc_send_na(int ifindex, const struct in6_addr *src,
 
   memset(iov, 0, sizeof(iov));
 
-  if((len = ndisc_get_l2addr(ifindex, l2addr)) < 0)
-    return -EINVAL;
+  if ((len = ndisc_get_l2addr(ifindex, l2addr)) < 0) return -EINVAL;
 
   na = icmp6_create(iov, ND_NEIGHBOR_ADVERT, 0);
 
-  if(na == NULL) return -ENOMEM;
+  if (na == NULL) return -ENOMEM;
 
-  if(len > 0 && ndisc_opt_create(&iov[1], ND_OPT_TARGET_LINKADDR, len, l2addr) == NULL)
-  {
+  if (len > 0 &&
+      ndisc_opt_create(&iov[1], ND_OPT_TARGET_LINKADDR, len, l2addr) == NULL) {
     free_iov_data(iov, 1);
     return -ENOMEM;
   }
@@ -250,4 +238,3 @@ int ndisc_send_na(int ifindex, const struct in6_addr *src,
   free_iov_data(iov, 2);
   return 0;
 }
-

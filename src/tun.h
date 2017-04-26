@@ -14,7 +14,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
+ * USA.
  *
  * Contact: thibault.vancon@pepperspot.info
  *          sebastien.vincent@pepperspot.info
@@ -71,15 +72,15 @@
 #ifndef _TUN_H
 #define _TUN_H
 
-#include <net/if.h>               // IF_NAMESIZE
-#include <netinet/in.h>           // in_addr
+#include <net/if.h>     // IF_NAMESIZE
+#include <netinet/in.h> // in_addr
 
 #ifndef IFNAMSIZ
-#define IFNAMSIZ      IF_NAMESIZE //!< Interface name size
+#define IFNAMSIZ IF_NAMESIZE //!< Interface name size
 #endif
 
-#define TUN_PACKET_MAX_SIZE  8196 //!< Maximum packet size we receive
-#define TUN_ADDR_MAX_SIZE     128 //!< Maximum ascii address size
+#define TUN_PACKET_MAX_SIZE 8196 //!< Maximum packet size we receive
+#define TUN_ADDR_MAX_SIZE 128    //!< Maximum ascii address size
 
 #if defined(__linux__)
 #define TUN_NETLINK_MAX_SIZE 1024 //!< maximum netlink message size
@@ -89,21 +90,20 @@
 //!  \struct tun_packet_t
 //!  \brief Describe an IPv4 packet.
 //!
-struct tun_packet_t
-{
-  unsigned int ver:4;             //!< IPv4 version
-  unsigned int ihl:4;             //!< Internet header length
-  unsigned int dscp:6;            //!< DSCP field
-  unsigned int ecn:2;             //!< ECN field
-  unsigned int length:16;         //!< Total length
-  unsigned int id:16;             //!< ID number
-  unsigned int flags:3;           //!< IP flags
-  unsigned int fragment:13;       //!< Fragmentation offset
-  unsigned int ttl:8;             //!< Time to live
-  unsigned int protocol:8;        //!< Up layer protocol number
-  unsigned int check:16;          //!< Checksum
-  unsigned int src:32;            //!< IPv4 source address
-  unsigned int dst:32;            //!< IPv4 destination address
+struct tun_packet_t {
+  unsigned int ver : 4;       //!< IPv4 version
+  unsigned int ihl : 4;       //!< Internet header length
+  unsigned int dscp : 6;      //!< DSCP field
+  unsigned int ecn : 2;       //!< ECN field
+  unsigned int length : 16;   //!< Total length
+  unsigned int id : 16;       //!< ID number
+  unsigned int flags : 3;     //!< IP flags
+  unsigned int fragment : 13; //!< Fragmentation offset
+  unsigned int ttl : 8;       //!< Time to live
+  unsigned int protocol : 8;  //!< Up layer protocol number
+  unsigned int check : 16;    //!< Checksum
+  unsigned int src : 32;      //!< IPv4 source address
+  unsigned int dst : 32;      //!< IPv4 destination address
 };
 
 /* ***********************************************************
@@ -114,16 +114,16 @@ struct tun_packet_t
 //!  \struct tun_t
 //!  \brief IPv4 tunnel interface information.
 //!
-struct tun_t
-{
-  int fd;                         //!< File descriptor to tun interface
-  struct in_addr addr;            //!< Main IPv4 address
-  struct in_addr dstaddr;         //!< Destination address
-  struct in_addr netmask;         //!< IPv4 Netmask
-  int addrs;                      //!< Number of allocated IP addresses
-  int routes;                     //!< One if we allocated an automatic route
-  char devname[IFNAMSIZ];         //!< Name of the tun device
-  int (*cb_ind)(struct tun_t *this, void *pack, unsigned len); //!< Callback when receiving packet
+struct tun_t {
+  int fd;                 //!< File descriptor to tun interface
+  struct in_addr addr;    //!< Main IPv4 address
+  struct in_addr dstaddr; //!< Destination address
+  struct in_addr netmask; //!< IPv4 Netmask
+  int addrs;              //!< Number of allocated IP addresses
+  int routes;             //!< One if we allocated an automatic route
+  char devname[IFNAMSIZ]; //!< Name of the tun device
+  int (*cb_ind)(struct tun_t *this, void *pack,
+                unsigned len); //!< Callback when receiving packet
 };
 
 //!
@@ -205,9 +205,7 @@ int tun_free(struct tun_t *this);
 //!
 
 int tun_set_cb_ind(struct tun_t *this,
-                   int (*cb_ind)(struct tun_t *this, void *pack, unsigned len));
-
-
+                   int (*cb_ind)(struct tun_t *this, void *pack,
+                                 unsigned len));
 
 #endif // !_TUN_H
-

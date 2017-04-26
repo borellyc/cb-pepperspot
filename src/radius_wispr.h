@@ -14,7 +14,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
+ * USA.
  *
  * Contact: thibault.vancon@pepperspot.info
  *          sebastien.vincent@pepperspot.info
@@ -71,19 +72,18 @@
 #ifndef _RADIUS_WISPR_H
 #define _RADIUS_WISPR_H
 
-#define RADIUS_VENDOR_WISPR                            14122 //!< WISPR vendor-specific code
+#define RADIUS_VENDOR_WISPR 14122 //!< WISPR vendor-specific code
 
-#define RADIUS_ATTR_WISPR_LOCATION_ID                      1 //!< integer
-#define RADIUS_ATTR_WISPR_LOCATION_NAME                    2 //!< string
-#define RADIUS_ATTR_WISPR_LOGOFF_URL                       3 //!< string
-#define RADIUS_ATTR_WISPR_REDIRECTION_URL                  4 //!< string
-#define RADIUS_ATTR_WISPR_BANDWIDTH_MIN_UP                 5 //!< integer
-#define RADIUS_ATTR_WISPR_BANDWIDTH_MIN_DOWN               6 //!< integer
-#define RADIUS_ATTR_WISPR_BANDWIDTH_MAX_UP                 7 //!< integer
-#define RADIUS_ATTR_WISPR_BANDWIDTH_MAX_DOWN               8 //!< integer
-#define RADIUS_ATTR_WISPR_SESSION_TERMINATE_TIME           9 //!< string
-#define RADIUS_ATTR_WISPR_SESSION_TERMINATE_END_OF_DAY    10 //!< string
-#define RADIUS_ATTR_WISPR_BILLING_CLASS_OF_SERVICE        11 //!< string
+#define RADIUS_ATTR_WISPR_LOCATION_ID 1                   //!< integer
+#define RADIUS_ATTR_WISPR_LOCATION_NAME 2                 //!< string
+#define RADIUS_ATTR_WISPR_LOGOFF_URL 3                    //!< string
+#define RADIUS_ATTR_WISPR_REDIRECTION_URL 4               //!< string
+#define RADIUS_ATTR_WISPR_BANDWIDTH_MIN_UP 5              //!< integer
+#define RADIUS_ATTR_WISPR_BANDWIDTH_MIN_DOWN 6            //!< integer
+#define RADIUS_ATTR_WISPR_BANDWIDTH_MAX_UP 7              //!< integer
+#define RADIUS_ATTR_WISPR_BANDWIDTH_MAX_DOWN 8            //!< integer
+#define RADIUS_ATTR_WISPR_SESSION_TERMINATE_TIME 9        //!< string
+#define RADIUS_ATTR_WISPR_SESSION_TERMINATE_END_OF_DAY 10 //!< string
+#define RADIUS_ATTR_WISPR_BILLING_CLASS_OF_SERVICE 11     //!< string
 
 #endif // !_RADIUS_WISPR_H
-

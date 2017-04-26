@@ -14,7 +14,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
+ * USA.
  *
  * Contact: thibault.vancon@pepperspot.info
  *          sebastien.vincent@pepperspot.info
@@ -52,113 +53,92 @@
 //!  \brief ICMPv6 related function (send/receive).
 //!
 
+#include <assert.h>
 #include <errno.h>
+#include <netinet/icmp6.h> // icmp6_filter
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
-#include <syslog.h>
-#include <assert.h>
 #include <sys/socket.h>
-#include <netinet/icmp6.h>                       // icmp6_filter
+#include <syslog.h>
+#include <unistd.h>
 
 #include "icmp6.h"
 #include "util.h"
 
-static struct icmpv6_socket g_icmp6_sock;        //!< ICMPv6 socket descriptor
+static struct icmpv6_socket g_icmp6_sock; //!< ICMPv6 socket descriptor
 
 // Join/leave multicast group on interface
-int if_mc_group(int sock, int ifindex, const struct in6_addr *mc_addr, int cmd)
-{
+int if_mc_group(int sock, int ifindex, const struct in6_addr *mc_addr,
+                int cmd) {
   unsigned int val = 0;
   struct ipv6_mreq mreq;
   int ret = 0;
 
-  if(sock == -1)
-    sock = g_icmp6_sock.fd;
+  if (sock == -1) sock = g_icmp6_sock.fd;
 
   memset(&mreq, 0, sizeof(mreq));
   mreq.ipv6mr_interface = ifindex;
   mreq.ipv6mr_multiaddr = *mc_addr;
 
-  ret = setsockopt(sock, IPPROTO_IPV6, IPV6_MULTICAST_LOOP,
-                   &val, sizeof(int));
+  ret = setsockopt(sock, IPPROTO_IPV6, IPV6_MULTICAST_LOOP, &val, sizeof(int));
 
-  if(ret < 0) return ret;
+  if (ret < 0) return ret;
 
   return setsockopt(sock, IPPROTO_IPV6, cmd, &mreq, sizeof(mreq));
 }
 
 // Initialize ICMPv6 socket
-int icmp6_init(void)
-{
+int icmp6_init(void) {
   struct icmp6_filter filter;
   int val = 0;
 
   g_icmp6_sock.fd = socket(AF_INET6, SOCK_RAW, IPPROTO_ICMPV6);
-  if(g_icmp6_sock.fd < 0)
-  {
-    syslog(LOG_ERR,
-           "Unable to open ICMPv6 socket! "
-           "Do you have root permissions?");
+  if (g_icmp6_sock.fd < 0) {
+    syslog(LOG_ERR, "Unable to open ICMPv6 socket! "
+                    "Do you have root permissions?");
     return g_icmp6_sock.fd;
   }
   val = 1;
-  if(setsockopt(g_icmp6_sock.fd, IPPROTO_IPV6, IPV6_RECVPKTINFO,
-                 &val, sizeof(val)) < 0)
+  if (setsockopt(g_icmp6_sock.fd, IPPROTO_IPV6, IPV6_RECVPKTINFO, &val,
+                 sizeof(val)) < 0)
     return -1;
-  if(setsockopt(g_icmp6_sock.fd, IPPROTO_IPV6, IPV6_RECVHOPLIMIT,
-                 &val, sizeof(val)) < 0)
+  if (setsockopt(g_icmp6_sock.fd, IPPROTO_IPV6, IPV6_RECVHOPLIMIT, &val,
+                 sizeof(val)) < 0)
     return -1;
   ICMP6_FILTER_SETBLOCKALL(&filter);
   ICMP6_FILTER_SETPASS(ICMP6_DST_UNREACH, &filter);
 
-  if(setsockopt(g_icmp6_sock.fd, IPPROTO_ICMPV6, ICMP6_FILTER,
-                 &filter, sizeof(struct icmp6_filter)) < 0)
+  if (setsockopt(g_icmp6_sock.fd, IPPROTO_ICMPV6, ICMP6_FILTER, &filter,
+                 sizeof(struct icmp6_filter)) < 0)
     return -1;
   val = 2;
-  if(setsockopt(g_icmp6_sock.fd, IPPROTO_RAW, IPV6_CHECKSUM,
-                 &val, sizeof(val)) < 0)
+  if (setsockopt(g_icmp6_sock.fd, IPPROTO_RAW, IPV6_CHECKSUM, &val,
+                 sizeof(val)) < 0)
     return -1;
 
   return 0;
 }
 
 // Create an ICMPv6 header
-void *icmp6_create(struct iovec *iov, uint8_t type, uint8_t code)
-{
+void *icmp6_create(struct iovec *iov, uint8_t type, uint8_t code) {
   struct icmp6_hdr *hdr = NULL;
   int msglen = 0;
 
-  switch(type)
-  {
-    case ICMP6_DST_UNREACH:
-    case ICMP6_PACKET_TOO_BIG:
-    case ICMP6_TIME_EXCEEDED:
-    case ICMP6_PARAM_PROB:
-      msglen = sizeof(struct icmp6_hdr);
-      break;
-    case ND_ROUTER_SOLICIT:
-      msglen = sizeof(struct nd_router_solicit);
-      break;
-    case ND_ROUTER_ADVERT:
-      msglen = sizeof(struct nd_router_advert);
-      break;
-    case ND_NEIGHBOR_SOLICIT:
-      msglen = sizeof(struct nd_neighbor_solicit);
-      break;
-    case ND_NEIGHBOR_ADVERT:
-      msglen = sizeof(struct nd_neighbor_advert);
-      break;
-    case ND_REDIRECT:
-      msglen = sizeof(struct nd_redirect);
-      break;
-    default:
-      msglen = sizeof(struct icmp6_hdr);
+  switch (type) {
+  case ICMP6_DST_UNREACH:
+  case ICMP6_PACKET_TOO_BIG:
+  case ICMP6_TIME_EXCEEDED:
+  case ICMP6_PARAM_PROB: msglen = sizeof(struct icmp6_hdr); break;
+  case ND_ROUTER_SOLICIT: msglen = sizeof(struct nd_router_solicit); break;
+  case ND_ROUTER_ADVERT: msglen = sizeof(struct nd_router_advert); break;
+  case ND_NEIGHBOR_SOLICIT: msglen = sizeof(struct nd_neighbor_solicit); break;
+  case ND_NEIGHBOR_ADVERT: msglen = sizeof(struct nd_neighbor_advert); break;
+  case ND_REDIRECT: msglen = sizeof(struct nd_redirect); break;
+  default: msglen = sizeof(struct icmp6_hdr);
   }
   hdr = malloc(msglen);
-  if(hdr == NULL)
-    return NULL;
+  if (hdr == NULL) return NULL;
 
   memset(hdr, 0, msglen);
   hdr->icmp6_type = type;
@@ -170,10 +150,9 @@ void *icmp6_create(struct iovec *iov, uint8_t type, uint8_t code)
 }
 
 // Send an ICMPv6 packet
-int icmp6_send(int oif, uint8_t hoplimit,
-               const struct in6_addr *src, const struct in6_addr *dst,
-               struct iovec *datav, size_t iovlen)
-{
+int icmp6_send(int oif, uint8_t hoplimit, const struct in6_addr *src,
+               const struct in6_addr *dst, struct iovec *datav,
+               size_t iovlen) {
   struct sockaddr_in6 daddr;
   struct msghdr msg;
   struct cmsghdr *cmsg = NULL;
@@ -189,13 +168,11 @@ int icmp6_send(int oif, uint8_t hoplimit,
 
   memset(&pinfo, 0, sizeof(pinfo));
   pinfo.ipi6_addr = *src;
-  if(oif > 0)
-    pinfo.ipi6_ifindex = oif;
+  if (oif > 0) pinfo.ipi6_ifindex = oif;
 
   cmsglen = CMSG_SPACE(sizeof(pinfo));
   cmsg = malloc(cmsglen);
-  if(cmsg == NULL)
-  {
+  if (cmsg == NULL) {
     // dbg("out of memory\n");
     return -ENOMEM;
   }
@@ -211,16 +188,14 @@ int icmp6_send(int oif, uint8_t hoplimit,
   msg.msg_name = (void *)&daddr;
   msg.msg_namelen = CMSG_SPACE(sizeof(struct in6_pktinfo));
 
-  setsockopt(g_icmp6_sock.fd, IPPROTO_IPV6, IPV6_PKTINFO,
-             &on, sizeof(int));
-  setsockopt(g_icmp6_sock.fd, IPPROTO_IPV6, IPV6_UNICAST_HOPS,
-             &hops, sizeof(hops));
-  setsockopt(g_icmp6_sock.fd, IPPROTO_IPV6, IPV6_MULTICAST_HOPS,
-             &hops, sizeof(hops));
+  setsockopt(g_icmp6_sock.fd, IPPROTO_IPV6, IPV6_PKTINFO, &on, sizeof(int));
+  setsockopt(g_icmp6_sock.fd, IPPROTO_IPV6, IPV6_UNICAST_HOPS, &hops,
+             sizeof(hops));
+  setsockopt(g_icmp6_sock.fd, IPPROTO_IPV6, IPV6_MULTICAST_HOPS, &hops,
+             sizeof(hops));
 
   ret = sendmsg(g_icmp6_sock.fd, &msg, 0);
-  if(ret < 0)
-    printf("sendmsg: %s\n", strerror(errno));
+  if (ret < 0) printf("sendmsg: %s\n", strerror(errno));
 
   free(cmsg);
 
@@ -228,8 +203,4 @@ int icmp6_send(int oif, uint8_t hoplimit,
 }
 
 // Cleanup ICMPv6 socket
-void icmp6_cleanup(void)
-{
-  close(g_icmp6_sock.fd);
-}
-
+void icmp6_cleanup(void) { close(g_icmp6_sock.fd); }

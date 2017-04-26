@@ -14,7 +14,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
+ * USA.
  *
  * Contact: thibault.vancon@pepperspot.info
  *          sebastien.vincent@pepperspot.info
@@ -71,7 +72,7 @@
 #ifndef _SYSERR_H
 #define _SYSERR_H
 
-#include <netinet/in.h>    // in_addr
+#include <netinet/in.h> // in_addr
 
 #define SYSERR_MSGSIZE 256 //!< Maximum error message size
 
@@ -102,4 +103,3 @@ void sys_errpack(int pri, char *fn, int ln, int en, struct sockaddr_in *peer,
                  void *pack, unsigned len, char *fmt, ...);
 
 #endif // !_SYSERR_H
-

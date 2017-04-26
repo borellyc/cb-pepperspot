@@ -14,7 +14,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
+ * USA.
  *
  * Contact: thibault.vancon@pepperspot.info
  *          sebastien.vincent@pepperspot.info
@@ -30,9 +31,9 @@
 #ifndef _NDISC_H
 #define _NDISC_H
 
-#include <stdint.h>          // ISO C99 types: uint8_t, uint16_t, ...
-#include <netinet/in.h>      // in_addr
-#include <net/if_arp.h>      // ARPHRD_ETHER, ARPHRD_IEEE802, ...
+#include <net/if_arp.h> // ARPHRD_ETHER, ARPHRD_IEEE802, ...
+#include <netinet/in.h> // in_addr
+#include <stdint.h>     // ISO C99 types: uint8_t, uint16_t, ...
 
 #ifndef ARPHRD_IEEE80211
 #define ARPHRD_IEEE80211 801 //!< 802.11 type
@@ -48,8 +49,7 @@
 //!  \return 0 if success, -1 otherwise
 //!
 int ndisc_send_na(int ifindex, const struct in6_addr *src,
-                  const struct in6_addr *dst,
-                  const struct in6_addr *target, uint32_t flags);
+                  const struct in6_addr *dst, const struct in6_addr *target,
+                  uint32_t flags);
 
 #endif // !_NDISC_H
-

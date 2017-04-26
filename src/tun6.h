@@ -14,7 +14,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
+ * USA.
  *
  * Contact: thibault.vancon@pepperspot.info
  *          sebastien.vincent@pepperspot.info
@@ -52,22 +53,22 @@
 // #include <stddef.h>                      // NULL
 // #include <sys/types.h>
 // #include <sys/select.h>
-#include <net/if.h>                      // IF_NAMESIZE
-#include <netinet/in.h>                  // in_addr
+#include <net/if.h>     // IF_NAMESIZE
+#include <netinet/in.h> // in_addr
 
 #ifndef IFNAMSIZ
-#define IFNAMSIZ             IF_NAMESIZE //!< Maximum interface name size
+#define IFNAMSIZ IF_NAMESIZE //!< Maximum interface name size
 #endif
 
-#define TUN6_PACKET_MAX_SIZE        8196 //!< Maximum packet size
+#define TUN6_PACKET_MAX_SIZE 8196 //!< Maximum packet size
 
 #if __STDC_VERSION__ < 199901L
 #ifndef inline
-#define inline                           //!< Fake definition of inline for old C version
+#define inline //!< Fake definition of inline for old C version
 #endif
 
-#ifndef restrict 
-#define restrict                         //!< Fake definition of restrict for old C version
+#ifndef restrict
+#define restrict //!< Fake definition of restrict for old C version
 #endif
 #endif
 
@@ -81,16 +82,15 @@
 //!  \brief Describe an IPv6 packet.
 //!  \author Sebastien VINCENT
 //!
-struct tun6_packet_t
-{
-  uint32_t version:4;            //!< Version of IPv6 (always 6)
-  uint32_t traffic_class:8;      //!< Priority field
-  uint32_t flow_label:20;        //!< Flow label for QoS
-  uint16_t payload_length;       //!< Payload length
-  uint8_t  next_header;          //!< Next header (protocol or header extension)
-  uint8_t  hop_limit;            //!< Hop limit (ie TTL)
-  uint8_t  src_addr[16];         //!< IPv6 source address
-  uint8_t  dst_addr[16];         //!< IPv6 destination source address
+struct tun6_packet_t {
+  uint32_t version : 4;       //!< Version of IPv6 (always 6)
+  uint32_t traffic_class : 8; //!< Priority field
+  uint32_t flow_label : 20;   //!< Flow label for QoS
+  uint16_t payload_length;    //!< Payload length
+  uint8_t next_header;        //!< Next header (protocol or header extension)
+  uint8_t hop_limit;          //!< Hop limit (ie TTL)
+  uint8_t src_addr[16];       //!< IPv6 source address
+  uint8_t dst_addr[16];       //!< IPv6 destination source address
 };
 
 //!
@@ -100,17 +100,17 @@ struct tun6_packet_t
 //!  \brief IPv6 tunnel interface information.
 //!  \author Sebastien VINCENT
 //!
-typedef struct tun6_t
-{
-  int fd6;                       //!< File descriptor to IPv6 tun interface
-  int ifindex;                   //!< Interface index
-  struct in6_addr addr6;         //!< Our IPv6 address
-  uint8_t prefixlen;             //!< Prefix length of the IPv6 address (64 by default)
-  int nb_addr6;                  //!< Number of allocated IP addresses
-  int routes6;                   //!< One if we allocated an automatic route
-  char devname6[IFNAMSIZ];       //!< Name of the IPv6 tun device
-  struct tun6 *device;           //!< The tun6 device
-  int (*cb_ind6)(struct tun6_t *this, void *pack, unsigned len); //!< Callback when receiving IPv6 packet
+typedef struct tun6_t {
+  int fd6;               //!< File descriptor to IPv6 tun interface
+  int ifindex;           //!< Interface index
+  struct in6_addr addr6; //!< Our IPv6 address
+  uint8_t prefixlen;     //!< Prefix length of the IPv6 address (64 by default)
+  int nb_addr6;          //!< Number of allocated IP addresses
+  int routes6;           //!< One if we allocated an automatic route
+  char devname6[IFNAMSIZ]; //!< Name of the IPv6 tun device
+  struct tun6 *device;     //!< The tun6 device
+  int (*cb_ind6)(struct tun6_t *this, void *pack,
+                 unsigned len); //!< Callback when receiving IPv6 packet
 } tun6_t;
 
 //!
@@ -147,7 +147,8 @@ int tun6_encaps(struct tun6_t *this, void *pack, unsigned int len);
 //!  \return 0 if success, -1 otherwise
 //!  \author Sebastien VINCENT
 //!
-int tun6_setaddr(struct tun6_t *this, struct in6_addr *addr, uint8_t prefixlen);
+int tun6_setaddr(struct tun6_t *this, struct in6_addr *addr,
+                 uint8_t prefixlen);
 
 //!
 //!  \brief Set an IPv6 route on the interface.
@@ -186,7 +187,7 @@ int tun6_free(struct tun6_t *this);
 //!  \author Sebastien VINCENT
 //!
 int tun6_set_cb_ind(struct tun6_t *this,
-                    int (*cb_ind)(struct tun6_t *this, void *pack, unsigned len));
+                    int (*cb_ind)(struct tun6_t *this, void *pack,
+                                  unsigned len));
 
 #endif // !_TUN6_H
-

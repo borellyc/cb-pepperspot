@@ -14,7 +14,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
+ * USA.
  *
  * Contact: thibault.vancon@pepperspot.info
  *          sebastien.vincent@pepperspot.info
@@ -33,15 +34,15 @@
 #endif
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
-#if defined(__FreeBSD__) || defined(__APPLE__) || defined(__NetBSD__) || defined(__OpenBSD__)
-  typedef unsigned long u_long;
-  typedef unsigned short u_short;
-  typedef unsigned int u_int;
-  typedef unsigned char u_char;
+#if defined(__FreeBSD__) || defined(__APPLE__) || defined(__NetBSD__) || \
+    defined(__OpenBSD__)
+typedef unsigned long u_long;
+typedef unsigned short u_short;
+typedef unsigned int u_int;
+typedef unsigned char u_char;
 #endif
 
 #if (!defined(HAVE_CLEARENV) && !defined(_XOPEN_SOURCE)) || defined(__APPLE__)
@@ -49,9 +50,11 @@ extern "C"
 // code from miredo
 #if defined(__APPLE__)
 #include <crt_externs.h>
-#define environ (*_NSGetEnviron())   //!< Extern variable environ replacement for Mac OS X
+#define environ \
+  (*_NSGetEnviron()) //!< Extern variable environ replacement for Mac OS X
 #else
-extern char ** environ;              //!< environ variable which contains environment variable
+extern char *
+    *environ; //!< environ variable which contains environment variable
 #endif
 
 //!
@@ -69,7 +72,8 @@ int clearenv(void);
 //!
 //!  \brief daemon replacement function (non POSIX).
 //!  \param nochdir if 0, the child change to "/" directory
-//!  \param noclose if 0, the child redirect stdin, stdout and stderr to /dev/null
+//!  \param noclose if 0, the child redirect stdin, stdout and stderr to
+//!  /dev/null
 //!  \return O if OK, -1 otherwise (errno is set).
 //!
 int daemon(int nochdir, int noclose);
@@ -81,4 +85,3 @@ int daemon(int nochdir, int noclose);
 #endif
 
 #endif // !_COMPAT_H
-
