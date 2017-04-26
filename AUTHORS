@@ -1,2 +1,33 @@
-Thibault Vancon <thibault.vancon@pepperspot.info>
-Sebastien Vincent <sebastien.vincent@cppextrem.com>
+cb-pepperspot is based on pepperspot.
+It is (re)written by Christophe BORELLY.
+
+PepperSpot (2008-2011) was written by Thibault VANÇON and Sébastien VINCENT. 
+Some others people have contributed to it by reporting problems or 
+suggesting various improvements. Here is a list ofthese people.
+Help us keep it complete and exempt of errors.
+
+Thibault VANCON      thibault.vancon@pepperspot.info
+Sebastien VINCENT    sebastien.vincent@cppextrem.com
+Julien MONTAVONT
+Guillaume SCHREINER
+Simon GEISSLER
+Christophe BORELLY   christophe.borelly@umontpellier.fr
+
+PepperSpot is based on ChilliSpot (2004-2006), a LAN Access Point Controller, 
+originally written by Jens JAKOBSEN.
+Thank's to him and to the Chillispot's Community:
+
+Ned LUD              solar@gentoo.org
+Dan STROHSCHEIN      dstrohschein@thewifilink.com
+Vladimir VUKSAN      vlists@veus.hr
+Alexander PAPADAKIS  alpapad@algonet.gr
+Paul ANNESLEY
+Russell BRENNER
+Stefan LENGACHER
+Jacques CROCKER
+Philipp KOBEL        philipp.kobel@lin.at
+Harald JENNY         harald@lin.at
+Drew S. DUPONT
+Jerome HEULOT
+David BIRD
+Lorenzo BETTINI

@@ -1,9 +1,9 @@
-2011-09-15  Sebastien Vincent <sebastien.vincent@cppextrem.com>
+2011-09-15  Sebastien VINCENT
 
   * Version 0.4   - Fix stack smashing issue;
                   - Fix pathname of some files in pepperspot.spec.
 
-2010-01-27  Sebastien Vincent <sebastien.vincent@peppespot.info>
+2010-01-27  Sebastien VINCENT
   
   * Version 0.3   - IPv4/IPv6 authentication unification (from Simon Geissler);
                   - CAS authentication (from Christophe Borelly);
@@ -12,14 +12,14 @@
                   - Put several files from doc/ to extra/ directory;
                   - Doxygenization.
 
-2009-03-27  Sebastien Vincent <sebastien.vincent@pepperspot.info>
+2009-03-27  Sebastien VINCENT
 
   * Version 0.2   - Fix compilation issues for Ubuntu;
                   - Typos;
                   - Remove unused code;
                   - Update e-mail addresses.
 
-2008-10-30  Sebastien Vincent <vincent@lsiit.u-strasbg.fr>
+2008-10-30  Sebastien VINCENT
 
   * Initial version.
 

@@ -1,0 +1,6 @@
+cb-pepperspot is based on pepperspot.
+Here are some improvements that will be provided by this release:
+ -new coding style (based on clang-format)
+ -enhanced readability and organisation of code
+ -enhanced debug possibilities
+
