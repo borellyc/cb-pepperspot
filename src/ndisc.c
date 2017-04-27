@@ -1,52 +1,7 @@
-/*
- * PepperSpot -- The Next Generation Captive Portal
- * Copyright (C) 2008, Thibault VANCON and Sebastien VINCENT
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
- * USA.
- *
- * Contact: thibault.vancon@pepperspot.info
- *          sebastien.vincent@pepperspot.info
- */
-
-/*
- * $Id: ndisc.c 1.56 06/05/06 15:15:47+03:00 anttit@tcs.hut.fi $
- *
- * This file is part of the MIPL Mobile IPv6 for Linux.
- *
- * Authors: Antti Tuominen <anttit@tcs.hut.fi>
- *          Ville Nuorvala <vnuorval@tcs.hut.fi>
- *
- * Copyright 2003-2005 Go-Core Project
- * Copyright 2003-2006 Helsinki University of Technology
- *
- * MIPL Mobile IPv6 for Linux is free software; you can redistribute
- * it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation; version 2 of
- * the License.
- *
- * MIPL Mobile IPv6 for Linux is distributed in the hope that it will
- * be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with MIPL Mobile IPv6 for Linux; if not, write to the Free
- * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
- * 02111-1307 USA.
- */
+// $Id: ndisc.c 1.56 2006-05-06 15:15:47+03:00 anttit@tcs.hut.fi $
+// Copyright (c) 2008, Thibault VANCON and Sebastien VINCENT
+// Copyright (c) 2003-2005 Go-Core Project
+// Copyright (c) 2003-2006 Helsinki University of Technology
 
 //!
 //!  \file ndisc.c
@@ -238,3 +193,26 @@ int ndisc_send_na(int ifindex, const struct in6_addr *src,
   free_iov_data(iov, 2);
   return 0;
 }
+
+/*
+ * This file is part of the MIPL Mobile IPv6 for Linux.
+ *
+ * Authors: Antti Tuominen <anttit@tcs.hut.fi>
+ *          Ville Nuorvala <vnuorval@tcs.hut.fi>
+ *
+ * MIPL Mobile IPv6 for Linux is free software; you can redistribute
+ * it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation; version 2 of
+ * the License.
+ *
+ * MIPL Mobile IPv6 for Linux is distributed in the hope that it will
+ * be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with MIPL Mobile IPv6 for Linux; if not, write to the Free
+ * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ * 02111-1307 USA.
+ */
+

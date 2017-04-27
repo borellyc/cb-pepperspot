@@ -1,51 +1,11 @@
-/*
- * PepperSpot -- The Next Generation Captive Portal
- * Copyright (C) 2008, Thibault VANCON and Sebastien VINCENT
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
- * USA.
- *
- * Contact: thibault.vancon@pepperspot.info
- *          sebastien.vincent@pepperspot.info
- */
-
-/*
- * tun6.h - IPv6 tunnel interface declaration
- * $Id: tun6.h 1552 2006-07-04 15:38:38Z remi $
- */
+// $Id: tun6.h 1552 2006-07-04 15:38:38Z remi $
+// Copyright (c) 2008, Thibault VANCON and Sebastien VINCENT
+// Copyright (c) 2004-2006 Remi DENIS-COURMONT
 
 //!
 //!  \file tun6.h
 //!  \brief IPv6 tunnel interface (tun).
 //!
-
-//! *********************************************************************
-//!   Copyright (c) 2004-2006 Remi DENIS-COURMONT.                       *
-//!   This program is free software; you can redistribute and/or modify  *
-//!   it under the terms of the GNU General Public License as published  *
-//!   by the Free Software Foundation; version 2 of the license.         *
-//!                                                                      *
-//!   This program is distributed in the hope that it will be useful,    *
-//!   but WITHOUT ANY WARRANTY; without even the implied warranty of     *
-//!   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.               *
-//!   See the GNU General Public License for more details.               *
-//!                                                                      *
-//!   You should have received a copy of the GNU General Public License  *
-//!   along with this program; if not, you can get it from:              *
-//!   http://www.gnu.org/copyleft/gpl.html                               *
-//!  **********************************************************************
 
 #ifndef _TUN6_H
 #define _TUN6_H
@@ -191,3 +151,4 @@ int tun6_set_cb_ind(struct tun6_t *this,
                                   unsigned len));
 
 #endif // !_TUN6_H
+
