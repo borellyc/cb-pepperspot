@@ -2,10 +2,11 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.57)
-AC_INIT(pepperspot, 0.4, bugs@pepperspot.info)
+AC_INIT(cb-pepperspot, 0.5, christophe.borelly@umontpellier.fr)
 AC_CONFIG_SRCDIR([src/cmdline.c])
 
 AM_INIT_AUTOMAKE
+AM_SILENT_RULES([yes])
 
 AM_CONFIG_HEADER([config.h])
 
@@ -14,17 +15,23 @@ CFLAGS=""
 # Checks for programs.
 AC_PROG_CC
 
+# Detect OS
+AC_CANONICAL_BUILD
+
 #JJAKO Check for libtool
 # AC_PROG_LIBTOOL
 # AM_PROG_LIBTOOL
 
 # Checks for libraries.
-# AC_CHECK_LIB(resolv, __res_close,,[echo -e "\tPlease install libresolv";exit])
+# AC_CHECK_LIB(resolv, __res_close,,
+#              [echo -e "\tPlease install libresolv";exit])
 
 # Checks for header files.
 AC_HEADER_STDC
 AC_HEADER_SYS_WAIT
-AC_CHECK_HEADERS([arpa/inet.h fcntl.h netdb.h netinet/in.h stddef.h stdint.h stdlib.h string.h sys/ioctl.h sys/socket.h sys/time.h syslog.h unistd.h net/if_var.h])
+AC_CHECK_HEADERS([arpa/inet.h fcntl.h netdb.h netinet/in.h net/if_var.h \
+                  stddef.h stdint.h stdlib.h string.h \
+                  sys/ioctl.h sys/socket.h sys/time.h syslog.h unistd.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
@@ -49,7 +56,9 @@ AC_FUNC_MEMCMP
 AC_FUNC_MKTIME
 AC_FUNC_REALLOC
 AC_FUNC_SELECT_ARGTYPES
-AC_CHECK_FUNCS([dup2 gethostbyname gettimeofday inet_ntoa memset select socket strchr strcspn strdup strerror strspn strstr strtol clearenv daemon tzset])
+AC_CHECK_FUNCS([dup2 gethostbyname gettimeofday inet_ntoa memset select \
+                socket strchr strcspn strdup strerror strspn strstr strtol \
+                clearenv daemon tzset])
 
 # Doxygen
 DX_HTML_FEATURE(ON)
@@ -60,10 +69,14 @@ DX_RTF_FEATURE(OFF)
 DX_XML_FEATURE(OFF)
 DX_PDF_FEATURE(OFF)
 DX_PS_FEATURE(OFF)
-DX_INIT_DOXYGEN(pepperspot, Doxyfile)
+DX_INIT_DOXYGEN(cb-pepperspot, Doxyfile)
 
 # Enable compilation in debug mode.
-AC_ARG_ENABLE(debug-build, [  --enable-debug-build    allow to compile with debug informations [default=no]], enable_debug_build=$enableval, enable_debug_build=no)
+AC_ARG_ENABLE(debug-build,
+  [AS_HELP_STRING([--enable-debug-build],
+                  [allow to compile with debug informations [default=no]])],
+  [enable_debug_build=$enableval],
+  [enable_debug_build=no])
 if test "$enable_debug_build" = "yes"; then
   AC_DEFINE([DEBUG_BUILD], [1], [Enable debug build])
 fi
@@ -76,12 +89,14 @@ AC_CONFIG_FILES([Makefile
                  src/Makefile
                  debian/Makefile
                  contrib/Makefile
-		 pepperspot.spec])
+                 cb-pepperspot.spec])
 AC_OUTPUT
 
-AC_MSG_NOTICE([Configuration
+AC_MSG_NOTICE([Current configuration
 
-AC_PACKAGE_NAME version AC_PACKAGE_VERSION
+  AC_PACKAGE_NAME version AC_PACKAGE_VERSION
+  Build OS: ........................ $build_os
+  Build CPU: ....................... $build_cpu
   Enable debug build: .............. $enable_debug_build
 ])
 
